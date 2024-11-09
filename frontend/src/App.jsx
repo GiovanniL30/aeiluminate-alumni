@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LoggedInProvider from "./admin/context/LoggedIn";
 import {
   Dashboard,
   Layout,
@@ -11,21 +12,24 @@ import {
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/** Admin Routes*/}
-        <Route element={<AdminAuth />}>
-          <Route path="/admin" element={<Layout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="accounts" element={<Accounts />} />
-            <Route path="applications" element={<Applications />} />
+    <LoggedInProvider>
+      <BrowserRouter>
+        <Routes>
+          {/** Admin Routes*/}
+          <Route element={<AdminAuth />}>
+            <Route path="/admin" element={<Layout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="accounts" element={<Accounts />} />
+              <Route path="applications" element={<Applications />} />
+            </Route>
           </Route>
-        </Route>
 
-        {/** Admin Login Route */}
-        <Route path="/admin/login" element={<Login />} />
-      </Routes>
-    </BrowserRouter>
+          {/** Admin Login Route */}
+
+          <Route path="/admin/login" element={<Login />} />
+        </Routes>
+      </BrowserRouter>
+    </LoggedInProvider>
   );
 };
 
