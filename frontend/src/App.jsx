@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LoggedInProvider from "./admin/context/LoggedIn";
+import AdminLoggedInProvider from "./admin/context/AdminLoggedIn";
 import {
   Dashboard,
   Layout,
@@ -12,7 +12,7 @@ import {
 
 const App = () => {
   return (
-    <LoggedInProvider>
+    <AdminLoggedInProvider>
       <BrowserRouter>
         <Routes>
           {/** Admin Routes*/}
@@ -29,7 +29,7 @@ const App = () => {
           <Route path="/admin/login" element={<Login />} />
         </Routes>
       </BrowserRouter>
-    </LoggedInProvider>
+    </AdminLoggedInProvider>
   );
 };
 

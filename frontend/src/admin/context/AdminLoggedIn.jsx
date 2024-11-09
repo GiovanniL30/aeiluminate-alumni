@@ -6,7 +6,7 @@ export const useLoginContext = () => {
   return useContext(LoggedInContext);
 };
 
-const LoggedInProvider = ({ children }) => {
+const AdminLoggedInProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("loggedIn_admin") === "true"
   );
@@ -22,4 +22,4 @@ const LoggedInProvider = ({ children }) => {
   );
 };
 
-export default LoggedInProvider;
+export default AdminLoggedInProvider;

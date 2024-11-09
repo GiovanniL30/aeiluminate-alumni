@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { useLoginContext } from "../context/LoggedIn";
+import { useLoginContext } from "../context/AdminLoggedIn";
 
 const AdminAuth = () => {
   const { isLoggedIn } = useLoginContext();

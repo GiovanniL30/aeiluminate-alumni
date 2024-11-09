@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useLoginContext } from "../context/LoggedIn";
+import { useLoginContext } from "../context/AdminLoggedIn";
 
 const Login = () => {
   const [data, setData] = useState({ username: "", password: "" });
