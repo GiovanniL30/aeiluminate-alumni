@@ -72,20 +72,28 @@ You will need to configure the environment variables for both the frontend and b
 In the frontend folder, create a .env file and add the following configuration:
 
 ```bash
-VITE_API_BASE_URL=http://localhost:5000  # Replace with your server's URL
-VITE_APPWRITE_API_URL=http://localhost:80  # AppWrite server URL
-VITE_APPWRITE_PROJECT_ID=your_project_id
+VITE_API_BASE_URL=http://localhost:1099
 ```
 
 In the server folder, create a .env file and add the following configuration:
 
 ```bash
-APPWRITE_API_URL=http://localhost:80  # AppWrite server URL
-APPWRITE_PROJECT_ID=your_project_id
-MYSQL_HOST=localhost
-MYSQL_USER=your_mysql_user
-MYSQL_PASSWORD=your_mysql_password
-MYSQL_DATABASE=your_database_name
+#Application
+PORT
+secret_key
+ADMIN_USERNAME
+ADMIN_PASSWORD
+
+#Appwrite
+APP_WRITE_ENDPOINT
+APP_WRITE_PROJECT_ID
+
+#Database
+DATABASE_HOST
+DATABASE_USER
+DATABASE_PASSWORD
+DATABASE_PORT
+DATABASE_NAME
 ```
 
 #### 5. Run the Server
