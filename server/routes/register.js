@@ -1,10 +1,8 @@
 import express from "express";
-import appWriteInstance from "../appwriteconfig.js";
+import { account } from "../appwriteconfig.js";
 import { ID } from "appwrite";
 
 export const router = express.Router();
-
-const account = appWriteInstance.getAccount();
 
 router.post("/client", async (req, res) => {
   const { email, username, password } = req.body;

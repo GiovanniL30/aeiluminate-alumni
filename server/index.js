@@ -3,8 +3,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import { router as loginRoute } from "./routes/login.js";
 import { router as registerRoute } from "./routes/register.js";
-import { authenticateCookie } from "./middleware/authenticateCookie.js";
-import { Client, Account } from "appwrite";
+import connection from "./connections.js";
 
 const app = express();
 app.use(cors());
