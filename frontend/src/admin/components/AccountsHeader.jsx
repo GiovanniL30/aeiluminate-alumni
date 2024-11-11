@@ -9,6 +9,7 @@ import ascending from "../../assets/ascending.svg";
 import descending from "../../assets/descending.svg";
 
 import DropDownOptions from "../components/DropDownOptions";
+import Button from "./Button";
 
 const sortOptions = [
   {
@@ -56,7 +57,7 @@ const filterOption = [
   },
 ];
 
-const AccountsHeader = ({ queryData, setQueryData }) => {
+const AccountsHeader = ({ queryData, setQueryData, setOpenAddAcount }) => {
   const [activeDropDown, setActiveDropDown] = useState({
     name: "",
     open: false,
@@ -81,6 +82,9 @@ const AccountsHeader = ({ queryData, setQueryData }) => {
           className="w-full border-[1px] rounded-full border-light_text bg-light_blue text-sm p-2 pl-10 focus:outline-primary_blue"
           type="text"
           placeholder="Search"
+          name="search"
+          value={queryData.search}
+          onChange={(e) => handleOptionChange(e)}
         />
         <img
           className="absolute top-1/2 -translate-y-1/2 w-4 left-3 mt-[1px]"
@@ -89,9 +93,11 @@ const AccountsHeader = ({ queryData, setQueryData }) => {
         />
       </div>
       <div className="flex items-center gap-5">
-        <button className="bg-primary_blue text-white font-semibold rounded-full py-2 px-4 text-sm hover-opacity">
-          Add User +
-        </button>
+        <Button
+          text="Add Account +"
+          otherStyle="!rounded-full"
+          onClick={() => setOpenAddAcount(true)}
+        />
         <button
           onClick={() => handleOpenDropDown("sort")}
           className="flex items-center gap-2  text-sm relative"

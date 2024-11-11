@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 
 import AccountsHeader from "../components/AccountsHeader";
+import Users from "../components/Users";
+import UsersTable from "../components/UsersTable";
+import CreateAccount from "../components/CreateAccount";
 
 const Accounts = () => {
+  const [openAddAcount, setOpenAddAcount] = useState(false);
+
   const [queryData, setQueryData] = useState({
     search: "",
     sort: "firstName",
@@ -12,10 +17,14 @@ const Accounts = () => {
 
   return (
     <section className="min-w-[800px]">
-      <AccountsHeader queryData={queryData} setQueryData={setQueryData} />
-      <div>users</div>
-      <div>table</div>
-      <div>pagination</div>
+      {openAddAcount && <CreateAccount setOpenAddAcount={setOpenAddAcount} />}
+      <AccountsHeader
+        queryData={queryData}
+        setQueryData={setQueryData}
+        setOpenAddAcount={setOpenAddAcount}
+      />
+      <Users />
+      <UsersTable />
     </section>
   );
 };
