@@ -1,9 +1,8 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { useLoginContext } from "../context/AdminLoggedIn";
 
 const AdminAuth = () => {
-  const { isLoggedIn } = useLoginContext();
+  const isLoggedIn = true;
 
   console.log(isLoggedIn);
 
