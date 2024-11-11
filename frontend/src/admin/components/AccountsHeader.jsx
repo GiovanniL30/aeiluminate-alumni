@@ -25,7 +25,7 @@ const sortOptions = [
   {
     title: "User Name",
     icon: user,
-    value: "userName",
+    value: "username",
   },
 ];
 
@@ -49,11 +49,11 @@ const filterOption = [
   },
   {
     title: "Alumni",
-    value: "alumni",
+    value: "Alumni",
   },
   {
     title: "Manager",
-    value: "manager",
+    value: "Manager",
   },
 ];
 
@@ -104,7 +104,7 @@ const AccountsHeader = ({ queryData, setQueryData, setOpenAddAcount }) => {
         >
           <p>Sort by</p> <img src={down} alt="" />
           {activeDropDown.name == "sort" && activeDropDown.open && (
-            <div className="flex flex-col absolute -left-20 top-10  border-[1px] rounded-md shadow-md w-40 items-center p-2 gap-2">
+            <div className="flex flex-col absolute -left-20 top-10  border-[1px] rounded-md shadow-md w-40 items-center p-2 gap-2 bg-white">
               <DropDownOptions
                 options={sortOptions}
                 handleOptionChange={handleOptionChange}
@@ -128,7 +128,7 @@ const AccountsHeader = ({ queryData, setQueryData, setOpenAddAcount }) => {
         >
           <img src={filter} alt="filter" />
           {activeDropDown.name == "filter" && activeDropDown.open && (
-            <div className="flex flex-col absolute -left-20  top-10  border-[1px] rounded-md shadow-md items-center p-2 gap-2 ">
+            <div className="flex flex-col absolute -left-20  top-10  border-[1px] rounded-md shadow-md items-center p-2 gap-2 bg-white ">
               <DropDownOptions
                 otherStyle="w-full gap-0"
                 options={filterOption}
