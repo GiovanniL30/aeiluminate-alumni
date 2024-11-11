@@ -20,7 +20,7 @@ const sortOptions = [
   {
     title: "Last Name",
     icon: filter_name,
-    value: "lasttName",
+    value: "lastName",
   },
   {
     title: "User Name",

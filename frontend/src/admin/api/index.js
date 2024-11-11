@@ -41,3 +41,33 @@ export const getPrograms = async () => {
     throw error;
   }
 };
+
+/**                         SENDS A REQUEST TO CREATE A NEW USER */
+export const createUserAccount = async (userData) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/api/register/client`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+
+      throw new Error(
+        errorData.message || "An error occurred while creating a new user."
+      );
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error.message);
+    throw error;
+  }
+};

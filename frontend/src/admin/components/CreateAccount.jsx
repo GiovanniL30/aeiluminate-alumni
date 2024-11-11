@@ -1,40 +1,28 @@
 import React, { useState } from "react";
-
 import Input from "./Input";
 import Button from "./Button";
-import { getPrograms } from "../api";
-import { useQuery } from "@tanstack/react-query";
+import { getPrograms, createUserAccount } from "../api";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import ProgramInput from "./ProgramInput";
 
 const roles = [
-  {
-    text: "Alumni",
-    value: "alumni",
-  },
-  {
-    text: "Manager",
-    value: "manager",
-  },
+  { text: "Alumni", value: "Alumni" },
+  { text: "Manager", value: "Manager" },
 ];
 
 const employment = [
-  {
-    text: "Employed",
-    value: 1,
-  },
-  {
-    text: "Unemployed",
-    value: 0,
-  },
+  { text: "Employed", value: 1 },
+  { text: "Unemployed", value: 0 },
 ];
 
 const CreateAccount = ({ setOpenAddAcount }) => {
+  const queryClient = useQueryClient();
   const [data, setData] = useState({
     firstName: "",
     middleName: "",
     lastName: "",
     userName: "",
-    roleType: "alumni",
+    roleType: "Alumni",
     email: "",
     password: "",
     employment: 1,
@@ -44,30 +32,39 @@ const CreateAccount = ({ setOpenAddAcount }) => {
 
   const programsQuery = useQuery({
     queryKey: ["programs"],
-    queryFn: () => getPrograms(),
+    queryFn: getPrograms,
+  });
+
+  const createUserMutation = useMutation({
+    mutationFn: createUserAccount,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["programs"]);
+      alert("Account created successfully!");
+      setOpenAddAcount(false);
+    },
+    onError: (error) => {
+      alert(`Error: ${error.message}`);
+    },
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
   const submit = (e) => {
-    e.stopPropagation();
-
-    console.log(data);
+    e.preventDefault();
+    createUserMutation.mutate(data);
   };
 
   if (programsQuery.isLoading) return <h1>Loading...</h1>;
-
-  if (programsQuery.isError) return <h1>Error opening Add new account form</h1>;
+  if (programsQuery.isError) return <h1>Error loading programs</h1>;
 
   return (
     <div className="z-50 fixed bg-black bg-opacity-50 border-2 bottom-0 top-0 left-0 right-0 flex items-center justify-center">
       <div className="flex flex-col gap-4 bg-white border-[1px] rounded-md w-3/4 min-w-[800px] max-w-[1200px]  p-10">
         <h1 className="font-bold text-2xl">Create Account</h1>
-        <div className="flex flex-col gap-5">
+        <form className="flex flex-col gap-5" onSubmit={submit}>
           <div className="flex justify-between w-full gap-3">
             <Input
               label="First Name"
@@ -117,10 +114,11 @@ const CreateAccount = ({ setOpenAddAcount }) => {
               type="password"
               handleChange={handleChange}
               value={data.password}
+              min={8}
             />
           </div>
 
-          {data.roleType === "alumni" && (
+          {data.roleType === "Alumni" && (
             <>
               <div className="flex justify-between w-full gap-3">
                 <Input
@@ -130,7 +128,6 @@ const CreateAccount = ({ setOpenAddAcount }) => {
                   handleChange={handleChange}
                   value={data.employment}
                 />
-
                 <Input
                   label="Year Graduated"
                   name="yearGraduated"
@@ -139,7 +136,6 @@ const CreateAccount = ({ setOpenAddAcount }) => {
                   value={data.yearGraduated}
                 />
               </div>
-
               <ProgramInput
                 programs={programsQuery.data}
                 value={data.program}
@@ -148,16 +144,24 @@ const CreateAccount = ({ setOpenAddAcount }) => {
             </>
           )}
 
-          <div className="self-end flex items-center gap-3 ">
-            <Button text="Add" otherStyle="w-24" onClick={submit} />
+          <div className="self-end flex items-center gap-3">
             <Button
+              text={`${
+                createUserMutation.isPending ? "Creating Account..." : "Add"
+              }`}
+              otherStyle="w-24"
+              type="submit"
+              disabled={createUserMutation.isPending}
+            />
+            <Button
+              type="button"
               text="Cancel"
               variant="outline"
               otherStyle="w-24"
               onClick={() => setOpenAddAcount(false)}
             />
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

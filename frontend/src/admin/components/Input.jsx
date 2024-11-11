@@ -7,6 +7,7 @@ const Input = ({
   type = "text",
   options = null,
   handleChange,
+  min = 8,
 }) => {
   return (
     <div className="w-full flex flex-col gap-2">
@@ -32,6 +33,7 @@ const Input = ({
           name={name}
           value={value}
           onChange={handleChange}
+          min={min}
         />
       )}
     </div>

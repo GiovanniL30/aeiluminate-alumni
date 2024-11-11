@@ -1,8 +1,17 @@
 import React from "react";
 
-const Button = ({ text, variant = "filled", otherStyle, onClick }) => {
+const Button = ({
+  text,
+  variant = "filled",
+  otherStyle,
+  onClick,
+  type = "button",
+  disabled = false,
+}) => {
   return (
     <button
+      disabled={disabled}
+      type={type}
       onClick={onClick}
       className={`${
         variant == "filled"
