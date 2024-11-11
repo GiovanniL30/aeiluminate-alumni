@@ -1,10 +1,25 @@
 import React from "react";
-
 import details_icon from "../../assets/details_icon.svg";
 import delete_icon from "../../assets/delete.svg";
 import check_mark from "../../assets/check mark.svg";
 
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { removeUserAccount } from "../api";
+
 const UsersTable = ({ data }) => {
+  const queryClient = useQueryClient();
+
+  const deleteUserQuery = useMutation({
+    mutationFn: removeUserAccount,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["users"]);
+      alert("Deleted User");
+    },
+    onError: (error) => {
+      alert(error);
+    },
+  });
+
   return (
     <table className="w-full max-w-[1500px] mx-auto border-[1px]">
       <tbody>
@@ -34,7 +49,10 @@ const UsersTable = ({ data }) => {
               <button>
                 <img src={check_mark} alt="check" />
               </button>
-              <button>
+              <button
+                onClick={() => deleteUserQuery.mutate(user.userID)}
+                disabled={deleteUserQuery.isLoading}
+              >
                 <img src={delete_icon} alt="delete" />
               </button>
             </td>

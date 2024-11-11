@@ -1,5 +1,5 @@
 import connection from "./connections.js";
-import { account } from "./appwriteconfig.js";
+import { account, users } from "./appwriteconfig.js";
 
 /**
  *
@@ -19,12 +19,26 @@ export const checkUsername = (username, callback) => {
 
 /**
  *
+ *  Checks if the username is already on the database
+ */
+export const checkEmail = (email, callback) => {
+  const query = "SELECT * FROM user_details WHERE email = ?";
+
+  connection.query(query, [email], (err, results) => {
+    if (err) {
+      return callback(false);
+    }
+
+    callback(results.length > 0);
+  });
+};
+
+/**
+ *
  * Removes an account on the user table
  */
 export const removeUserAccount = async (userId, callback) => {
   try {
-    await account.deleteIdentity(userId);
-
     const query = "DELETE FROM users WHERE userID = ?";
     connection.query(query, [userId], (err, result) => {
       if (err) {

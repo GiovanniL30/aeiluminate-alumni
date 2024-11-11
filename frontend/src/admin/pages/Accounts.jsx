@@ -24,7 +24,7 @@ const Accounts = () => {
    * Query to fetch list of users
    */
   const usersQuery = useQuery({
-    queryKey: ["users", queryData],
+    queryKey: ["users"],
     queryFn: () =>
       getUsers(
         `${import.meta.env.VITE_API_BASE_URL}/api/users?page=${

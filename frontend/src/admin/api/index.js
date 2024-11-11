@@ -71,3 +71,28 @@ export const createUserAccount = async (userData) => {
     throw error;
   }
 };
+
+/**                         SENDS A REQUEST TO REMOVE A USER */
+export const removeUserAccount = async (userId) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/api/user/delete/${userId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      return;
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error deleting user:", error.message);
+    throw error;
+  }
+};

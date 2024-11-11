@@ -1,5 +1,6 @@
 import express from "express";
 import connection from "../connections.js";
+import { removeUserAccount } from "../utils.js";
 
 export const router = express.Router();
 
@@ -44,5 +45,16 @@ router.get("/users", (req, res) => {
         },
       });
     });
+  });
+});
+
+router.delete("/user/delete/:id", (req, res) => {
+  const { id } = req.params;
+
+  removeUserAccount(id, (error, message) => {
+    if (error) {
+      return res.status(500).json({ error: message });
+    }
+    res.status(200).json({ message });
   });
 });
