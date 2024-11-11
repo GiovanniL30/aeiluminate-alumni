@@ -20,6 +20,9 @@
 }
 
 @layer utilities {
+  .hover-opacity {
+    @apply hover:opacity-50 duration-500 ease-in-out;
+  }
   .padding {
     @apply sm:px-16 px-8 sm:py-24 py-12;
   }
@@ -47,14 +50,4 @@
   .padding-b {
     @apply sm:pb-24 pb-12;
   }
-}
-
-.sidebar-link::before {
-  position: absolute;
-  content: "";
-  width: 20px;
-  height: 20px;
-  color: "#4880FF";
-  top: 0;
-  left: -10px;
 }

@@ -7,7 +7,7 @@ const Layout = () => {
   return (
     <div>
       <Sidebar />
-      <div className="pl-[270px] p-6">
+      <div className="ml-[245px] py-6 px-10">
         <Header />
         <Outlet />
       </div>
