@@ -4,6 +4,7 @@ import cors from "cors";
 import { router as loginRoute } from "./routes/login.js";
 import { router as registerRoute } from "./routes/register.js";
 import { router as usersRoute } from "./routes/users.js";
+import { router as programsRoute } from "./routes/programs.js";
 
 const app = express();
 app.use(cors());
@@ -14,6 +15,7 @@ app.use(cookieParser());
 app.use("/api/login", loginRoute);
 app.use("/api/register", registerRoute);
 app.use("/api", usersRoute);
+app.use("/api", programsRoute);
 
 const PORT = process.env.PORT || 1000;
 

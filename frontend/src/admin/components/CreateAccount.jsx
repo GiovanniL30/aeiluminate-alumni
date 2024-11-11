@@ -2,6 +2,9 @@ import React, { useState } from "react";
 
 import Input from "./Input";
 import Button from "./Button";
+import { getPrograms } from "../api";
+import { useQuery } from "@tanstack/react-query";
+import ProgramInput from "./ProgramInput";
 
 const roles = [
   {
@@ -14,7 +17,18 @@ const roles = [
   },
 ];
 
-const CreateAccount = ({ openAddAcount, setOpenAddAcount }) => {
+const employment = [
+  {
+    text: "Employed",
+    value: 1,
+  },
+  {
+    text: "Unemployed",
+    value: 0,
+  },
+];
+
+const CreateAccount = ({ setOpenAddAcount }) => {
   const [data, setData] = useState({
     firstName: "",
     middleName: "",
@@ -23,8 +37,14 @@ const CreateAccount = ({ openAddAcount, setOpenAddAcount }) => {
     roleType: "alumni",
     email: "",
     password: "",
-    program: "",
-    yearGraduated: "",
+    employment: 1,
+    program: 1,
+    yearGraduated: 2024,
+  });
+
+  const programsQuery = useQuery({
+    queryKey: ["programs"],
+    queryFn: () => getPrograms(),
   });
 
   const handleChange = (e) => {
@@ -38,6 +58,10 @@ const CreateAccount = ({ openAddAcount, setOpenAddAcount }) => {
 
     console.log(data);
   };
+
+  if (programsQuery.isLoading) return <h1>Loading...</h1>;
+
+  if (programsQuery.isError) return <h1>Error opening Add new account form</h1>;
 
   return (
     <div className="z-50 fixed bg-black bg-opacity-50 border-2 bottom-0 top-0 left-0 right-0 flex items-center justify-center">
@@ -95,21 +119,35 @@ const CreateAccount = ({ openAddAcount, setOpenAddAcount }) => {
               value={data.password}
             />
           </div>
-          <div className="flex justify-between w-full gap-3">
-            <Input
-              label="Program"
-              name="program"
-              handleChange={handleChange}
-              value={data.program}
-            />
-            <Input
-              label="Year Graduated"
-              name="yearGraduated"
-              type="number"
-              handleChange={handleChange}
-              value={data.yearGraduated}
-            />
-          </div>
+
+          {data.roleType === "alumni" && (
+            <>
+              <div className="flex justify-between w-full gap-3">
+                <Input
+                  label="Employment"
+                  name="employment"
+                  options={employment}
+                  handleChange={handleChange}
+                  value={data.employment}
+                />
+
+                <Input
+                  label="Year Graduated"
+                  name="yearGraduated"
+                  type="number"
+                  handleChange={handleChange}
+                  value={data.yearGraduated}
+                />
+              </div>
+
+              <ProgramInput
+                programs={programsQuery.data}
+                value={data.program}
+                handleChange={handleChange}
+              />
+            </>
+          )}
+
           <div className="self-end flex items-center gap-3 ">
             <Button text="Add" otherStyle="w-24" onClick={submit} />
             <Button
