@@ -1,4 +1,7 @@
-/**                         GET LIST OF USER ACCOUNTS */
+/**
+ * Fetch all list of users
+ * @url baseurl/api/users
+ */
 export const getUsers = async (url) => {
   try {
     const response = await fetch(url);
@@ -17,7 +20,10 @@ export const getUsers = async (url) => {
   }
 };
 
-/**                         GET LIST OF AVAILABLE PROGRAMS */
+/**
+ * Fetch all list of programs
+ * @url baseurl/api/programs
+ */
 export const getPrograms = async () => {
   try {
     const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/programs`);
@@ -36,7 +42,10 @@ export const getPrograms = async () => {
   }
 };
 
-/**                         SENDS A REQUEST TO CREATE A NEW USER */
+/**
+ * Sends a request to create a new user
+ * @url baseurl/api/register/client
+ */
 export const createUserAccount = async (userData) => {
   console.log(userData);
   try {
@@ -62,7 +71,10 @@ export const createUserAccount = async (userData) => {
   }
 };
 
-/**                         SENDS A REQUEST TO REMOVE A USER */
+/**
+ * Sends a request to remove a  user
+ * @url baseurl/api/user/delete/:id
+ */
 export const removeUserAccount = async (userId) => {
   try {
     const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/delete/${userId}`, {

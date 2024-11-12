@@ -24,6 +24,10 @@
   .hover-opacity {
     @apply hover:opacity-50 duration-500 ease-in-out;
   }
+
+  .hover-scaledown {
+    @apply hover:scale-75 duration-500 ease-in-out;
+  }
   .padding {
     @apply sm:px-16 px-8 sm:py-24 py-12;
   }
