@@ -5,10 +5,10 @@ import { Outlet } from "react-router-dom";
 const MainLayout = () => {
   return (
     <main>
-      <header className="padding-x py-5">
+      <header className="padding-x  fixed w-full top-4">
         <Navbar />
       </header>
-      <section className="padding">
+      <section className="padding mt-11">
         <Outlet />
       </section>
     </main>
