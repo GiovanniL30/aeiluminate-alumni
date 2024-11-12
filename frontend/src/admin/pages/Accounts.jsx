@@ -4,7 +4,7 @@ import AccountsHeader from "../components/AccountsHeader";
 import Users from "../components/Users";
 import UsersTable from "../components/UsersTable";
 import CreateAccount from "../components/CreateAccount";
-import { useUsersQuery } from "../api/@react-query/query";
+import { useUsersQuery } from "../_api/@react-query/query";
 
 const Accounts = () => {
   const [openAddAcount, setOpenAddAcount] = useState(false);

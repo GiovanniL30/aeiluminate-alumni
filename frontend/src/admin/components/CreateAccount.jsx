@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import Input from "./Input";
 import Button from "./Button";
-import { getPrograms, createUserAccount } from "../api";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+
 import ProgramInput from "./ProgramInput";
+import { useCreateUser, useGetPrograms } from "../_api/@react-query/query";
 
 const roles = [
   { text: "Alumni", value: "Alumni" },
@@ -16,7 +16,9 @@ const employment = [
 ];
 
 const CreateAccount = ({ setOpenAddAcount }) => {
-  const queryClient = useQueryClient();
+  const programsQuery = useGetPrograms();
+  const createUserMutation = useCreateUser(setOpenAddAcount);
+
   const [data, setData] = useState({
     firstName: "",
     middleName: "",
@@ -28,23 +30,6 @@ const CreateAccount = ({ setOpenAddAcount }) => {
     employment: 1,
     program: 1,
     yearGraduated: 2024,
-  });
-
-  const programsQuery = useQuery({
-    queryKey: ["programs"],
-    queryFn: getPrograms,
-  });
-
-  const createUserMutation = useMutation({
-    mutationFn: createUserAccount,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["programs"]);
-      alert("Account created successfully!");
-      setOpenAddAcount(false);
-    },
-    onError: (error) => {
-      alert(`Error: ${error.message}`);
-    },
   });
 
   const handleChange = (e) => {
@@ -66,100 +51,37 @@ const CreateAccount = ({ setOpenAddAcount }) => {
         <h1 className="font-bold text-2xl">Create Account</h1>
         <form className="flex flex-col gap-5" onSubmit={submit}>
           <div className="flex justify-between w-full gap-3">
-            <Input
-              label="First Name"
-              name="firstName"
-              handleChange={handleChange}
-              value={data.firstName}
-            />
-            <Input
-              label="Middle Name"
-              name="middleName"
-              handleChange={handleChange}
-              value={data.middleName}
-            />
-            <Input
-              label="Last Name"
-              name="lastName"
-              handleChange={handleChange}
-              value={data.lastName}
-            />
+            <Input label="First Name" name="firstName" handleChange={handleChange} value={data.firstName} />
+            <Input label="Middle Name" name="middleName" handleChange={handleChange} value={data.middleName} />
+            <Input label="Last Name" name="lastName" handleChange={handleChange} value={data.lastName} />
           </div>
           <div className="flex justify-between w-full gap-3">
-            <Input
-              label="User Name"
-              name="userName"
-              handleChange={handleChange}
-              value={data.userName}
-            />
-            <Input
-              label="Role Type"
-              name="roleType"
-              options={roles}
-              handleChange={handleChange}
-              value={data.roleType}
-            />
+            <Input label="User Name" name="userName" handleChange={handleChange} value={data.userName} />
+            <Input label="Role Type" name="roleType" options={roles} handleChange={handleChange} value={data.roleType} />
           </div>
           <div className="flex justify-between w-full gap-3">
-            <Input
-              label="Email Address"
-              name="email"
-              type="email"
-              handleChange={handleChange}
-              value={data.email}
-            />
-            <Input
-              label="Password"
-              name="password"
-              type="password"
-              handleChange={handleChange}
-              value={data.password}
-              min={8}
-            />
+            <Input label="Email Address" name="email" type="email" handleChange={handleChange} value={data.email} />
+            <Input label="Password" name="password" type="password" handleChange={handleChange} value={data.password} min={8} />
           </div>
 
           {data.roleType === "Alumni" && (
             <>
               <div className="flex justify-between w-full gap-3">
-                <Input
-                  label="Employment"
-                  name="employment"
-                  options={employment}
-                  handleChange={handleChange}
-                  value={data.employment}
-                />
-                <Input
-                  label="Year Graduated"
-                  name="yearGraduated"
-                  type="number"
-                  handleChange={handleChange}
-                  value={data.yearGraduated}
-                />
+                <Input label="Employment" name="employment" options={employment} handleChange={handleChange} value={data.employment} />
+                <Input label="Year Graduated" name="yearGraduated" type="number" handleChange={handleChange} value={data.yearGraduated} />
               </div>
-              <ProgramInput
-                programs={programsQuery.data}
-                value={data.program}
-                handleChange={handleChange}
-              />
+              <ProgramInput programs={programsQuery.data} value={data.program} handleChange={handleChange} />
             </>
           )}
 
           <div className="self-end flex items-center gap-3">
             <Button
-              text={`${
-                createUserMutation.isPending ? "Creating Account..." : "Add"
-              }`}
+              text={`${createUserMutation.isPending ? "Creating Account..." : "Add"}`}
               otherStyle="w-24"
               type="submit"
               disabled={createUserMutation.isPending}
             />
-            <Button
-              type="button"
-              text="Cancel"
-              variant="outline"
-              otherStyle="w-24"
-              onClick={() => setOpenAddAcount(false)}
-            />
+            <Button type="button" text="Cancel" variant="outline" otherStyle="w-24" onClick={() => setOpenAddAcount(false)} />
           </div>
         </form>
       </div>

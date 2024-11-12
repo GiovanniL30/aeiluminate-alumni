@@ -3,7 +3,7 @@ import details_icon from "../../assets/details_icon.svg";
 import delete_icon from "../../assets/delete.svg";
 import check_mark from "../../assets/check mark.svg";
 
-import { useDeleteUserQuery } from "../api/@react-query/query";
+import { useDeleteUserQuery } from "../_api/@react-query/query";
 
 const UsersTable = ({ data }) => {
   const deleteUserQuery = useDeleteUserQuery();
