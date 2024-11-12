@@ -1,60 +1,14 @@
 import express from "express";
-import connection from "../connections.js";
-import { removeUserAccount } from "../utils.js";
+import { deleteUserController, getUsersContoller } from "../controllers/userControler.js";
 
 export const router = express.Router();
 
-router.get("/users", (req, res) => {
-  const { page = 1, pageSize = 10 } = req.query;
-  const offset = (page - 1) * pageSize;
+/**
+ * Get users route
+ */
+router.get("/users", getUsersContoller);
 
-  let query = `
-    SELECT users.*, user_details.email 
-    FROM users 
-    LEFT JOIN user_details ON users.userID = user_details.userid 
-    LIMIT ? OFFSET ?
-  `;
-  const queryParams = [parseInt(pageSize), parseInt(offset)];
-
-  connection.query(query, queryParams, (err, results) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
-
-    let countQuery = `
-      SELECT COUNT(*) AS total 
-      FROM users 
-      LEFT JOIN user_details ON users.userID = user_details.userid
-    `;
-
-    connection.query(countQuery, (err, countResult) => {
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
-
-      const totalRecords = countResult[0].total;
-      const totalPages = Math.ceil(totalRecords / pageSize);
-
-      res.json({
-        results,
-        pagination: {
-          currentPage: parseInt(page),
-          pageSize: parseInt(pageSize),
-          totalRecords: totalRecords,
-          totalPages: totalPages,
-        },
-      });
-    });
-  });
-});
-
-router.delete("/user/delete/:id", (req, res) => {
-  const { id } = req.params;
-
-  removeUserAccount(id, (error, message) => {
-    if (error) {
-      return res.status(500).json({ error: message });
-    }
-    res.status(200).json({ message });
-  });
-});
+/**
+ * Delete user route
+ */
+router.delete("/user/delete/:id", deleteUserController);
