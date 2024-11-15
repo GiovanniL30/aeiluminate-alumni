@@ -25,17 +25,6 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/** Admin Routes*/}
-        <Route element={<AdminAuth />}>
-          <Route path="/admin" element={<Layout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="accounts" element={<Accounts />} />
-            <Route path="applications" element={<Applications />} />
-          </Route>
-        </Route>
-
-        {/** Client Routes*/}
-
         <Route element={<AlumniAuth />}>
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
