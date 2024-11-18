@@ -3,7 +3,7 @@ import Inbox from "./Inbox";
 import MainLayout from "./MainLayout";
 import Notifications from "./Notifications";
 import CreatePost from "./CreatePost";
-import CreateEvent from "./CreateEvent";
+
 import Profile from "./Profile";
 import Search from "./Search";
 import Signin from "./Signin";
@@ -20,7 +20,6 @@ export {
   MainLayout,
   Notifications,
   CreatePost,
-  CreateEvent,
   Profile,
   Search,
   Signin,

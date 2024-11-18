@@ -9,7 +9,6 @@ import {
   CreatePost,
   Profile,
   Search,
-  CreateEvent,
   Signin,
   Signup,
   User,
@@ -31,7 +30,6 @@ const App = () => {
               <Route index element={<Home />} />
               <Route path="search" element={<Search />} />
               <Route path="post" element={<CreatePost />} />
-              <Route path="event" element={<CreateEvent />} />
               <Route path="inbox" element={<Inbox />} />
               <Route path="notifications" element={<Notifications />} />
               <Route path="profile" element={<Profile />} />
