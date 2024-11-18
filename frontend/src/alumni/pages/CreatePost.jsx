@@ -15,7 +15,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
   const [isPost, setIsPost] = useState(true);
   const [images, setImages] = useState([]);
   const { user } = useAuthContext();
-  const [caption, setCaption] = useState("");
+  const [caption, setCaption] = useState("Acssssssssssssssssssssssssssssssssssssssss");
 
   const handleCaptionChange = (e) => {
     const { value } = e.target;
@@ -41,12 +41,12 @@ const CreatePost = ({ maxCaption = 225 }) => {
     }
   };
 
-  if (uploadQuery.isError) {
-    // localStorage.removeItem("user");
-    // return <Navigate to={`/login?error=${uploadQuery.error}`} />;
+  // if (uploadQuery.isError) {
+  //   // localStorage.removeItem("user");
+  //   // return <Navigate to={`/login?error=${uploadQuery.error}`} />;
 
-    return <h1>{uploadQuery.error.message}</h1>;
-  }
+  //   return <h1>{uploadQuery.error.message}</h1>;
+  // }
 
   return (
     <div className="flex flex-col gap-10 mt-5">

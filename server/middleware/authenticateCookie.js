@@ -1,9 +1,8 @@
 import jwt from "jsonwebtoken";
 
 export const authenticateUserCookie = (req, res, next) => {
+  console.log("Cookies:", req.cookies);
   const token = req.cookies.token;
-
-  console.log("Received token: ", token);
 
   if (!token) {
     return res.status(401).json({

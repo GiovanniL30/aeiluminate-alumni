@@ -10,9 +10,10 @@ export const uploadPostController = async (req, res) => {
 
     const mediaInfo = await Promise.all(
       req.files.map(async (file) => {
+        console.log(file);
         const mediaId = ID.unique();
 
-        await storage.createFile(process.env.APP_WRITE_IMAGES_BUCKET, mediaId, file.buffer);
+        await storage.createFile(process.env.APP_WRITE_IMAGES_BUCKET, mediaId, file);
 
         const fileUrl = `${process.env.APP_WRITE_ENDPOINT}/storage/buckets/${process.env.APP_WRITE_IMAGES_BUCKET}/files/${mediaId}/view`;
 

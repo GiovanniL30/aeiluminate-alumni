@@ -17,6 +17,7 @@ export const userLogin = async (email, password) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(credentials),
+      credentials: "include",
     });
 
     if (!response.ok) {
@@ -43,6 +44,8 @@ export const uploadPost = async (caption, images) => {
     const formData = new FormData();
     formData.append("caption", caption);
     images.forEach((image) => formData.append("images", image.file));
+
+    console.log(formData);
 
     const response = await fetch(`${baseURL}/api/post`, {
       method: "POST",

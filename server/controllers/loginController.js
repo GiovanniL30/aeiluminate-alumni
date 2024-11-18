@@ -32,7 +32,10 @@ export const loginController = async (req, res) => {
       const token = generateToken(user.userID, user.role);
 
       console.log("Generated Token:", token);
-      res.cookie("token", token, { httpOnly: true, secure: process.env.MODE === "production" });
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.MODE === "production",
+      });
       res.status(200).json({ user });
     }
   } catch (error) {

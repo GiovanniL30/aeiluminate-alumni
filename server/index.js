@@ -17,7 +17,6 @@ app.use(
     credentials: true,
   })
 );
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -26,6 +25,6 @@ app.use("/api", loginRoute);
 app.use("/api/register", registerRoute);
 app.use("/api", authenticateUserCookie, postRouter);
 
-const PORT = process.env.PORT || 1000;
+const PORT = process.env.PORT || 1099;
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
