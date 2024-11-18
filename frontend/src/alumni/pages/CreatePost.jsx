@@ -61,7 +61,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
   };
 
   return (
-    <div className="flex flex-col gap-10 mt-5">
+    <div className="flex flex-col gap-10 mt-5 max-container">
       {uploadQuery.isError && <TopPopUp text={uploadQuery.error.message} />}
       <div className="flex gap-5 items-center">
         <button
