@@ -25,7 +25,6 @@ export const createUserAccountController = async (req, res) => {
       return res.status(409).json({ message: "Email already exists" });
     }
 
-    const appWriteUser = await account.create(ID.unique(), email, password, userName);
     const id = appWriteUser.$id;
 
     const newUser = await addNewUser(id, roleType, email, userName, password, firstName, middleName, lastName);

@@ -52,6 +52,30 @@ export const addNewAlumni = (userID, yeaGraduated, programID, isEmployed) => {
  */
 
 /**
+ *
+ * Validate email and password
+ */
+export const validateEmailAndPassword = (email, password) => {
+  const query = "SELECT * FROM users WHERE email = ? AND password = ?";
+
+  return new Promise((resolve, reject) => {
+    connection.query(query, [email, password], (error, result) => {
+      if (error) {
+        console.error("Failed to check email and password:", error);
+        reject(error);
+        return;
+      }
+
+      if (result.length > 0) {
+        resolve(result[0]);
+      } else {
+        resolve(null);
+      }
+    });
+  });
+};
+
+/**
  * Gets all list of programs
  */
 export const getPrograms = () => {
@@ -61,7 +85,7 @@ export const getPrograms = () => {
     connection.query(query, (error, result) => {
       if (error) {
         console.error("Failed to get programs");
-        reject();
+        reject(error);
       }
 
       resolve(result);

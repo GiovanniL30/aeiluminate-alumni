@@ -9,10 +9,10 @@ import { router as programsRoute } from "./routes/programs.js";
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use("/api/login", loginRoute);
+app.use("/api", loginRoute);
 app.use("/api/register", registerRoute);
 app.use("/api", usersRoute);
 app.use("/api", programsRoute);
