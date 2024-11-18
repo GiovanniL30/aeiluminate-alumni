@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
 
 import FileUploader from "../components/FileUploader";
 import Button from "../components/Button";
@@ -85,6 +84,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
         <h1 className="font-bold text-lg">Create new {isPost ? "Post" : "aeline"} </h1>
         <Button text={uploadQuery.isPending ? "Uploading..." : "Share"} otherStyle="px-10" disabled={uploadQuery.isPending} onClick={handleSubmit} />
       </div>
+
       <div className="flex flex-col gap-20 md:flex-row w-full">
         {isPost && <FileUploader images={images} setImages={setImages} />}
 

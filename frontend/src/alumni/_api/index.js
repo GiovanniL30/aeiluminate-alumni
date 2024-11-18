@@ -70,12 +70,15 @@ export const uploadPost = async (caption, images) => {
 /**
  *
  * Request to add a new aeline
- * @url baseurl/api/post
+ * @url baseurl/api/line
  */
 export const uploadLine = async (caption) => {
   try {
     const response = await fetch(`${baseURL}/api/line`, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({ caption }),
       credentials: "include",
     });
