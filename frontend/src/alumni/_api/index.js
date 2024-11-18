@@ -1,3 +1,5 @@
+import { useAuthContext } from "../context/AuthContext";
+
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 /**
@@ -28,5 +30,35 @@ export const userLogin = async (email, password) => {
   } catch (error) {
     console.log(error);
     throw error;
+  }
+};
+
+/**
+ *
+ * Request to add a new post
+ * @url baseurl/api/post
+ */
+export const uploadPost = async (caption, images) => {
+  try {
+    const formData = new FormData();
+    formData.append("caption", caption);
+    images.forEach((image) => formData.append("images", image.file));
+
+    const response = await fetch(`${baseURL}/api/post`, {
+      method: "POST",
+      body: formData,
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "An error occurred while adding the post.");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error.message);
+    throw new Error(error.message);
   }
 };

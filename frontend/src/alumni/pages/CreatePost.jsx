@@ -1,12 +1,17 @@
 import React, { useState } from "react";
+import { Navigate } from "react-router-dom";
 
 import FileUploader from "../components/FileUploader";
 import Button from "../components/Button";
 import { useAuthContext } from "../context/AuthContext";
 import create_post from "../../assets/create_post.png";
 import create_line from "../../assets/create_line.png";
+import { useUploadPost } from "../_api/@react-client-query/query";
+import TopPopUp from "../components/TopPopUp";
 
 const CreatePost = ({ maxCaption = 225 }) => {
+  const uploadQuery = useUploadPost();
+
   const [isPost, setIsPost] = useState(true);
   const [images, setImages] = useState([]);
   const { user } = useAuthContext();
@@ -20,10 +25,32 @@ const CreatePost = ({ maxCaption = 225 }) => {
     setCaption(value);
   };
 
-  console.log(images);
+  const handleSubmit = () => {
+    if (caption.length < 20) {
+      alert("Caption length should be greater than 20");
+      return;
+    }
+
+    if (isPost && images.length === 0) {
+      alert("Please upload at least one image.");
+      return;
+    }
+
+    if (isPost) {
+      uploadQuery.mutate({ caption, images });
+    }
+  };
+
+  if (uploadQuery.isError) {
+    // localStorage.removeItem("user");
+    // return <Navigate to={`/login?error=${uploadQuery.error}`} />;
+
+    return <h1>{uploadQuery.error.message}</h1>;
+  }
 
   return (
     <div className="flex flex-col gap-10 mt-5">
+      {uploadQuery.isError && <TopPopUp text={uploadQuery.error.message} />}
       <div className="flex gap-5 items-center">
         <button
           onClick={() => setIsPost(true)}
@@ -43,7 +70,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
 
       <div className="flex items-center justify-between">
         <h1 className="font-bold text-lg">Create new {isPost ? "Post" : "aeline"} </h1>
-        <Button text="Share" otherStyle="px-10" />
+        <Button text={uploadQuery.isPending ? "Uploading..." : "Share"} otherStyle="px-10" disabled={uploadQuery.isPending} onClick={handleSubmit} />
       </div>
       <div className="flex flex-col gap-20 md:flex-row w-full">
         {isPost && <FileUploader images={images} setImages={setImages} />}
