@@ -41,6 +41,7 @@ export const userLogin = async (email, password) => {
  */
 export const uploadPost = async (caption, images) => {
   try {
+    console.log(images);
     const formData = new FormData();
     formData.append("caption", caption);
     images.forEach((image) => formData.append("images", image.file));
@@ -50,6 +51,32 @@ export const uploadPost = async (caption, images) => {
     const response = await fetch(`${baseURL}/api/post`, {
       method: "POST",
       body: formData,
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "An error occurred while adding the post.");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error.message);
+    throw new Error(error.message);
+  }
+};
+
+/**
+ *
+ * Request to add a new aeline
+ * @url baseurl/api/post
+ */
+export const uploadLine = async (caption) => {
+  try {
+    const response = await fetch(`${baseURL}/api/line`, {
+      method: "POST",
+      body: JSON.stringify({ caption }),
       credentials: "include",
     });
 

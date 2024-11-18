@@ -6,16 +6,17 @@ import Button from "../components/Button";
 import { useAuthContext } from "../context/AuthContext";
 import create_post from "../../assets/create_post.png";
 import create_line from "../../assets/create_line.png";
-import { useUploadPost } from "../_api/@react-client-query/query";
+import { useUploadLine, useUploadPost } from "../_api/@react-client-query/query";
 import TopPopUp from "../components/TopPopUp";
 
 const CreatePost = ({ maxCaption = 225 }) => {
   const uploadQuery = useUploadPost();
+  const uploadLine = useUploadLine();
 
   const [isPost, setIsPost] = useState(true);
   const [images, setImages] = useState([]);
   const { user } = useAuthContext();
-  const [caption, setCaption] = useState("Acssssssssssssssssssssssssssssssssssssssss");
+  const [caption, setCaption] = useState("");
 
   const handleCaptionChange = (e) => {
     const { value } = e.target;
@@ -37,16 +38,28 @@ const CreatePost = ({ maxCaption = 225 }) => {
     }
 
     if (isPost) {
-      uploadQuery.mutate({ caption, images });
+      uploadQuery.mutate(
+        { caption, images },
+        {
+          onSuccess: () => {
+            setImages([]);
+            setCaption("");
+            alert("Post Uploaded successfully");
+          },
+        }
+      );
+    } else {
+      uploadLine.mutate(
+        { caption },
+        {
+          onSuccess: () => {
+            setCaption("");
+            alert("Line Uploaded successfully");
+          },
+        }
+      );
     }
   };
-
-  // if (uploadQuery.isError) {
-  //   // localStorage.removeItem("user");
-  //   // return <Navigate to={`/login?error=${uploadQuery.error}`} />;
-
-  //   return <h1>{uploadQuery.error.message}</h1>;
-  // }
 
   return (
     <div className="flex flex-col gap-10 mt-5">
