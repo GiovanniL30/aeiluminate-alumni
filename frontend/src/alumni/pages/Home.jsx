@@ -9,9 +9,29 @@ import PostCard from "../components/_cards/PostCard";
 import AelineCard from "../components/_cards/AelineCard";
 
 const Home = () => {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetPosts(5);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetPosts(2);
+  const observerRef = useRef(null);
 
-  console.log(data);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 1.0 }
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current);
+      }
+    };
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   if (data?.pages[0].posts.length === 0) {
     return <h1>No posts available.</h1>;
@@ -19,39 +39,27 @@ const Home = () => {
 
   return (
     <div className="max-container flex justify-between gap-20">
-      <div className="hidden w-[50%] lg:flex bg-red-50">Left</div>
-      <div className="flex w-full justify-center flex-col gap-10 ">
-        {data?.pages[0].posts.map((post) => {
-          return (
-            <>
-              {post.postMedia.length > 0 ? (
-                <PostCard
-                  key={post.postID}
-                  caption={post.caption}
-                  createdAt={post.createdAt}
-                  postID={post.postID}
-                  images={post.postMedia}
-                  userID={post.userID}
-                />
-              ) : (
-                <AelineCard key={post.postID} caption={post.caption} createdAt={post.createdAt} postID={post.postID} userID={post.userID} />
-              )}
-            </>
-          );
+      <div className="fixed left-0 hidden w-[300px] md:flex bg-red-50">Left</div>
+      <div className="flex w-full justify-center flex-col gap-10 lg:mr-[300px] md:ml-[300px] xl:mx-auto max-w-[600px]">
+        {data?.pages.map((page) => {
+          return page.posts.map((post) => {
+            return (
+              <React.Fragment key={post.postID}>
+                {post.postMedia.length > 0 ? (
+                  <PostCard caption={post.caption} createdAt={post.createdAt} postID={post.postID} images={post.postMedia} userID={post.userID} />
+                ) : (
+                  <AelineCard caption={post.caption} createdAt={post.createdAt} postID={post.postID} userID={post.userID} />
+                )}
+              </React.Fragment>
+            );
+          });
         })}
 
-        {hasNextPage && (
-          <button
-            onClick={() => fetchNextPage()}
-            disabled={isFetchingNextPage}
-            className="py-2 px-4 mt-4 bg-blue-500 text-white rounded disabled:opacity-50"
-          >
-            {isFetchingNextPage ? "Loading..." : "Load More"}
-          </button>
-        )}
+        <div ref={observerRef} className="observer-trigger h-10" style={{ visibility: hasNextPage ? "visible" : "hidden" }}>
+          {isFetchingNextPage && <p>Loading more posts...</p>}
+        </div>
       </div>
-
-      <div className="hidden w-[50%] md:flex bg-red-200">Right</div>
+      <div className="fixed right-0 hidden w-[200px] lg:flex xl:w-[300px] bg-red-200">Right</div>
     </div>
   );
 };

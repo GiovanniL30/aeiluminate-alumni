@@ -70,7 +70,7 @@ export const addNewPost = (postId, userID, caption) => {
  * @affectedDatabase = media
  */
 export const addNewMedia = (mediaID, mediaType, postID) => {
-  const query = "INSERT INTO media (mediaID, mediaType, , postID) VALUES (?, ?, ?)";
+  const query = "INSERT INTO media (mediaID, mediaType, postID) VALUES (?, ?, ?)";
 
   return new Promise((resolve, reject) => {
     connection.query(query, [mediaID, mediaType, postID], (err, result) => {

@@ -28,6 +28,9 @@ export const useUploadLine = () => {
   });
 };
 
+/**
+ * React query to handle loading of posts
+ */
 export const useGetPosts = (length) => {
   return useInfiniteQuery({
     queryKey: ["posts"],
