@@ -95,3 +95,36 @@ export const uploadLine = async (caption) => {
     throw new Error(error.message);
   }
 };
+
+/**
+ * Request to get a list of posts with pagination
+ * @url baseurl/api/posts
+ */
+export const fetchPosts = async ({ pageParam = 1, length = 5 }) => {
+  try {
+    const response = await fetch(`${baseURL}/api/posts?page=${pageParam}&length=${length}`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "An error occurred while fetching lists of posts.");
+    }
+
+    const data = await response.json();
+
+    const totalPosts = data.totatPosts;
+    const totalPages = Math.ceil(totalPosts / length);
+
+    const nextPage = pageParam < totalPages ? pageParam + 1 : undefined;
+
+    return {
+      posts: data.posts,
+      nextPage,
+    };
+  } catch (error) {
+    console.log(error.message);
+    throw new Error(error.message);
+  }
+};

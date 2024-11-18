@@ -69,11 +69,11 @@ export const addNewPost = (postId, userID, caption) => {
  * Adds a new media
  * @affectedDatabase = media
  */
-export const addNewMedia = (mediaID, mediaType, mediaURL, postID) => {
-  const query = "INSERT INTO media (mediaID, mediaType, mediaURL, postID) VALUES (?, ?, ?, ?)";
+export const addNewMedia = (mediaID, mediaType, postID) => {
+  const query = "INSERT INTO media (mediaID, mediaType, , postID) VALUES (?, ?, ?)";
 
   return new Promise((resolve, reject) => {
-    connection.query(query, [mediaID, mediaType, mediaURL, postID], (err, result) => {
+    connection.query(query, [mediaID, mediaType, postID], (err, result) => {
       if (err) {
         console.error("Error inserting new media", err);
         return reject(new Error("Failed to insert new media into the database"));
@@ -184,6 +184,49 @@ export const getUsers = (page, pageSize) => {
         const totalCount = countResult[0].total;
         resolve({ users: results, total: totalCount });
       });
+    });
+  });
+};
+
+/**
+ * Fetches paginated posts and total count from the database.
+ */
+export const getPosts = (page, pageSize) => {
+  const query = "SELECT * FROM posts LIMIT ? OFFSET ?";
+  const offset = (page - 1) * pageSize;
+
+  return new Promise((resolve, reject) => {
+    connection.query(query, [parseInt(pageSize), parseInt(offset)], (err, results) => {
+      if (err) {
+        return reject("Error fetching paginated posts");
+      }
+
+      connection.query("SELECT COUNT(*) AS total FROM posts", (err, countResult) => {
+        if (err) {
+          return reject("Error fetching total post count");
+        }
+
+        const totalCount = countResult[0].total;
+        resolve({ posts: results, total: totalCount });
+      });
+    });
+  });
+};
+
+/**
+ *
+ * Get all list of media files of a post
+ */
+export const getMedia = (postId) => {
+  const query = "SELECT mediaID, mediaType FROM media WHERE postID = ?";
+
+  return new Promise((resolve, reject) => {
+    connection.query(query, [postId], (err, results) => {
+      if (err) {
+        return reject("Failed to get media of the post");
+      }
+
+      resolve(results);
     });
   });
 };

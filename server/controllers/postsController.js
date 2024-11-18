@@ -2,8 +2,15 @@ import { ID, InputFile } from "node-appwrite";
 import crypto from "crypto";
 
 import { storage } from "../appwriteconfig.js";
-import { addNewPost, addNewMedia } from "../mysqlQueries/queries.js";
+import { addNewPost, addNewMedia, getPosts, getMedia } from "../mysqlQueries/queries.js";
 
+/**
+ *
+ * Inserts a new Post on the Database
+ *
+ * @method POST
+ * @route /api/post
+ */
 export const uploadPostController = async (req, res) => {
   try {
     const { userId } = req;
@@ -17,12 +24,9 @@ export const uploadPostController = async (req, res) => {
 
       const result = await storage.createFile(process.env.APP_WRITE_IMAGES_BUCKET, mediaId, InputFile.fromBuffer(file.buffer, file.originalname));
 
-      const fileUrl = `${process.env.APP_WRITE_ENDPOINT}/storage/buckets/${process.env.APP_WRITE_IMAGES_BUCKET}/files/${result.$id}/view`;
-
       mediaInfo.push({
         mediaID: result.$id,
         mediaType: file.mimetype,
-        mediaURL: fileUrl,
       });
     }
 
@@ -46,7 +50,7 @@ export const uploadPostController = async (req, res) => {
  * Inserts a new aeline on the Database
  *
  * @method POST
- * @route /line
+ * @route /api/line
  */
 export const uploadLineController = async (req, res, next) => {
   try {
@@ -59,7 +63,42 @@ export const uploadLineController = async (req, res, next) => {
 
     return res.status(201).json({ message: "Post created successfully" });
   } catch (error) {
-    console.error("Error in uploadPostController:", error);
+    console.error("Error in uploadLineController:", error);
+    return res.status(500).json({ message: error.message || "Internal Server Error" });
+  }
+};
+
+/**
+ *
+ * Get list of Posts on the Database
+ *
+ * paginated list of posts
+ *
+ * @method GET
+ * @route /api/post
+ */
+export const getPostController = async (req, res, next) => {
+  try {
+    const { page, length } = req.query;
+
+    const { posts, total } = await getPosts(page, length);
+
+    const updatedPosts = [];
+
+    for (const post of posts) {
+      const postMedia = await getMedia(post.postID);
+      updatedPosts.push({ ...post, postMedia });
+    }
+
+    const totalPage = Math.ceil(total / length);
+
+    res.status(200).json({
+      posts: updatedPosts,
+      totatPosts: total,
+      totalPage,
+    });
+  } catch (error) {
+    console.error("Error in getting posts:", error);
     return res.status(500).json({ message: error.message || "Internal Server Error" });
   }
 };

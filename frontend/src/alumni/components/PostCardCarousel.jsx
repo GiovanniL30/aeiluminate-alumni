@@ -1,6 +1,6 @@
 import React from "react";
 
-const PostCardCarousel = ({ posts, setPosts, currentIndex, setCurrentIndex }) => {
+const PostCardCarousel = ({ posts, setPosts, currentIndex, setCurrentIndex, isRemovable = true }) => {
   const nextPost = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % posts.length);
   };
@@ -39,12 +39,14 @@ const PostCardCarousel = ({ posts, setPosts, currentIndex, setCurrentIndex }) =>
           <img className="max-w-full max-h-full" src={posts[currentIndex].filePreview} alt={`Post ${currentIndex}`} />
         </div>
 
-        <button
-          className="absolute top-2 right-2 text-white text-sm bg-red-900 bg-opacity-50 w-5 h-5 rounded-full hover:bg-opacity-75 focus:outline-none z-10"
-          onClick={removeImage}
-        >
-          &#10005;
-        </button>
+        {isRemovable && (
+          <button
+            className="absolute top-2 right-2 text-white text-sm bg-red-900 bg-opacity-50 w-5 h-5 rounded-full hover:bg-opacity-75 focus:outline-none z-10"
+            onClick={removeImage}
+          >
+            &#10005;
+          </button>
+        )}
       </div>
 
       <button
