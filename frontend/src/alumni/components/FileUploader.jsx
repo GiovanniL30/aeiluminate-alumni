@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PostCardCarousel from "./PostCardCarousel";
+import no_post from "../../assets/no_post.png";
 
 const FileUploader = ({ images, setImages }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -14,18 +15,24 @@ const FileUploader = ({ images, setImages }) => {
     }
   };
 
-  console.log(images);
-
   return (
     <div className="border-[1px] h-[600px] w-full flex flex-col items-center justify-center p-4">
       {images && images.length > 0 ? (
         <PostCardCarousel posts={images} setPosts={setImages} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} />
       ) : (
-        <p className="text-gray-500">No images selected</p>
+        <div className="flex flex-col gap-5 items-center justify-center">
+          <img src={no_post} alt="image" />
+          <div className="flex flex-col items-center text-sm text-light_text">
+            <p>No images selected</p>
+            <p>
+              <span className="font-bold">Limit: </span> 5mb
+            </p>
+          </div>
+        </div>
       )}
 
-      <label htmlFor="file-upload" className="cursor-pointer text-blue-500 mt-4">
-        Choose File
+      <label htmlFor="file-upload" className="text-sm hover-opacity cursor-pointer bg-primary_blue text-white  py-2 px-10 rounded-md mt-4">
+        Select from computer
       </label>
       <input id="file-upload" type="file" accept=".jpg, .jpeg, .png" className="hidden" onChange={handleFileChange} />
     </div>

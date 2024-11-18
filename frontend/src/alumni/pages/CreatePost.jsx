@@ -3,8 +3,11 @@ import React, { useState } from "react";
 import FileUploader from "../components/FileUploader";
 import Button from "../components/Button";
 import { useAuthContext } from "../context/AuthContext";
+import create_post from "../../assets/create_post.png";
+import create_line from "../../assets/create_line.png";
 
-const CreatePost = ({ post = true, maxCaption = 225 }) => {
+const CreatePost = ({ maxCaption = 225 }) => {
+  const [isPost, setIsPost] = useState(true);
   const [images, setImages] = useState([]);
   const { user } = useAuthContext();
   const [caption, setCaption] = useState("");
@@ -19,12 +22,29 @@ const CreatePost = ({ post = true, maxCaption = 225 }) => {
 
   return (
     <div className="flex flex-col gap-10 mt-5">
+      <div className="flex gap-5 items-center">
+        <button
+          onClick={() => setIsPost(true)}
+          className={`flex items-center justify-center gap-2 hover-opacity ${isPost ? "text-primary_blue underline font-bold" : "text-black"}`}
+        >
+          <img src={create_post} alt="post" />
+          <p>Create Post</p>
+        </button>
+        <button
+          onClick={() => setIsPost(false)}
+          className={`flex items-center justify-center gap-2 hover-opacity ${!isPost ? "text-primary_blue underline font-bold" : "text-black"}`}
+        >
+          <img src={create_line} alt="line" />
+          <p>Create aeline</p>
+        </button>
+      </div>
+
       <div className="flex items-center justify-between">
-        <h1 className="font-bold text-lg">Create new {post ? "Post" : "aeline"} </h1>
+        <h1 className="font-bold text-lg">Create new {isPost ? "Post" : "aeline"} </h1>
         <Button text="Share" otherStyle="px-10" />
       </div>
       <div className="flex flex-col gap-20 md:flex-row w-full">
-        {post && <FileUploader images={images} setImages={setImages} />}
+        {isPost && <FileUploader images={images} setImages={setImages} />}
 
         <div className="flex flex-col gap-5 w-full">
           <div className="flex items-center gap-2">
