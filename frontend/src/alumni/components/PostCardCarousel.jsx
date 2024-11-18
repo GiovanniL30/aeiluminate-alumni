@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 const PostCardCarousel = ({ posts, setPosts, currentIndex, setCurrentIndex }) => {
   const nextPost = () => {
@@ -15,11 +15,13 @@ const PostCardCarousel = ({ posts, setPosts, currentIndex, setCurrentIndex }) =>
 
   const removeImage = () => {
     const updatedPosts = posts.filter((_, index) => index !== currentIndex);
+
+    URL.revokeObjectURL(posts[currentIndex].filePreview);
     setPosts(updatedPosts);
 
     if (updatedPosts.length === 0) {
       setCurrentIndex(0);
-    } else if (currentIndex === updatedPosts.length) {
+    } else if (currentIndex >= updatedPosts.length) {
       setCurrentIndex(updatedPosts.length - 1);
     }
   };
@@ -34,7 +36,7 @@ const PostCardCarousel = ({ posts, setPosts, currentIndex, setCurrentIndex }) =>
       </button>
       <div className="relative w-full h-full">
         <div className="w-full h-full flex justify-center items-center">
-          <img className="max-w-full max-h-full" src={posts[currentIndex]} alt={`Post ${currentIndex}`} />
+          <img className="max-w-full max-h-full" src={posts[currentIndex].filePreview} alt={`Post ${currentIndex}`} />
         </div>
 
         <button

@@ -48,6 +48,42 @@ export const addNewAlumni = (userID, yeaGraduated, programID, isEmployed) => {
 };
 
 /**
+ * Adds a new post
+ * @affectedDatabase = posts
+ */
+export const addNewPost = (postId, userID, caption) => {
+  const query = "INSERT INTO posts (postId, userID, caption) VALUES (?, ?, ?)";
+
+  return new Promise((resolve, reject) => {
+    connection.query(query, [postId, userID, caption], (err, result) => {
+      if (err) {
+        console.error("Error inserting new post", err);
+        return reject(new Error("Failed to insert new post into the database"));
+      }
+      resolve(result.affectedRows > 0);
+    });
+  });
+};
+
+/**
+ * Adds a new media
+ * @affectedDatabase = media
+ */
+export const addNewMedia = (mediaID, mediaType, mediaURL, postID) => {
+  const query = "INSERT INTO media (mediaID, mediaType, mediaURL, postID) VALUES (?, ?, ?, ?)";
+
+  return new Promise((resolve, reject) => {
+    connection.query(query, [mediaID, mediaType, mediaURL, postID], (err, result) => {
+      if (err) {
+        console.error("Error inserting new media", err);
+        return reject(new Error("Failed to insert new media into the database"));
+      }
+      resolve(result.affectedRows > 0);
+    });
+  });
+};
+
+/**
  * ===================== READ =====================
  */
 
