@@ -1,20 +1,21 @@
 import jwt from "jsonwebtoken";
 
 export const authenticateCookie = (req, res, next) => {
-  const token = req.cookie.token;
+  const token = req.cookies.token;
 
   if (!token) {
-    return res
-      .status(401)
-      .json({ message: "Access denied. No token provided." });
+    return res.status(401).json({ message: "Access denied. No token provided. Please Login Again" });
   }
 
-  jwt.verify(token, process.env.TOKEN_KEY, (err, user) => {
+  jwt.verify(token, process.env.TOKEN, (err, data) => {
     if (err) {
-      return res.status(403).json({ message: "Invalid token." });
+      console.error(err);
+      return res.status(403).json({ message: err.message });
     }
 
-    req.user = user;
+    req.userId = data.userId;
+    req.role = data.role;
+
     next();
   });
 };

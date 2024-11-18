@@ -14,8 +14,6 @@ app.use(cookieParser());
 
 app.use("/api", loginRoute);
 app.use("/api/register", registerRoute);
-app.use("/api", usersRoute);
-app.use("/api", programsRoute);
 
 const PORT = process.env.PORT || 1000;
 
