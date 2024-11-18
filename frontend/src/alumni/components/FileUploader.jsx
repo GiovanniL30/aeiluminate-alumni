@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PostCardCarousel from "./PostCardCarousel";
 import no_post from "../../assets/no_post.png";
 
-const FileUploader = ({ images, setImages }) => {
+const FileUploader = ({ images, setImages, uploading = false }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleFileChange = (e) => {
@@ -44,10 +44,15 @@ const FileUploader = ({ images, setImages }) => {
         </div>
       )}
 
-      <label htmlFor="file-upload" className="text-sm hover-opacity cursor-pointer bg-primary_blue text-white py-2 px-10 rounded-md mt-4">
+      <label
+        htmlFor="file-upload"
+        className={`text-sm hover-opacity cursor-pointer bg-primary_blue text-white py-2 px-10 rounded-md mt-4 ${
+          uploading && "pointer-events-none opacity-50"
+        }`}
+      >
         Select from computer
       </label>
-      <input id="file-upload" type="file" accept=".jpg, .jpeg, .png" className="hidden" onChange={handleFileChange} />
+      <input disabled={uploading} id="file-upload" type="file" accept=".jpg, .jpeg, .png" className="hidden" onChange={handleFileChange} />
     </div>
   );
 };

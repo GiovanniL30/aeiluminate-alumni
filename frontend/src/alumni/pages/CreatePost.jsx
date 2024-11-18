@@ -86,7 +86,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
       </div>
 
       <div className="flex flex-col gap-20 md:flex-row w-full">
-        {isPost && <FileUploader images={images} setImages={setImages} />}
+        {isPost && <FileUploader uploading={uploadQuery.isPending} images={images} setImages={setImages} />}
 
         <div className="flex flex-col gap-5 w-full">
           <div className="flex items-center gap-2">
@@ -96,6 +96,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
 
           <div className="relative">
             <textarea
+              disabled={uploadQuery.isPending}
               autoFocus={true}
               value={caption}
               onChange={handleCaptionChange}
