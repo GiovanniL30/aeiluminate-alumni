@@ -3,9 +3,11 @@ import logo from "../../assets/logoCircle.png";
 import { NavLink } from "react-router-dom";
 import { navLinks } from "../constants";
 import Hamburger from "./Hamburger";
+import { useAuthContext } from "../context/AuthContext";
 
 const Navbar = () => {
   const [openNav, setOpenNav] = useState(false);
+  const { user } = useAuthContext();
 
   const toggleNav = () => {
     setOpenNav(!openNav);
@@ -44,7 +46,10 @@ const Navbar = () => {
       </ul>
 
       <div className="flex gap-4 items-center">
-        <NavLink to="profile">Profile</NavLink>
+        <NavLink to="profile" className="flex items-center gap-2 hover-opacity">
+          <img className="w-10" src={user.profile_picture} alt="profile" />
+          <p>{user.username}</p>
+        </NavLink>
         <Hamburger otherStyle="md:hidden " onClick={toggleNav} isOpen={openNav} />
       </div>
     </div>
