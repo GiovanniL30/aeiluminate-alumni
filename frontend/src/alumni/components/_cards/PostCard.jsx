@@ -8,6 +8,7 @@ import unliked from "../../../assets/post-unliked.png";
 import more_vert from "../../../assets/more_vert.png";
 
 import ImageCarousel from "../ImageCarousel";
+import { ReadMore } from "../ReadMore";
 
 const PostCard = ({ postID, caption, images, userID, createdAt }) => {
   return (
@@ -34,7 +35,7 @@ const PostCard = ({ postID, caption, images, userID, createdAt }) => {
       </div>
       <div className="flex flex-col gap-2 px-4 pb-4">
         <p className="font-bold text-sm">12,542 Likes</p>
-        <p>{caption}</p>
+        <ReadMore text={caption} id={postID} />
       </div>
     </div>
   );
