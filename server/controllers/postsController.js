@@ -31,11 +31,11 @@ export const uploadPostController = async (req, res) => {
       });
     }
 
-    const postResult = await addNewPost(postId, userId, caption, new Date().toISOString());
+    const postResult = await addNewPost(postId, userId, caption, new Date());
     if (!postResult) throw new Error("Failed to add new post");
 
     for (const media of mediaInfo) {
-      const newMedia = await addNewMedia(media.mediaID, media.mediaType, media.mediaURL, new Date().toISOString(), postId);
+      const newMedia = await addNewMedia(media.mediaID, media.mediaType, media.mediaURL, new Date(), postId);
       if (!newMedia) throw new Error("Failed to add new media");
     }
 
