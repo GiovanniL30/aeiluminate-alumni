@@ -5,6 +5,9 @@
 - **AppWrite**
 - **MySQL**
 - **React**
+- **Multer**
+- **React Query**
+- **JWT**
 - **Vite**
 - **Tailwind CSS**
 - **Node.js**
