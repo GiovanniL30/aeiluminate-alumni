@@ -1,4 +1,5 @@
 import React from "react";
+import { timeAgo } from "../../../utils.js";
 
 import logo from "../../../assets/logoCircle.png";
 
@@ -31,7 +32,7 @@ const AelineCard = ({ postID, caption, userID, createdAt }) => {
       </div>
       <div className="flex items-start justify-center gap-2 ml-auto mt-2">
         <div className="flex gap-2">
-          <p className="text-sm text-light_text">50 m</p>
+          <p className="text-sm text-light_text">{timeAgo(createdAt)}</p>
           <button className="flex items-center justify-center">
             <img src={more_hor} alt="dots" />
           </button>

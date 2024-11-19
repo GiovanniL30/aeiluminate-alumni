@@ -59,7 +59,7 @@ export const uploadLineController = async (req, res, next) => {
     const { caption } = req.body;
     const postId = crypto.randomUUID();
 
-    const postResult = await addNewPost(postId, userId, caption);
+    const postResult = await addNewPost(postId, userId, caption, new Date());
     if (!postResult) throw new Error("Failed to add new post");
 
     return res.status(201).json({ message: "Post created successfully" });
