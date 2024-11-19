@@ -22,7 +22,7 @@ const PostCard = ({ postID, caption, images, userID, createdAt }) => {
       </div>
       <div className="bg-blue-50 h-[500px]">
         {images.map((image, index) => {
-          return <h1 key={index}>{image.mediaID}</h1>;
+          return <h1 key={index}>{image.mediaURL}</h1>;
         })}
       </div>
       <div className="flex items-center px-4 gap-6">

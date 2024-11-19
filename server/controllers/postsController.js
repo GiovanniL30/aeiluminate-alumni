@@ -20,13 +20,14 @@ export const uploadPostController = async (req, res) => {
     const mediaInfo = [];
 
     for (const file of req.files) {
-      const mediaId = ID.unique();
+      const result = await storage.createFile(process.env.APP_WRITE_IMAGES_BUCKET, ID.unique(), InputFile.fromBuffer(file.buffer, file.originalname));
 
-      const result = await storage.createFile(process.env.APP_WRITE_IMAGES_BUCKET, mediaId, InputFile.fromBuffer(file.buffer, file.originalname));
+      const mediaURL = `https://cloud.appwrite.io/v1/storage/buckets/${process.env.APP_WRITE_IMAGES_BUCKET}/files/${result.$id}/view?project=${process.env.APP_WRITE_PROJECT_ID}&project=${process.env.APP_WRITE_PROJECT_ID}&mode=admin`;
 
       mediaInfo.push({
         mediaID: result.$id,
         mediaType: file.mimetype,
+        mediaURL,
       });
     }
 
@@ -34,7 +35,7 @@ export const uploadPostController = async (req, res) => {
     if (!postResult) throw new Error("Failed to add new post");
 
     for (const media of mediaInfo) {
-      const newMedia = await addNewMedia(media.mediaID, media.mediaType, postId);
+      const newMedia = await addNewMedia(media.mediaID, media.mediaType, media.mediaURL, postId);
       if (!newMedia) throw new Error("Failed to add new media");
     }
 
