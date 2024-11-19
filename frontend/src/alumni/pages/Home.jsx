@@ -33,14 +33,12 @@ const Home = () => {
     };
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  if (data?.pages[0].posts.length === 0) {
-    return <h1>No posts available.</h1>;
-  }
-
   return (
     <div className="max-container flex justify-between gap-20">
       <div className="fixed left-0 hidden w-[300px] md:flex bg-red-50">Left</div>
       <div className="flex w-full justify-center flex-col gap-10 lg:mr-[300px] md:ml-[300px] xl:mx-auto max-w-[600px]">
+        {data?.pages[0].posts.length === 0 && <h1>No posts available.</h1>}
+
         {data?.pages.map((page) => {
           return page.posts.map((post) => {
             return (
@@ -54,7 +52,6 @@ const Home = () => {
             );
           });
         })}
-
         <div ref={observerRef} className="observer-trigger h-10" style={{ visibility: hasNextPage ? "visible" : "hidden" }}>
           {isFetchingNextPage && <p>Loading more posts...</p>}
         </div>

@@ -5,8 +5,9 @@ import logo from "../../../assets/logoCircle.png";
 import comment from "../../../assets/comment.png";
 import liked from "../../../assets/post-liked.png";
 import unliked from "../../../assets/post-unliked.png";
-
 import more_vert from "../../../assets/more_vert.png";
+
+import ImageCarousel from "../ImageCarousel";
 
 const PostCard = ({ postID, caption, images, userID, createdAt }) => {
   return (
@@ -20,10 +21,8 @@ const PostCard = ({ postID, caption, images, userID, createdAt }) => {
           <img className="w-1 h-4" src={more_vert} alt="dots" />
         </button>
       </div>
-      <div className="bg-blue-50 h-[500px]">
-        {images.map((image, index) => {
-          return <h1 key={index}>{image.mediaURL}</h1>;
-        })}
+      <div className="bg-gray-50 h-fit max-h-[500px]">
+        <ImageCarousel images={images} />
       </div>
       <div className="flex items-center px-4 gap-6">
         <button className="w-6 h-6">

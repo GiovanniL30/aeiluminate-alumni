@@ -14,7 +14,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="max-container flex justify-between items-center bg-white pt-4 ">
+    <div className="max-container flex justify-between items-center bg-white pt-4">
       <div className="w-12">
         <img src={logo} alt="logo" />
       </div>

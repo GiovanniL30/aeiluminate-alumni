@@ -9,6 +9,7 @@ export default {
         text_color: "#0A0A0A",
         light_text: "#757575",
         drop_blue: "#8F9BB3",
+        grey_bg: "#BBB8B8",
         secondary_blue: "#9EC0D7",
       },
     },
