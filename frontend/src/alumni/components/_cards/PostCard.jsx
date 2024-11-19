@@ -1,4 +1,5 @@
 import React from "react";
+import { timeAgo } from "../../../utils.js";
 
 import logo from "../../../assets/logoCircle.png";
 
@@ -18,11 +19,14 @@ const PostCard = ({ postID, caption, images, userID, createdAt }) => {
           <img className="w-10" src={logo} alt="profile" />
           <p className="font-bold">{userID}</p>
         </div>
-        <button>
-          <img className="w-1 h-4" src={more_vert} alt="dots" />
-        </button>
+        <div className="flex gap-3 items-center justify-center">
+          <p className="text-sm text-light_text">{timeAgo(createdAt)}</p>
+          <button>
+            <img className="w-1 h-4" src={more_vert} alt="dots" />
+          </button>
+        </div>
       </div>
-      <div className="bg-gray-50 h-fit max-h-[500px]">
+      <div className="bg-gray-50 h-fit max-h-[500px] min-h-[250px]">
         <ImageCarousel images={images} />
       </div>
       <div className="flex items-center px-4 gap-6">

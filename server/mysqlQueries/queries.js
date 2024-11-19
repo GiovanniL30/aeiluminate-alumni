@@ -51,11 +51,11 @@ export const addNewAlumni = (userID, yeaGraduated, programID, isEmployed) => {
  * Adds a new post
  * @affectedDatabase = posts
  */
-export const addNewPost = (postId, userID, caption) => {
-  const query = "INSERT INTO posts (postId, userID, caption) VALUES (?, ?, ?)";
+export const addNewPost = (postId, userID, caption, time) => {
+  const query = "INSERT INTO posts (postId, userID, caption, createdAt) VALUES (?, ?, ?, ?)";
 
   return new Promise((resolve, reject) => {
-    connection.query(query, [postId, userID, caption], (err, result) => {
+    connection.query(query, [postId, userID, caption, time], (err, result) => {
       if (err) {
         console.error("Error inserting new post", err);
         return reject(new Error("Failed to insert new post into the database"));
@@ -69,11 +69,11 @@ export const addNewPost = (postId, userID, caption) => {
  * Adds a new media
  * @affectedDatabase = media
  */
-export const addNewMedia = (mediaID, mediaType, mediaURL, postID) => {
-  const query = "INSERT INTO media (mediaID, mediaType, mediaURL, postID) VALUES (?, ?, ?, ?)";
+export const addNewMedia = (mediaID, mediaType, mediaURL, uploadedAt, postID) => {
+  const query = "INSERT INTO media (mediaID, mediaType, mediaURL,uploadedAt, postID) VALUES (?, ?, ?, ?, ?)";
 
   return new Promise((resolve, reject) => {
-    connection.query(query, [mediaID, mediaType, mediaURL, postID], (err, result) => {
+    connection.query(query, [mediaID, mediaType, mediaURL, uploadedAt, postID], (err, result) => {
       if (err) {
         console.error("Error inserting new media", err);
         return reject(new Error("Failed to insert new media into the database"));

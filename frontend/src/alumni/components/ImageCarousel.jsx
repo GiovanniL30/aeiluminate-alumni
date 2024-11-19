@@ -24,7 +24,7 @@ const ImageCarousel = ({ images }) => {
 
       <div className="relative w-full h-full">
         <div className="w-full h-full flex justify-center items-center">
-          <img className="max-w-full max-h-full" src={images[currentIndex].mediaURL} alt={`Post ${currentIndex}`} />
+          <img className="max-w-full max-h-full object-contain" src={images[currentIndex].mediaURL} alt={`Post ${currentIndex}`} />
         </div>
       </div>
 
