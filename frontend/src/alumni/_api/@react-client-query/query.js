@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useInfiniteQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { userLogin, uploadPost, uploadLine, fetchPosts } from "../index.js";
 
 /**
@@ -14,8 +14,12 @@ export const useLoginUser = () => {
  * React query to upload a new post
  */
 export const useUploadPost = () => {
+
+  const client = useQueryClient()
+
   return useMutation({
     mutationFn: ({ caption, images }) => uploadPost(caption, images),
+    onSuccess: () => client.invalidateQueries(["posts"])
   });
 };
 
@@ -23,8 +27,12 @@ export const useUploadPost = () => {
  * React query to upload a new post
  */
 export const useUploadLine = () => {
+
+  const client = useQueryClient()
+
   return useMutation({
     mutationFn: ({ caption }) => uploadLine(caption),
+    onSuccess: () => client.invalidateQueries(["posts"])
   });
 };
 
