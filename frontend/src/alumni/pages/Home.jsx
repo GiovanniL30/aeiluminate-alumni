@@ -7,6 +7,7 @@ import SuggestedContacts from "../components/_home/SuggestedContacts";
 import { useGetPosts } from "../_api/@react-client-query/query";
 import PostCard from "../components/_cards/PostCard";
 import AelineCard from "../components/_cards/AelineCard";
+import PostCardLoading from "../components/_cards/PostCardLoading";
 
 const Home = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetPosts(2);
@@ -52,8 +53,12 @@ const Home = () => {
             );
           });
         })}
-        <div ref={observerRef} className="observer-trigger h-10" style={{ visibility: hasNextPage ? "visible" : "hidden" }}>
-          {isFetchingNextPage && <p>Loading more posts...</p>}
+        <div ref={observerRef} className="observer-trigger" style={{ visibility: hasNextPage ? "visible" : "hidden" }}>
+          {isFetchingNextPage && (
+            <>
+              <PostCardLoading />
+            </>
+          )}
         </div>
       </div>
       <div className="fixed right-0 hidden w-[200px] lg:flex xl:w-[300px] bg-red-200">Right</div>
