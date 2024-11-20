@@ -112,6 +112,30 @@ export const validateEmailAndPassword = (email, password) => {
 };
 
 /**
+ *
+ * Get a specific user on the database
+ */
+export const getUser = (id) => {
+  const query = "SELECT * FROM users WHERE userID = ?";
+
+  return new Promise((resolve, reject) => {
+    connection.query(query, [id], (error, result) => {
+      if (error) {
+        console.error("Failed to get user:", error);
+        reject(error);
+        return;
+      }
+
+      if (result.length > 0) {
+        resolve(result[0]);
+      } else {
+        resolve(null);
+      }
+    });
+  });
+};
+
+/**
  * Gets all list of programs
  */
 export const getPrograms = () => {

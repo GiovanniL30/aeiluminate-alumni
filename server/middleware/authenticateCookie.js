@@ -6,14 +6,14 @@ export const authenticateUserCookie = (req, res, next) => {
   if (!token) {
     return res.status(401).json({
       tokenError: true,
-      message: "No token provided. Please Login Again",
+      message: "No token provided (CAUSE: SESSION EXPIRED). Please Login Again",
     });
   }
 
   jwt.verify(token, process.env.TOKEN, (err, data) => {
     if (err) {
       if (err.name === "TokenExpiredError") {
-        return res.status(401).json({ message: "Token has expired. Please log in again." });
+        return res.status(401).json({ message: "Session has expired. Please log in again." });
       }
       console.error(err);
       return res.status(403).json({ message: "Token verification failed. Please log in again." });

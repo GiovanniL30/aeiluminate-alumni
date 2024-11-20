@@ -14,12 +14,11 @@ export const useLoginUser = () => {
  * React query to upload a new post
  */
 export const useUploadPost = () => {
-
-  const client = useQueryClient()
+  const client = useQueryClient();
 
   return useMutation({
     mutationFn: ({ caption, images }) => uploadPost(caption, images),
-    onSuccess: () => client.invalidateQueries(["posts"])
+    onSuccess: () => client.invalidateQueries(["posts"]),
   });
 };
 
@@ -27,12 +26,11 @@ export const useUploadPost = () => {
  * React query to upload a new post
  */
 export const useUploadLine = () => {
-
-  const client = useQueryClient()
+  const client = useQueryClient();
 
   return useMutation({
     mutationFn: ({ caption }) => uploadLine(caption),
-    onSuccess: () => client.invalidateQueries(["posts"])
+    onSuccess: () => client.invalidateQueries(["posts"]),
   });
 };
 
