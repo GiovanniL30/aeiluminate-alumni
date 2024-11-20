@@ -22,11 +22,11 @@ const PostCard = ({ postID, caption, images, userID, createdAt }) => {
   }
 
   const handleLike = () => {
-    // if (data.is_liked == 1) {
-    unlikePostQuery.mutate(postID);
-    // } else {
-    // likePostQuery.mutate(postID);
-    // }
+    if (data.is_liked == 1) {
+      unlikePostQuery.mutate(postID);
+    } else {
+      likePostQuery.mutate(postID);
+    }
   };
 
   return (

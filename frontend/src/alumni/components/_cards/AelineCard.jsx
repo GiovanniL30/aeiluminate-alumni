@@ -8,15 +8,24 @@ import liked from "../../../assets/post-liked.png";
 import unliked from "../../../assets/post-unliked.png";
 
 import more_hor from "../../../assets/more_hor.png";
-import { usePostInformation } from "../../_api/@react-client-query/query.js";
+import { usePostInformation, useLikePost, useUnlikePost } from "../../_api/@react-client-query/query.js";
 
 const AelineCard = ({ postID, caption, userID, createdAt }) => {
+  const likePostQuery = useLikePost();
+  const unlikePostQuery = useUnlikePost();
   const { isLoading, isError, data } = usePostInformation(postID);
-  const [likedState, setLikedState] = useState(false);
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
+
+  const handleLike = () => {
+    if (data.is_liked == 1) {
+      unlikePostQuery.mutate(postID);
+    } else {
+      likePostQuery.mutate(postID);
+    }
+  };
 
   return (
     <div className="flex gap-7 w-full">
@@ -27,8 +36,8 @@ const AelineCard = ({ postID, caption, userID, createdAt }) => {
         <p className="font-bold text-lg -mb-2">{data.posted_by}</p>
         <p className="font-thin">{caption}</p>
         <div className="flex mt-4 gap-2 items-center">
-          <button className="w-5 h-5">
-            <img src={unliked} alt="unliked" />
+          <button className="w-5 h-5" onClick={handleLike}>
+            <img src={data.is_liked == 1 ? liked : unliked} alt="unliked" />
           </button>
           <button className="w-5 h-5">
             <img src={comment} alt="comment" />

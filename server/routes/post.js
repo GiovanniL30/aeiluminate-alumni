@@ -34,7 +34,7 @@ postRouter.get("/posts", authenticateUserCookie, getPostController);
  *
  * Get post stats (comment and like count)
  */
-postRouter.get("/post/stats/:id", getPostCommentAndLikeCountController);
+postRouter.get("/post/stats/:id", authenticateUserCookie, getPostCommentAndLikeCountController);
 
 /**
  *

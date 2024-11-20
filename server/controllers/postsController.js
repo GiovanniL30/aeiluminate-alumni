@@ -119,8 +119,9 @@ export const getPostController = async (req, res, next) => {
 export const getPostCommentAndLikeCountController = async (req, res, next) => {
   try {
     const { id } = req.params;
+    const { userId } = req;
 
-    const stats = await getPostStats(id);
+    const stats = await getPostStats(id, userId);
 
     if (!stats) return res.status(404).json({ message: "Post stats not found" });
 
