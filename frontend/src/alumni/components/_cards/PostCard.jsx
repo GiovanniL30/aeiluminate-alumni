@@ -11,6 +11,7 @@ import more_vert from "../../../assets/more_vert.png";
 import ImageCarousel from "../ImageCarousel";
 import { ReadMore } from "../ReadMore";
 import { useLikePost, usePostInformation, useUnlikePost } from "../../_api/@react-client-query/query.js";
+import PostCardLoading from "./PostCardLoading.jsx";
 
 const PostCard = ({ postID, caption, images, userID, createdAt }) => {
   const likePostQuery = useLikePost();
@@ -18,7 +19,7 @@ const PostCard = ({ postID, caption, images, userID, createdAt }) => {
   const { isLoading, isError, data } = usePostInformation(postID);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <PostCardLoading />;
   }
 
   const handleLike = () => {
