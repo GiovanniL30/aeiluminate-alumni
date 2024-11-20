@@ -119,8 +119,6 @@ export const fetchPosts = async ({ pageParam = 1, length = 5 }) => {
 
     const nextPage = pageParam < totalPages ? pageParam + 1 : undefined;
 
-    console.log("next page: ", nextPage);
-
     return {
       posts: data.posts,
       nextPage,

@@ -46,4 +46,4 @@ postRouter.post("/post/like/:id", authenticateUserCookie, likeController);
  *
  * Unike a post
  */
-postRouter.post("/post/like/:id", authenticateUserCookie, unlikeController);
+postRouter.post("/post/unlike/:id", authenticateUserCookie, unlikeController);

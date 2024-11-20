@@ -5,6 +5,7 @@ import { storage } from "../appwriteconfig.js";
 
 import { addNewPost, addNewMedia, addLike } from "../mysqlQueries/addQueries.js";
 import { getPosts, getMedia, getPostStats } from "../mysqlQueries/readQueries.js";
+import { unlikePost } from "../mysqlQueries/deleteQueries.js";
 
 /**
  *
@@ -123,8 +124,6 @@ export const getPostCommentAndLikeCountController = async (req, res, next) => {
 
     if (!stats) return res.status(404).json({ message: "Post stats not found" });
 
-    console.log(stats);
-
     res.status(200).json(stats);
   } catch (error) {
     console.error("Error in getting post comment and like:", error);
@@ -169,7 +168,7 @@ export const unlikeController = async (req, res, next) => {
     const { id } = req.params;
     const { userId } = req;
 
-    const result = await unlikeController(id, userId);
+    const result = await unlikePost(id, userId);
 
     if (!result) throw new Error("Failed to unlike the post");
 

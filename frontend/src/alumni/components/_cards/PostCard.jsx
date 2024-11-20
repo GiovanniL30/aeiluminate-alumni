@@ -22,15 +22,11 @@ const PostCard = ({ postID, caption, images, userID, createdAt }) => {
   }
 
   const handleLike = () => {
-    console.log(data);
-
-    if (data.is_liked == 1) {
-      console.log("unliking");
-      unlikePostQuery(postID);
-    } else {
-      console.log("liking");
-      likePostQuery.mutate(postID);
-    }
+    // if (data.is_liked == 1) {
+    unlikePostQuery.mutate(postID);
+    // } else {
+    // likePostQuery.mutate(postID);
+    // }
   };
 
   return (
@@ -52,7 +48,7 @@ const PostCard = ({ postID, caption, images, userID, createdAt }) => {
       </div>
       <div className="flex items-center px-4 gap-6">
         <button className="w-6 h-6" onClick={handleLike}>
-          <img src={data.is_liked ? liked : unliked} alt="like/unlike" />
+          <img src={data.is_liked == 1 ? liked : unliked} alt="like/unlike" />
         </button>
         <button className="w-6 h-6">
           <img src={comment} alt="comment" />
