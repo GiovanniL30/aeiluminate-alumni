@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { timeAgo } from "../../../utils.js";
 
 import logo from "../../../assets/logoCircle.png";
@@ -8,8 +8,18 @@ import liked from "../../../assets/post-liked.png";
 import unliked from "../../../assets/post-unliked.png";
 
 import more_hor from "../../../assets/more_hor.png";
+import { usePostCommentAndLikeCount } from "../../_api/@react-client-query/query.js";
 
 const AelineCard = ({ postID, caption, userID, createdAt }) => {
+  const { isLoading, isError, data } = usePostCommentAndLikeCount(postID);
+  const [likedState, setLikedState] = useState(false);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  console.log(data);
+
   return (
     <div className="flex gap-7 w-full">
       <div className="flex items-start justify-start w-14">
@@ -27,7 +37,7 @@ const AelineCard = ({ postID, caption, userID, createdAt }) => {
           </button>
         </div>
         <button className="w-fit text-sm text-light_text">
-          <p>2 replies</p>
+          <p>{data ? data.total_replies : "0"} comments</p>
         </button>
       </div>
       <div className="flex items-start justify-center gap-2 ml-auto mt-2">

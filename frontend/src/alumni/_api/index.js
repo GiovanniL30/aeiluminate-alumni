@@ -130,3 +130,28 @@ export const fetchPosts = async ({ pageParam = 1, length = 5 }) => {
     throw new Error(error.message);
   }
 };
+
+/**
+ * Request to get a comment and like count
+ * @url baseurl/api/post/stats/:id
+ */
+export const fetchCommentAndLikeCount = async (postId) => {
+  try {
+    const response = await fetch(`${baseURL}/api/post/stats/${postId}`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData);
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+};

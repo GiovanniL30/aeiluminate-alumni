@@ -42,7 +42,7 @@ app.use("/api/check_token", authenticateUserCookie, async (req, res) => {
 app.use("/api", usersRoute);
 app.use("/api", loginRoute);
 app.use("/api/register", registerRoute);
-app.use("/api", authenticateUserCookie, postRouter);
+app.use("/api", postRouter);
 
 const PORT = process.env.PORT || 1099;
 

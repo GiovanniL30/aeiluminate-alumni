@@ -122,7 +122,7 @@ export const getPostCommentAndLikeCountController = async (req, res, next) => {
 
     if (!stats) return res.status(404).json({ message: "Post stats not found" });
 
-    res.stats(200).json({ stats });
+    res.status(200).json(stats);
   } catch (error) {
     console.error("Error in getting post comment and like:", error);
     return res.status(500).json({ message: error.message || "Internal Server Error" });
