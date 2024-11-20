@@ -155,3 +155,53 @@ export const fetchPostInformation = async (postId) => {
     throw new Error(error.message);
   }
 };
+
+/**
+ * Request to like a new post
+ * @url baseurl/api/post/like/:id
+ */
+export const likePost = async (postId) => {
+  try {
+    const response = await fetch(`${baseURL}/api/post/like/${postId}`, {
+      method: "POST",
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData);
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+};
+
+/**
+ * Request to unlike a new post
+ * @url baseurl/api/post/unlike/:id
+ */
+export const unlikePost = async (postId) => {
+  try {
+    const response = await fetch(`${baseURL}/api/post/unlike/${postId}`, {
+      method: "POST",
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData);
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+};

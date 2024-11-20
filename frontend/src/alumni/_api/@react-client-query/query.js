@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
-import { userLogin, uploadPost, uploadLine, fetchPosts, fetchPostInformation } from "../index.js";
+import { userLogin, uploadPost, uploadLine, fetchPosts, fetchPostInformation, likePost, unlikePost } from "../index.js";
 
 /**
  * React query to login user
@@ -52,5 +52,35 @@ export const usePostInformation = (postId) => {
   return useQuery({
     queryKey: ["post_comment_like_count", postId],
     queryFn: () => fetchPostInformation(postId),
+  });
+};
+
+/**
+ * React query to like a post
+ */
+export const useLikePost = () => {
+  const client = useQueryClient();
+
+  return useMutation({
+    mutationFn: (postId) => likePost(postId),
+    onSuccess: (_, postId) => {
+      console.log("liking post " + postId);
+      client.invalidateQueries(["post_comment_like_count", postId]);
+    },
+  });
+};
+
+/**
+ * React query to unlike a post
+ */
+export const useUnlikePost = () => {
+  const client = useQueryClient();
+
+  return useMutation({
+    mutationFn: (postId) => unlikePost(postId),
+    onSuccess: (_, postId) => {
+      console.log("unliking post " + postId);
+      client.invalidateQueries(["post_comment_like_count", postId]);
+    },
   });
 };

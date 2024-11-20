@@ -10,17 +10,28 @@ import more_vert from "../../../assets/more_vert.png";
 
 import ImageCarousel from "../ImageCarousel";
 import { ReadMore } from "../ReadMore";
-import { usePostInformation } from "../../_api/@react-client-query/query.js";
+import { useLikePost, usePostInformation, useUnlikePost } from "../../_api/@react-client-query/query.js";
 
 const PostCard = ({ postID, caption, images, userID, createdAt }) => {
+  const likePostQuery = useLikePost();
+  const unlikePostQuery = useUnlikePost();
   const { isLoading, isError, data } = usePostInformation(postID);
-  const [likedState, setLikedState] = useState(false);
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  console.log(data);
+  const handleLike = () => {
+    console.log(data);
+
+    if (data.is_liked == 1) {
+      console.log("unliking");
+      unlikePostQuery(postID);
+    } else {
+      console.log("liking");
+      likePostQuery.mutate(postID);
+    }
+  };
 
   return (
     <div className="w-full flex flex-col gap-5 border-[1px] rounded-lg">
@@ -40,8 +51,8 @@ const PostCard = ({ postID, caption, images, userID, createdAt }) => {
         <ImageCarousel images={images} />
       </div>
       <div className="flex items-center px-4 gap-6">
-        <button className="w-6 h-6">
-          <img src={likedState ? liked : unliked} alt="like/unlike" />
+        <button className="w-6 h-6" onClick={handleLike}>
+          <img src={data.is_liked ? liked : unliked} alt="like/unlike" />
         </button>
         <button className="w-6 h-6">
           <img src={comment} alt="comment" />

@@ -69,16 +69,17 @@ export const getPrograms = () => {
 
 /**
  *
- * Get comment and like count of a certail post
+ * Get comment, like count, and user's like status for a specific post
  */
-export const getPostStats = (postId) => {
+export const getPostStats = (postId, userId) => {
   const query = `
     SELECT 
         p.postID, 
         u.username AS posted_by,
         u.profile_picture AS profile_link,
         COUNT(DISTINCT l.userID) AS total_likes, 
-        COUNT(DISTINCT c.commentID) AS total_replies
+        COUNT(DISTINCT c.commentID) AS total_replies,
+        MAX(CASE WHEN l.userID = ? THEN 1 ELSE 0 END) AS is_liked
     FROM 
         posts p
     LEFT JOIN 
@@ -91,16 +92,16 @@ export const getPostStats = (postId) => {
         p.postID = ?
     GROUP BY 
         p.postID, u.username
-`;
+  `;
 
   return new Promise((resolve, reject) => {
-    connection.query(query, [postId], (error, result) => {
+    connection.query(query, [userId, postId], (error, result) => {
       if (error) {
-        console.error("Failed to get post comment and like count");
+        console.error("Failed to get post comment, like count, and user like status", error);
         reject(error);
       }
 
-      if (result.length > 0) {
+      if (result && result.length > 0) {
         resolve(result[0]);
       } else {
         resolve(null);

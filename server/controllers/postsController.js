@@ -3,7 +3,7 @@ import crypto from "crypto";
 
 import { storage } from "../appwriteconfig.js";
 
-import { addNewPost, addNewMedia } from "../mysqlQueries/addQueries.js";
+import { addNewPost, addNewMedia, addLike } from "../mysqlQueries/addQueries.js";
 import { getPosts, getMedia, getPostStats } from "../mysqlQueries/readQueries.js";
 
 /**
@@ -123,9 +123,59 @@ export const getPostCommentAndLikeCountController = async (req, res, next) => {
 
     if (!stats) return res.status(404).json({ message: "Post stats not found" });
 
+    console.log(stats);
+
     res.status(200).json(stats);
   } catch (error) {
     console.error("Error in getting post comment and like:", error);
+    return res.status(500).json({ message: error.message || "Internal Server Error" });
+  }
+};
+
+/**
+ *
+ * Like a post
+ *
+ *
+ * @method GET
+ * @route /api/post/like/:id
+ */
+export const likeController = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req;
+
+    const result = await addLike(id, userId);
+
+    if (!result) throw new Error("Failed to like the post");
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("Error in liking the post:", error);
+    return res.status(500).json({ message: error.message || "Internal Server Error" });
+  }
+};
+
+/**
+ *
+ * Unline a post
+ *
+ *
+ * @method GET
+ * @route /api/post/unlike/:id
+ */
+export const unlikeController = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req;
+
+    const result = await unlikeController(id, userId);
+
+    if (!result) throw new Error("Failed to unlike the post");
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("Error in unliking the post:", error);
     return res.status(500).json({ message: error.message || "Internal Server Error" });
   }
 };

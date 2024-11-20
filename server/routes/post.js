@@ -2,6 +2,8 @@ import express from "express";
 import {
   getPostCommentAndLikeCountController,
   getPostController,
+  likeController,
+  unlikeController,
   uploadLineController,
   uploadPostController,
 } from "../controllers/postsController.js";
@@ -33,3 +35,15 @@ postRouter.get("/posts", authenticateUserCookie, getPostController);
  * Get post stats (comment and like count)
  */
 postRouter.get("/post/stats/:id", getPostCommentAndLikeCountController);
+
+/**
+ *
+ * Like a post
+ */
+postRouter.post("/post/like/:id", authenticateUserCookie, likeController);
+
+/**
+ *
+ * Unike a post
+ */
+postRouter.post("/post/like/:id", authenticateUserCookie, unlikeController);

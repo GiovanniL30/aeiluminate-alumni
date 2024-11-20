@@ -26,3 +26,21 @@ export const removeUserAccount = async (userId) => {
     throw new Error("Error removing user from Appwrite");
   }
 };
+
+/**
+ * Unlike a post
+ * @affectedDatabase = likes
+ */
+export const unlikePost = (postID, userID) => {
+  const query = "DELETE FROM likes WHERE postID = ? AND userID = ?";
+
+  return new Promise((resolve, reject) => {
+    connection.query(query, [postID, userID], (err, result) => {
+      if (err) {
+        console.error("Error deleting like", err);
+        return reject(new Error("Failed to unlike the post in the database"));
+      }
+      resolve(result.affectedRows > 0);
+    });
+  });
+};

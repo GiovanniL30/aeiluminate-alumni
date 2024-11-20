@@ -78,3 +78,21 @@ export const addNewMedia = (mediaID, mediaType, mediaURL, uploadedAt, postID) =>
     });
   });
 };
+
+/**
+ * Like a new post
+ * @affectedDatabase = likes
+ */
+export const addLike = (postID, userID) => {
+  const query = "INSERT INTO likes (postID, userID, likedAt) VALUES (?, ?, ?)";
+
+  return new Promise((resolve, reject) => {
+    connection.query(query, [postID, userID, new Date()], (err, result) => {
+      if (err) {
+        console.error("Error inserting new like", err);
+        return reject(new Error("Failed to insert new like into the database"));
+      }
+      resolve(result.affectedRows > 0);
+    });
+  });
+};
