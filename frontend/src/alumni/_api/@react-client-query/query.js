@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
-import { userLogin, uploadPost, uploadLine, fetchPosts, fetchCommentAndLikeCount } from "../index.js";
+import { userLogin, uploadPost, uploadLine, fetchPosts, fetchPostInformation } from "../index.js";
 
 /**
  * React query to login user
@@ -48,9 +48,9 @@ export const useGetPosts = (length) => {
 /**
  * React query to get post comment and like count
  */
-export const usePostCommentAndLikeCount = (postId) => {
+export const usePostInformation = (postId) => {
   return useQuery({
     queryKey: ["post_comment_like_count", postId],
-    queryFn: () => fetchCommentAndLikeCount(postId),
+    queryFn: () => fetchPostInformation(postId),
   });
 };

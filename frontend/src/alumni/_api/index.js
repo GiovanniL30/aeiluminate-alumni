@@ -135,7 +135,7 @@ export const fetchPosts = async ({ pageParam = 1, length = 5 }) => {
  * Request to get a comment and like count
  * @url baseurl/api/post/stats/:id
  */
-export const fetchCommentAndLikeCount = async (postId) => {
+export const fetchPostInformation = async (postId) => {
   try {
     const response = await fetch(`${baseURL}/api/post/stats/${postId}`, {
       method: "GET",

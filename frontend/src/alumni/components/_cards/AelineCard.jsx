@@ -8,25 +8,23 @@ import liked from "../../../assets/post-liked.png";
 import unliked from "../../../assets/post-unliked.png";
 
 import more_hor from "../../../assets/more_hor.png";
-import { usePostCommentAndLikeCount } from "../../_api/@react-client-query/query.js";
+import { usePostInformation } from "../../_api/@react-client-query/query.js";
 
 const AelineCard = ({ postID, caption, userID, createdAt }) => {
-  const { isLoading, isError, data } = usePostCommentAndLikeCount(postID);
+  const { isLoading, isError, data } = usePostInformation(postID);
   const [likedState, setLikedState] = useState(false);
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  console.log(data);
-
   return (
     <div className="flex gap-7 w-full">
-      <div className="flex items-start justify-start w-14">
-        <img src={logo} alt="profile" />
+      <div className="flex items-start justify-start ">
+        <img className="w-14 h-14 rounded-full object-cover" src={data.profile_link} alt="profile" />
       </div>
       <div className="flex flex-col gap-2 mt-2">
-        <p className="font-bold text-lg -mb-2">{userID}</p>
+        <p className="font-bold text-lg -mb-2">{data.posted_by}</p>
         <p className="font-thin">{caption}</p>
         <div className="flex mt-4 gap-2 items-center">
           <button className="w-5 h-5">

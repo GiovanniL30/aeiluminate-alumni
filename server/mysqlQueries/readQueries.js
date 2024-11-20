@@ -71,9 +71,27 @@ export const getPrograms = () => {
  *
  * Get comment and like count of a certail post
  */
-export const getCommentAndLikeCount = (postId) => {
-  const query =
-    "SELECT p.postID, COUNT(DISTINCT l.userID) AS total_likes, COUNT(DISTINCT c.commentID) AS total_replies FROM posts p LEFT JOIN likes l ON p.postID = l.postID LEFT JOIN comments c ON p.postID = c.postID WHERE p.postID = ? GROUP BY p.postID";
+export const getPostStats = (postId) => {
+  const query = `
+    SELECT 
+        p.postID, 
+        u.username AS posted_by,
+        u.profile_picture AS profile_link,
+        COUNT(DISTINCT l.userID) AS total_likes, 
+        COUNT(DISTINCT c.commentID) AS total_replies
+    FROM 
+        posts p
+    LEFT JOIN 
+        likes l ON p.postID = l.postID
+    LEFT JOIN 
+        comments c ON p.postID = c.postID
+    LEFT JOIN 
+        users u ON p.userID = u.userID
+    WHERE 
+        p.postID = ?
+    GROUP BY 
+        p.postID, u.username
+`;
 
   return new Promise((resolve, reject) => {
     connection.query(query, [postId], (error, result) => {
@@ -153,13 +171,14 @@ export const getUsers = (page, pageSize) => {
 /**
  * Fetches paginated posts and total count from the database.
  */
-export const getPosts = (page, pageSize) => {
-  const query = "SELECT * FROM posts LIMIT ? OFFSET ?";
+export const getPosts = (page, pageSize, userId) => {
+  const query = "SELECT * FROM posts WHERE userID != ? LIMIT ? OFFSET ?";
   const offset = (page - 1) * pageSize;
 
   return new Promise((resolve, reject) => {
-    connection.query(query, [parseInt(pageSize), parseInt(offset)], (err, results) => {
+    connection.query(query, [userId, parseInt(pageSize), parseInt(offset)], (err, results) => {
       if (err) {
+        console.error(err);
         return reject("Error fetching paginated posts");
       }
 

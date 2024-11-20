@@ -90,7 +90,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
 
         <div className="flex flex-col gap-5 w-full">
           <div className="flex items-center gap-2">
-            <img className="w-10" src={user.profile_picture} alt="profile" />
+            <img className="w-12 h-12 rounded-full object-cover" src={user.profile_picture} alt="profile" />
             <p>{user.username}</p>
           </div>
 

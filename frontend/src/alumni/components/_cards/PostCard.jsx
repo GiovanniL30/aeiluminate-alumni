@@ -10,22 +10,24 @@ import more_vert from "../../../assets/more_vert.png";
 
 import ImageCarousel from "../ImageCarousel";
 import { ReadMore } from "../ReadMore";
-import { usePostCommentAndLikeCount } from "../../_api/@react-client-query/query.js";
+import { usePostInformation } from "../../_api/@react-client-query/query.js";
 
 const PostCard = ({ postID, caption, images, userID, createdAt }) => {
-  const { isLoading, isError, data } = usePostCommentAndLikeCount(postID);
+  const { isLoading, isError, data } = usePostInformation(postID);
   const [likedState, setLikedState] = useState(false);
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
+  console.log(data);
+
   return (
     <div className="w-full flex flex-col gap-5 border-[1px] rounded-lg">
-      <div className="flex justify-between p-4">
+      <div className="flex justify-between pt-4 px-4">
         <div className="flex items-center gap-6">
-          <img className="w-10" src={logo} alt="profile" />
-          <p className="font-bold">{userID}</p>
+          <img className="w-10 h-10 object-cover rounded-full" src={data.profile_link} alt="profile" />
+          <p className="font-bold">{data.posted_by}</p>
         </div>
         <div className="flex gap-3 items-center justify-center">
           <p className="text-sm text-light_text">{timeAgo(createdAt)}</p>

@@ -4,7 +4,7 @@ import crypto from "crypto";
 import { storage } from "../appwriteconfig.js";
 
 import { addNewPost, addNewMedia } from "../mysqlQueries/addQueries.js";
-import { getPosts, getMedia, getCommentAndLikeCount } from "../mysqlQueries/readQueries.js";
+import { getPosts, getMedia, getPostStats } from "../mysqlQueries/readQueries.js";
 
 /**
  *
@@ -82,9 +82,10 @@ export const uploadLineController = async (req, res, next) => {
  */
 export const getPostController = async (req, res, next) => {
   try {
+    const { userId } = req;
     const { page, length } = req.query;
 
-    const { posts, total } = await getPosts(page, length);
+    const { posts, total } = await getPosts(page, length, userId);
 
     const updatedPosts = [];
 
@@ -118,7 +119,7 @@ export const getPostCommentAndLikeCountController = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const stats = await getCommentAndLikeCount(id);
+    const stats = await getPostStats(id);
 
     if (!stats) return res.status(404).json({ message: "Post stats not found" });
 
