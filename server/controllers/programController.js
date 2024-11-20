@@ -1,4 +1,4 @@
-import { getPrograms } from "../mysqlQueries/queries.js";
+import { getPrograms } from "../mysqlQueries/readQueries.js";
 
 /**
  *

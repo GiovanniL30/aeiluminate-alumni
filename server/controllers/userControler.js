@@ -1,4 +1,5 @@
-import { getUser, getUsers, removeUserAccount } from "../mysqlQueries/queries.js";
+import { getUser, getUsers } from "../mysqlQueries/readQueries.js";
+import { removeUserAccount } from "../mysqlQueries/deleteQueries.js";
 
 /**
  *  Get all users on the Database (user)

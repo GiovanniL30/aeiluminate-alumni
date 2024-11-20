@@ -2,92 +2,6 @@ import connection from "../connections.js";
 import { account, users } from "../appwriteconfig.js";
 
 /**
- * ===================== CREATE =====================
- */
-
-/**
- * Adds a new user
- * @affectedDatabase = user
- */
-export const addNewUser = (userId, role, email, username, password, firstName, middleName, lastName) => {
-  const insertUserQuery = `
-      INSERT INTO users (userID, role, email, username, password, firstName, middleName, lastName) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `;
-
-  return new Promise((resolve, reject) => {
-    connection.query(insertUserQuery, [userId, role, email, username, password, firstName, middleName, lastName], (err, result) => {
-      if (err) {
-        console.error("Error inserting new user:", err);
-        return reject(new Error("Failed to insert new user into the database"));
-      }
-      resolve(result.affectedRows > 0);
-    });
-  });
-};
-
-/**
- * Adds a new alumni
- * @affectedDatabase = alumni
- */
-export const addNewAlumni = (userID, yeaGraduated, programID, isEmployed) => {
-  const insertUserQuery = `
-      INSERT INTO alumni (userID, year_graduated, programID, isEmployed) 
-      VALUES (?, ?, ?, ?)
-    `;
-
-  return new Promise((resolve, reject) => {
-    connection.query(insertUserQuery, [userID, yeaGraduated, programID, isEmployed], (err, result) => {
-      if (err) {
-        console.error("Error inserting new alumni", err);
-        return reject(new Error("Failed to insert new almuni into the database"));
-      }
-      resolve(result.affectedRows > 0);
-    });
-  });
-};
-
-/**
- * Adds a new post
- * @affectedDatabase = posts
- */
-export const addNewPost = (postId, userID, caption, time) => {
-  const query = "INSERT INTO posts (postId, userID, caption, createdAt) VALUES (?, ?, ?, ?)";
-
-  return new Promise((resolve, reject) => {
-    connection.query(query, [postId, userID, caption, time], (err, result) => {
-      if (err) {
-        console.error("Error inserting new post", err);
-        return reject(new Error("Failed to insert new post into the database"));
-      }
-      resolve(result.affectedRows > 0);
-    });
-  });
-};
-
-/**
- * Adds a new media
- * @affectedDatabase = media
- */
-export const addNewMedia = (mediaID, mediaType, mediaURL, uploadedAt, postID) => {
-  const query = "INSERT INTO media (mediaID, mediaType, mediaURL,uploadedAt, postID) VALUES (?, ?, ?, ?, ?)";
-
-  return new Promise((resolve, reject) => {
-    connection.query(query, [mediaID, mediaType, mediaURL, uploadedAt, postID], (err, result) => {
-      if (err) {
-        console.error("Error inserting new media", err);
-        return reject(new Error("Failed to insert new media into the database"));
-      }
-      resolve(result.affectedRows > 0);
-    });
-  });
-};
-
-/**
- * ===================== READ =====================
- */
-
-/**
  *
  * Validate email and password
  */
@@ -149,6 +63,30 @@ export const getPrograms = () => {
       }
 
       resolve(result);
+    });
+  });
+};
+
+/**
+ *
+ * Get comment and like count of a certail post
+ */
+export const getCommentAndLikeCount = (postId) => {
+  const query =
+    "SELECT p.postID, COUNT(DISTINCT l.userID) AS total_likes, COUNT(DISTINCT c.commentID) AS total_replies FROM posts p LEFT JOIN likes l ON p.postID = l.postID LEFT JOIN comments c ON p.postID = c.postID WHERE p.postID = ? GROUP BY p.postID";
+
+  return new Promise((resolve, reject) => {
+    connection.query(query, [postId], (error, result) => {
+      if (error) {
+        console.error("Failed to get post comment and like count");
+        reject(error);
+      }
+
+      if (result.length > 0) {
+        resolve(result[0]);
+      } else {
+        resolve(null);
+      }
     });
   });
 };
@@ -253,38 +191,4 @@ export const getMedia = (postId) => {
       resolve(results);
     });
   });
-};
-
-/**
- * ===================== UPDATE =====================
- */
-
-/**
- * ===================== DELETE =====================
- */
-
-/**
- * Removes an account from the user table
- * @affectedDatabase = user
- */
-export const removeUserAccount = async (userId) => {
-  try {
-    // Delete the user from Appwrite
-    await users.delete(userId);
-
-    const query = "DELETE FROM users WHERE userID = ?";
-
-    return new Promise((resolve, reject) => {
-      connection.query(query, [userId], (err, result) => {
-        if (err) {
-          return reject(false);
-        }
-
-        resolve(result.affectedRows > 0);
-      });
-    });
-  } catch (error) {
-    console.error("Error removing user from Appwrite:", error.message);
-    throw new Error("Error removing user from Appwrite");
-  }
 };

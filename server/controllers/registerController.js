@@ -1,6 +1,8 @@
-import { account } from "../appwriteconfig.js";
 import { ID } from "node-appwrite";
-import { addNewAlumni, addNewUser, checkEmail, checkUsername, removeUserAccount } from "../mysqlQueries/queries.js";
+
+import { addNewAlumni, addNewUser } from "../mysqlQueries/addQueries.js";
+import { checkEmail, checkUsername } from "../mysqlQueries/readQueries.js";
+import { removeUserAccount } from "../mysqlQueries/deleteQueries.js";
 
 /**
  *  Creates a new account on the Database (user, alumni) and on Appwrite

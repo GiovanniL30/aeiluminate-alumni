@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-import { checkEmail, validateEmailAndPassword } from "../mysqlQueries/queries.js";
+import { checkEmail, validateEmailAndPassword } from "../mysqlQueries/readQueries.js";
 
 const generateToken = (userId, role) => {
   return jwt.sign({ userId, role }, process.env.TOKEN, { expiresIn: "2h" });

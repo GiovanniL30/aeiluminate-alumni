@@ -8,7 +8,7 @@ import { router as usersRoute } from "./routes/users.js";
 import { router as programsRoute } from "./routes/programs.js";
 import { postRouter } from "./routes/post.js";
 import { authenticateUserCookie } from "./middleware/authenticateCookie.js";
-import { getUser } from "./mysqlQueries/queries.js";
+import { getUser } from "./mysqlQueries/readQueries.js";
 
 const app = express();
 
@@ -38,6 +38,7 @@ app.use("/api/check_token", authenticateUserCookie, async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
 app.use("/api", usersRoute);
 app.use("/api", loginRoute);
 app.use("/api/register", registerRoute);

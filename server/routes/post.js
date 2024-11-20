@@ -1,5 +1,10 @@
 import express from "express";
-import { getPostController, uploadLineController, uploadPostController } from "../controllers/postsController.js";
+import {
+  getPostCommentAndLikeCountController,
+  getPostController,
+  uploadLineController,
+  uploadPostController,
+} from "../controllers/postsController.js";
 import { upload } from "../multer.js";
 
 export const postRouter = express.Router();
@@ -21,3 +26,9 @@ postRouter.post("/line", uploadLineController);
  * Get list of posts
  */
 postRouter.get("/posts", getPostController);
+
+/**
+ *
+ * Get post stats (comment and like count)
+ */
+postRouter.get("/post/stats/:id", getPostCommentAndLikeCountController);

@@ -2,7 +2,9 @@ import { ID, InputFile } from "node-appwrite";
 import crypto from "crypto";
 
 import { storage } from "../appwriteconfig.js";
-import { addNewPost, addNewMedia, getPosts, getMedia } from "../mysqlQueries/queries.js";
+
+import { addNewPost, addNewMedia } from "../mysqlQueries/addQueries.js";
+import { getPosts, getMedia, getCommentAndLikeCount } from "../mysqlQueries/readQueries.js";
 
 /**
  *
@@ -100,6 +102,29 @@ export const getPostController = async (req, res, next) => {
     });
   } catch (error) {
     console.error("Error in getting posts:", error);
+    return res.status(500).json({ message: error.message || "Internal Server Error" });
+  }
+};
+
+/**
+ *
+ * Get Comment and Like Count of a post
+ *
+ *
+ * @method GET
+ * @route /api/post/stats/:id
+ */
+export const getPostCommentAndLikeCountController = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const stats = await getCommentAndLikeCount(id);
+
+    if (!stats) return res.status(404).json({ message: "Post stats not found" });
+
+    res.stats(200).json({ stats });
+  } catch (error) {
+    console.error("Error in getting post comment and like:", error);
     return res.status(500).json({ message: error.message || "Internal Server Error" });
   }
 };
