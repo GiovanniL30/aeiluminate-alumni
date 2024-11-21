@@ -96,3 +96,21 @@ export const addLike = (postID, userID) => {
     });
   });
 };
+
+/**
+ * Follow a user
+ * @affectedDatabase = follower
+ */
+export const followUser = (followerID, followedID) => {
+  const query = "INSERT INTO follows (followerID, followedID, followedAt) VALUES (? ,?, ?)";
+
+  return new Promise((resolve, reject) => {
+    connection.query(query, [followerID, followedID, new Date()], (err, result) => {
+      if (err) {
+        console.error("Error following a user", err);
+        return reject(new Error("Failed to follow"));
+      }
+      resolve(result.affectedRows > 0);
+    });
+  });
+};

@@ -212,3 +212,49 @@ export const getMedia = (postId) => {
     });
   });
 };
+
+/**
+ *
+ * Get total followers of a user
+ */
+export const getUserFollowerCount = (userId) => {
+  const query = "SELECT COUNT(followerID) AS total_followers FROM follows WHERE followedID = ?";
+
+  return new Promise((resolve, reject) => {
+    connection.query(query, [userId], (err, results) => {
+      if (err) {
+        console.error("Failed to get follower count:", err);
+        return reject(new Error("Failed to fetch the follower count from the database"));
+      }
+
+      if (results && results.length > 0) {
+        resolve(results[0]);
+      } else {
+        resolve({ total_followers: 0 });
+      }
+    });
+  });
+};
+
+/**
+ *
+ * Check if the user is following a user
+ */
+export const checkIsFollowing = (followerID, followingID) => {
+  const query = "SELECT COUNT(*) AS is_following FROM follows WHERE followerID = ? AND followedID = ?";
+
+  return new Promise((resolve, reject) => {
+    connection.query(query, [followerID, followingID], (err, results) => {
+      if (err) {
+        console.error("Failed to check following status:", err);
+        return reject(new Error("Failed to fetch following status from the database"));
+      }
+
+      if (results && results.length > 0) {
+        resolve(results[0].is_following > 0);
+      } else {
+        resolve(false);
+      }
+    });
+  });
+};

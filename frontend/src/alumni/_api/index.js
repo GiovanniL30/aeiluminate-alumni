@@ -203,3 +203,102 @@ export const unlikePost = async (postId) => {
     throw new Error(error.message);
   }
 };
+
+/**
+ * Request to unlike a new post
+ * @url baseurl/api/user/follower_count/:id
+ */
+export const fetchFollowerCount = async (userId) => {
+  try {
+    const response = await fetch(`${baseURL}/api/user/follower_count/${userId}`, {
+      method: "GET",
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData);
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+};
+
+/**
+ * Request to follow a user
+ * @url baseurl/api/user/follow/:id
+ */
+export const followUserRequest = async (userId) => {
+  try {
+    const response = await fetch(`${baseURL}/api/user/follow/${userId}`, {
+      method: "POST",
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData);
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+};
+
+/**
+ * Request to unfollow a user
+ * @url baseurl/api/user/unfollow/:id
+ */
+export const unfollowUserRequest = async (userId) => {
+  try {
+    const response = await fetch(`${baseURL}/api/user/unfollow/${userId}`, {
+      method: "POST",
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData);
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+};
+
+/**
+ * Request to check following status
+ * @url baseurl/api/user/unfollow/:id
+ */
+export const checkFollowingStatusRequest = async (userId) => {
+  try {
+    const response = await fetch(`${baseURL}/api/user/follow_status/${userId}`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData);
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+};

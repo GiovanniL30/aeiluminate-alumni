@@ -4,8 +4,22 @@ import Button from "../Button";
 
 import liked from "../../../assets/post-liked.png";
 import unliked from "../../../assets/post-unliked.png";
+import { useFollowUser, useIsFollowing, useUnFollowUser, useUserFollowerCount } from "../../_api/@react-client-query/query";
 
 const PostCommentPopUp = ({ likes, isLiked, profilePic, handleLike, images, userID, userName, setIsShowComment, caption }) => {
+  const followerCountQuery = useUserFollowerCount(userID);
+  const followUserQuery = useFollowUser();
+  const unFollowUserQuery = useUnFollowUser();
+  const isFollowingQuery = useIsFollowing(userID);
+
+  const followHandler = () => {
+    if (isFollowingQuery.data.isFollowing) {
+      unFollowUserQuery.mutate(userID);
+    } else {
+      followUserQuery.mutate(userID);
+    }
+  };
+
   return (
     <div className="py-20 px-10 fixed left-0 right-0 top-0 bottom-0 min-h-screen bg-black bg-opacity-30 z-50 pointer-events-auto">
       <button className="fixed right-4 top-12 text-white font-bold text-xl" onClick={() => setIsShowComment(false)}>
@@ -22,9 +36,14 @@ const PostCommentPopUp = ({ likes, isLiked, profilePic, handleLike, images, user
               <img className="w-12 h-12 rounded-full object-cover" src={profilePic} alt="profile" />
               <div className="flex flex-col">
                 <p className="font-semibold text-lg">{userName}</p>
-                <p className="text-sm">Follower Count</p>
+                <p className="text-sm">{followerCountQuery.data ? followerCountQuery.data.total_followers : "0"} followers</p>
               </div>
-              <Button text="Follow" otherStyle="ml-10" />
+              <Button
+                onClick={followHandler}
+                text={isFollowingQuery.data.isFollowing ? "Unfollow" : "Follow"}
+                disabled={followUserQuery.isPending || unFollowUserQuery.isPending}
+                otherStyle={`ml-10 ${isFollowingQuery.data.isFollowing && "bg-red-500"}`}
+              />
             </div>
             <div className="mt-8">
               <p>{caption}</p>

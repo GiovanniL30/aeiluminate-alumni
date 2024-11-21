@@ -44,3 +44,21 @@ export const unlikePost = (postID, userID) => {
     });
   });
 };
+
+/**
+ * Unfollow a user
+ * @affectedDatabase = follower
+ */
+export const unfollowUser = (followerID, followedID) => {
+  const query = "DELETE FROM follows WHERE followerID = ? AND followedID = ?";
+
+  return new Promise((resolve, reject) => {
+    connection.query(query, [followerID, followedID], (err, result) => {
+      if (err) {
+        console.error("Error unfollowing a user", err);
+        return reject(new Error("Failed to unfollow"));
+      }
+      resolve(result.affectedRows > 0);
+    });
+  });
+};
