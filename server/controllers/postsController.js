@@ -3,8 +3,8 @@ import crypto from "crypto";
 
 import { storage } from "../appwriteconfig.js";
 
-import { addNewPost, addNewMedia, addLike } from "../mysqlQueries/addQueries.js";
-import { getPosts, getMedia, getPostStats } from "../mysqlQueries/readQueries.js";
+import { addNewPost, addNewMedia, addLike, addComment } from "../mysqlQueries/addQueries.js";
+import { getPosts, getMedia, getPostStats, getPostComments } from "../mysqlQueries/readQueries.js";
 import { unlikePost } from "../mysqlQueries/deleteQueries.js";
 
 /**
@@ -176,6 +176,54 @@ export const unlikeController = async (req, res, next) => {
     res.status(200).json(result);
   } catch (error) {
     console.error("Error in unliking the post:", error);
+    return res.status(500).json({ message: error.message || "Internal Server Error" });
+  }
+};
+
+/**
+ *
+ * Get post comments
+ *
+ *
+ * @method GET
+ * @route /post/comments/:id
+ */
+export const getCommentsController = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const result = await getPostComments(id);
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("Error in adding comment to the post:", error);
+    return res.status(500).json({ message: error.message || "Internal Server Error" });
+  }
+};
+
+/**
+ *
+ * Add a comment
+ *
+ *
+ * @method POST
+ * @route /post/comment/:id
+ */
+export const addCommentController = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req;
+    const { comment } = req.body;
+
+    if (!comment) return res.status(401).json({ message: "Comment must not be blank" });
+
+    const result = await addComment(crypto.randomUUID(), comment, id, userId);
+
+    if (!result) throw new Error("Failed to add comment");
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("Error in adding comment to the post:", error);
     return res.status(500).json({ message: error.message || "Internal Server Error" });
   }
 };

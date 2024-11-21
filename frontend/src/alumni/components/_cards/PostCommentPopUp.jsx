@@ -1,16 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import ImageCarousel from "../ImageCarousel";
 import Button from "../Button";
 
 import liked from "../../../assets/post-liked.png";
 import unliked from "../../../assets/post-unliked.png";
-import { useFollowUser, useIsFollowing, useUnFollowUser, useUserFollowerCount } from "../../_api/@react-client-query/query";
+import {
+  useAddComment,
+  useComments,
+  useFollowUser,
+  useIsFollowing,
+  useUnFollowUser,
+  useUserFollowerCount,
+} from "../../_api/@react-client-query/query";
+import PostCommentLoading from "./PostCommentLoading";
+import CommentBlock from "./CommentBlock";
 
-const PostCommentPopUp = ({ likes, isLiked, profilePic, handleLike, images, userID, userName, setIsShowComment, caption }) => {
+const PostCommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, images, userID, userName, setIsShowComment, caption }) => {
+  const [commentData, setCommentData] = useState("");
   const followerCountQuery = useUserFollowerCount(userID);
   const followUserQuery = useFollowUser();
   const unFollowUserQuery = useUnFollowUser();
   const isFollowingQuery = useIsFollowing(userID);
+  const addCommentQuery = useAddComment();
+  const commentsQuery = useComments(postId);
 
   const followHandler = () => {
     if (isFollowingQuery.data.isFollowing) {
@@ -19,6 +31,18 @@ const PostCommentPopUp = ({ likes, isLiked, profilePic, handleLike, images, user
       followUserQuery.mutate(userID);
     }
   };
+
+  const submitComment = () => {
+    if (commentData.length < 10) {
+      alert("Comment should be atleast 10 characters");
+      return;
+    }
+
+    addCommentQuery.mutate({ content: commentData, postId });
+    setCommentData("");
+  };
+
+  if (isFollowingQuery.isLoading || commentsQuery.isLoading) return <PostCommentLoading />;
 
   return (
     <div className="py-20 px-10 fixed left-0 right-0 top-0 bottom-0 min-h-screen bg-black bg-opacity-30 z-50 pointer-events-auto">
@@ -42,7 +66,7 @@ const PostCommentPopUp = ({ likes, isLiked, profilePic, handleLike, images, user
                 onClick={followHandler}
                 text={isFollowingQuery.data.isFollowing ? "Unfollow" : "Follow"}
                 disabled={followUserQuery.isPending || unFollowUserQuery.isPending}
-                otherStyle={`ml-10 ${isFollowingQuery.data.isFollowing && "bg-red-500"}`}
+                otherStyle={`ml-10 ${isFollowingQuery.data.isFollowing && "bg-red-500 disabled"}`}
               />
             </div>
             <div className="mt-8">
@@ -50,11 +74,29 @@ const PostCommentPopUp = ({ likes, isLiked, profilePic, handleLike, images, user
             </div>
           </div>
 
-          <div className="flex-grow flex items-center justify-center min-h-[100px] overflow-y-auto">
-            <p className="italic text-gray-500">No comments yet. Be the first to comment!</p>
+          {commentsQuery.data.length > 0 && <p className="font-bold mt-4">Comments</p>}
+
+          <div className="flex-grow flex  min-h-[100px] overflow-y-auto">
+            {commentsQuery.data.length > 0 ? (
+              <div className="flex flex-col gap-5 p-7">
+                {commentsQuery.data.map((comment) => (
+                  <CommentBlock
+                    key={comment.commentID}
+                    userProfilePic={comment.userProfilePic}
+                    userID={comment.userID}
+                    userName={comment.userName}
+                    commentID={comment.commentID}
+                    commentCreatedAt={comment.commentCreatedAt}
+                    commentContent={comment.commentContent}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p className="italic text-gray-500 flex justify-center items-center w-full h-full">No comments yet. Be the first to comment!</p>
+            )}
           </div>
 
-          <div>
+          <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2 mb-4">
               <button className="w-6 h-6" onClick={handleLike}>
                 <img src={isLiked ? liked : unliked} alt="like" />
@@ -62,9 +104,16 @@ const PostCommentPopUp = ({ likes, isLiked, profilePic, handleLike, images, user
               <p>{likes} likes</p>
             </div>
             <textarea
+              value={commentData}
+              onChange={(e) => setCommentData(e.target.value)}
               className="h-16 resize-none w-full focus:outline-none p-2 text-sm border-none rounded-md"
               placeholder="Add a comment..."
             ></textarea>
+            <Button
+              onClick={submitComment}
+              disabled={addCommentQuery.isPending}
+              text={addCommentQuery.isPaused ? "Adding Comment ..." : "Add Comment"}
+            />
           </div>
         </div>
       </div>

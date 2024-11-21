@@ -258,3 +258,39 @@ export const checkIsFollowing = (followerID, followingID) => {
     });
   });
 };
+
+/**
+ * Get comments for a specific post
+ */
+export const getPostComments = (postId) => {
+  const query = `
+      SELECT 
+        c.commentID,
+        c.content AS commentContent,
+        c.createdAt AS commentCreatedAt,
+        u.userID,
+        u.username AS userName,
+        u.profile_picture AS userProfilePic
+      FROM 
+          comments c
+      JOIN 
+          users u ON c.userID = u.userID
+      WHERE 
+          c.postID = ?
+    `;
+
+  return new Promise((resolve, reject) => {
+    connection.query(query, [postId], (err, results) => {
+      if (err) {
+        console.error("Failed to fetch comments:", err);
+        return reject(new Error("Failed to fetch comments from the database"));
+      }
+
+      if (results && results.length > 0) {
+        resolve(results);
+      } else {
+        resolve([]);
+      }
+    });
+  });
+};

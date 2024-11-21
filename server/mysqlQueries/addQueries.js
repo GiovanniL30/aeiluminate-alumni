@@ -114,3 +114,21 @@ export const followUser = (followerID, followedID) => {
     });
   });
 };
+
+/**
+ * Add a comment
+ * @affectedDatabase = comment
+ */
+export const addComment = (commentID, content, postID, userID) => {
+  const query = "INSERT INTO comments (commentID, content, createdAt, postID, userID) VALUES (?, ?, ?, ?, ?)";
+
+  return new Promise((resolve, reject) => {
+    connection.query(query, [commentID, content, new Date(), postID, userID], (err, result) => {
+      if (err) {
+        console.error("Error adding a comment", err);
+        return reject(new Error("Failed to comment"));
+      }
+      resolve(result.affectedRows > 0);
+    });
+  });
+};

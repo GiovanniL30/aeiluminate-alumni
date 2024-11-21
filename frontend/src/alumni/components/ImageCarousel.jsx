@@ -24,11 +24,17 @@ const ImageCarousel = ({ images, otherImageStyle }) => {
 
       <div className="relative w-full h-full">
         <div className="w-full h-full flex justify-center items-center">
-          <img
-            className={`max-w-full max-h-full object-contain ${otherImageStyle}`}
-            src={images[currentIndex].mediaURL}
-            alt={`Post ${currentIndex}`}
-          />
+          <a
+            className="w-full h-full flex justify-center items-center hover:opacity-80 duration-200"
+            href={images[currentIndex].mediaURL}
+            target="_blank"
+          >
+            <img
+              className={`max-w-full max-h-full object-contain ${otherImageStyle}`}
+              src={images[currentIndex].mediaURL}
+              alt={`Post ${currentIndex}`}
+            />
+          </a>
         </div>
       </div>
 

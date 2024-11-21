@@ -11,6 +11,8 @@ import {
   followUserRequest,
   unfollowUserRequest,
   checkFollowingStatusRequest,
+  addCommentRequest,
+  getCommentsRequest,
 } from "../index.js";
 
 /**
@@ -138,5 +140,27 @@ export const useIsFollowing = (userId) => {
   return useQuery({
     queryFn: () => checkFollowingStatusRequest(userId),
     queryKey: ["follow_status", userId],
+  });
+};
+
+/**
+ * React query to add a new comment
+ */
+export const useAddComment = () => {
+  const client = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ content, postId }) => addCommentRequest(content, postId),
+    onSuccess: (_, postId) => client.invalidateQueries(["post_comments", postId]),
+  });
+};
+
+/**
+ * React query to get comments
+ */
+export const useComments = (postId) => {
+  return useQuery({
+    queryFn: () => getCommentsRequest(postId),
+    queryKey: ["post_comments", postId],
   });
 };

@@ -1,5 +1,7 @@
 import express from "express";
 import {
+  addCommentController,
+  getCommentsController,
   getPostCommentAndLikeCountController,
   getPostController,
   likeController,
@@ -32,7 +34,7 @@ postRouter.get("/posts", authenticateUserCookie, getPostController);
 
 /**
  *
- * Get post stats (comment and like count)
+ * Get post stats
  */
 postRouter.get("/post/stats/:id", authenticateUserCookie, getPostCommentAndLikeCountController);
 
@@ -47,3 +49,15 @@ postRouter.post("/post/like/:id", authenticateUserCookie, likeController);
  * Unike a post
  */
 postRouter.post("/post/unlike/:id", authenticateUserCookie, unlikeController);
+
+/**
+ *
+ * Add a comment
+ */
+postRouter.post("/post/comment/:id", authenticateUserCookie, addCommentController);
+
+/**
+ *
+ * Get list of comments on a post
+ */
+postRouter.get("/post/comments/:id", authenticateUserCookie, getCommentsController);

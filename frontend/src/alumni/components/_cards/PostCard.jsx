@@ -36,6 +36,7 @@ const PostCard = ({ postID, caption, images, userID, createdAt }) => {
     <div className={`w-full flex flex-col gap-5 border-[1px] rounded-lg ${isShowComment && "pointer-events-none"}`}>
       {isShowComment && (
         <PostCommentPopUp
+          postId={postID}
           profilePic={data.profile_link}
           handleLike={handleLike}
           images={images}

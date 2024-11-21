@@ -46,8 +46,6 @@ export const uploadPost = async (caption, images) => {
     formData.append("caption", caption);
     images.forEach((image) => formData.append("images", image.file));
 
-    console.log(formData);
-
     const response = await fetch(`${baseURL}/api/post`, {
       method: "POST",
       body: formData,
@@ -296,6 +294,58 @@ export const checkFollowingStatusRequest = async (userId) => {
 
     const data = await response.json();
 
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+};
+
+/**
+ * Request to add a new comment
+ * @url baseurl/api/post/comment/:id
+ */
+export const addCommentRequest = async (comment, postId) => {
+  try {
+    const response = await fetch(`${baseURL}/api/post/comment/${postId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ comment }),
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+};
+
+/**
+ * Request to get comments of a post
+ * @url baseurl/api/post/comments/:id
+ */
+export const getCommentsRequest = async (postId) => {
+  try {
+    const response = await fetch(`${baseURL}/api/post/comments/${postId}`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData);
+    }
+
+    const data = await response.json();
     return data;
   } catch (error) {
     console.log(error);
