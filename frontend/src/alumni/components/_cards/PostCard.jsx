@@ -12,8 +12,10 @@ import ImageCarousel from "../ImageCarousel";
 import { ReadMore } from "../ReadMore";
 import { useLikePost, usePostInformation, useUnlikePost } from "../../_api/@react-client-query/query.js";
 import PostCardLoading from "./PostCardLoading.jsx";
+import PostCommentPopUp from "./PostCommentPopUp.jsx";
 
 const PostCard = ({ postID, caption, images, userID, createdAt }) => {
+  const [isShowComment, setIsShowComment] = useState(false);
   const likePostQuery = useLikePost();
   const unlikePostQuery = useUnlikePost();
   const { isLoading, isError, data } = usePostInformation(postID);
@@ -31,7 +33,21 @@ const PostCard = ({ postID, caption, images, userID, createdAt }) => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-5 border-[1px] rounded-lg">
+    <div className={`w-full flex flex-col gap-5 border-[1px] rounded-lg ${isShowComment && "pointer-events-none"}`}>
+      {isShowComment && (
+        <PostCommentPopUp
+          profilePic={data.profile_link}
+          handleLike={handleLike}
+          images={images}
+          userID={userID}
+          userName={data.posted_by}
+          setIsShowComment={setIsShowComment}
+          caption={caption}
+          isLiked={data.is_liked}
+          likes={data.total_likes}
+        />
+      )}
+
       <div className="flex justify-between pt-4 px-4">
         <div className="flex items-center gap-6">
           <img className="w-10 h-10 object-cover rounded-full" src={data.profile_link} alt="profile" />
@@ -51,7 +67,7 @@ const PostCard = ({ postID, caption, images, userID, createdAt }) => {
         <button className="w-6 h-6" onClick={handleLike}>
           <img src={data.is_liked == 1 ? liked : unliked} alt="like/unlike" />
         </button>
-        <button className="w-6 h-6">
+        <button className="w-6 h-6" onClick={() => setIsShowComment(true)}>
           <img src={comment} alt="comment" />
         </button>
       </div>

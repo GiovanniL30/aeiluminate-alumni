@@ -37,7 +37,7 @@ const Home = () => {
   return (
     <div className="max-container flex justify-between gap-20">
       <div className="fixed left-0 hidden w-[300px] md:flex bg-red-50">Left</div>
-      <div className="flex w-full justify-center flex-col gap-10 lg:mr-[300px] md:ml-[300px] xl:mx-auto max-w-[600px]">
+      <div className="flex w-full justify-center flex-col gap-10  md:ml-[250px] xl:mx-auto max-w-[600px]">
         {data?.pages[0].posts.length === 0 && <h1>No posts available.</h1>}
 
         {data?.pages.map((page) => {
@@ -61,7 +61,7 @@ const Home = () => {
           )}
         </div>
       </div>
-      <div className="fixed right-0 hidden w-[200px] lg:flex xl:w-[300px] bg-red-200">Right</div>
+      <div className="fixed right-0 hidden xl:w-[300px] xl:flex bg-red-200">Right</div>
     </div>
   );
 };
