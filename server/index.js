@@ -1,6 +1,7 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import dotenv from "dotenv";
 
 import { router as loginRoute } from "./routes/login.js";
 import { router as registerRoute } from "./routes/register.js";
@@ -11,6 +12,7 @@ import { authenticateUserCookie } from "./middleware/authenticateCookie.js";
 import { getUser } from "./mysqlQueries/readQueries.js";
 
 const app = express();
+dotenv.config();
 
 app.use(
   cors({

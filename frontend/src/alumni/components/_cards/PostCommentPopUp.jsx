@@ -112,7 +112,7 @@ const PostCommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, imag
             <Button
               onClick={submitComment}
               disabled={addCommentQuery.isPending}
-              text={addCommentQuery.isPaused ? "Adding Comment ..." : "Add Comment"}
+              text={addCommentQuery.isPending ? "Adding Comment ..." : "Add Comment"}
             />
           </div>
         </div>
