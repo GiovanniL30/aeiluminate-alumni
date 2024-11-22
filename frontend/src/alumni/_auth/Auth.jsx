@@ -1,40 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
+import { useUser } from "../_api/@react-client-query/query";
 
 const Auth = () => {
   const { user, setUser } = useAuthContext();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+  const { data, isLoading, isError, error } = useUser();
 
   useEffect(() => {
-    const checkToken = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/check_token`, {
-          method: "GET",
-          credentials: "include",
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
+    if (!isLoading) {
+      if (isError) {
+        const errorMessage = error.response?.data?.message || "An error occurred";
+        if (error.response?.data?.tokenError) {
           setUser({});
-          navigate(`/login?error=${data.message || "Please login first"}`);
-        } else {
-          setUser(data.user);
+          navigate(`/login?error=${errorMessage}`);
         }
-      } catch (error) {
-        console.error("Token check failed:", error);
-        navigate(`/login?error=${error.message || "Unknown error"}`);
-      } finally {
-        setLoading(false);
+      } else if (data?.user) {
+        setUser(data.user);
       }
-    };
+    }
+  }, [data, isLoading, isError, error, navigate, setUser]);
 
-    checkToken();
-  }, [navigate, setUser]);
-
-  if (loading) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 

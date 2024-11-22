@@ -35,10 +35,10 @@ export const getUsersContoller = async (req, res) => {
  * @route /api/user/:id
  */
 export const getUserController = async (req, res) => {
-  const { id } = req.params;
+  const { userId } = req;
 
   try {
-    const user = await getUser(id);
+    const user = await getUser(userId);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });

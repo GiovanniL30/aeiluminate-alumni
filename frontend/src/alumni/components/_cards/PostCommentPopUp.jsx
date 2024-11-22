@@ -64,8 +64,8 @@ const PostCommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, imag
               </div>
               <Button
                 onClick={followHandler}
-                text={isFollowingQuery.data.isFollowing ? "Unfollow" : "Follow"}
-                disabled={followUserQuery.isPending || unFollowUserQuery.isPending}
+                text={isFollowingQuery.data.isFollowing || followerCountQuery.isFetching ? "Unfollow" : "Follow"}
+                disabled={followUserQuery.isPending || unFollowUserQuery.isPending || followerCountQuery.isFetching}
                 otherStyle={`ml-10 ${isFollowingQuery.data.isFollowing && "bg-red-500 disabled"}`}
               />
             </div>

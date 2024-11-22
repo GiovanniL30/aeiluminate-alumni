@@ -4,6 +4,27 @@ const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 /**
  *
+ * Get user info
+ * @url baseurl/api/user
+ */
+export const getUserRequest = async () => {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+/**
+ *
  * Request to login user
  * @url baseurl/api/login
  */

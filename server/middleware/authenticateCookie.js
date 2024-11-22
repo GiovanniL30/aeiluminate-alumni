@@ -13,10 +13,10 @@ export const authenticateUserCookie = (req, res, next) => {
   jwt.verify(token, process.env.TOKEN, (err, data) => {
     if (err) {
       if (err.name === "TokenExpiredError") {
-        return res.status(401).json({ message: "Session has expired. Please log in again." });
+        return res.status(401).json({ tokenError: true, message: "Session has expired. Please log in again." });
       }
       console.error(err);
-      return res.status(403).json({ message: "Token verification failed. Please log in again." });
+      return res.status(403).json({ tokenError: true, message: "Token verification failed. Please log in again." });
     }
 
     req.userId = data.userId;

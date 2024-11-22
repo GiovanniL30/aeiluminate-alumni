@@ -21,7 +21,7 @@ router.get("/users", getUsersContoller);
 /**
  * Get users route
  */
-router.get("/user/:id", getUserController);
+router.get("/user", authenticateUserCookie, getUserController);
 
 /**
  * Delete user route

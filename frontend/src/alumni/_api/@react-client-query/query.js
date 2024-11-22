@@ -13,7 +13,18 @@ import {
   checkFollowingStatusRequest,
   addCommentRequest,
   getCommentsRequest,
+  getUserRequest,
 } from "../index.js";
+
+/**
+ * React query to get user info
+ */
+export const useUser = () => {
+  return useQuery({
+    queryFn: () => getUserRequest(),
+    queryKey: ["user"],
+  });
+};
 
 /**
  * React query to login user
