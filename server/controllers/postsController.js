@@ -122,7 +122,14 @@ export const getUserPostsController = async (req, res, next) => {
 
     const posts = await getUserPosts(id);
 
-    res.status(200).json({ posts });
+    const updatedPosts = [];
+
+    for (const post of posts) {
+      const postMedia = await getMedia(post.postID);
+      updatedPosts.push({ ...post, postMedia });
+    }
+
+    res.status(200).json({ posts: updatedPosts });
   } catch (error) {
     console.error("Error in getting user posts:", error);
     return res.status(500).json({ message: error.message || "Internal Server Error" });

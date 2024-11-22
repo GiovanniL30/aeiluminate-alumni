@@ -13,6 +13,7 @@ import UserEvents from "./_user/UserEvents";
 import UserFollowers from "./_user/UserFollowers";
 import UsersFollowing from "./_user/UsersFollowing";
 import UserLayout from "./_user/UserLayout";
+import UserAeilines from "./_user/UserAeilines";
 
 export {
   Home,
@@ -29,4 +30,5 @@ export {
   UserFollowers,
   UsersFollowing,
   UserLayout,
+  UserAeilines,
 };

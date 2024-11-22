@@ -24,14 +24,20 @@ const ProfileHeader = () => {
   const isFollowStatus = useIsFollowing(id);
   const userPostsQuery = useGetUserPosts(id);
 
+  const followHandler = () => {
+    if (isFollowStatus.data.isFollowing) {
+      unFollowUserQuery.mutate(userID);
+    } else {
+      followUserQuery.mutate(userID);
+    }
+  };
+
   if (isFollowStatus.isLoading || followingQuery.isLoading || followerQuery.isLoading || userPostsQuery.isLoading) {
     return <h1>Loading...</h1>;
   }
 
   const { bio, company, email, firstName, job_role, lastName, middleName, phoneNumber, profile_picture, role, userID, username } =
     userQuery.data.user;
-
-  console.log(userPostsQuery.data);
 
   return (
     <div className="mt-11 flex flex-col items-center max-w-[800px] mx-auto gap-14  md:flex-row">
@@ -43,6 +49,7 @@ const ProfileHeader = () => {
           <p className="flex font-bold text-4xl">{username}</p>
           {id != user.userID ? (
             <Button
+              onClick={followHandler}
               text={isFollowStatus.data.isFollowing || followerQuery.isFetching ? "Unfollow" : "Follow"}
               disabled={followUserQuery.isPending || unFollowUserQuery.isPending || followerQuery.isFetching}
               otherStyle={`ml-10 ${isFollowStatus.data.isFollowing && "bg-red-500 disabled"}`}
