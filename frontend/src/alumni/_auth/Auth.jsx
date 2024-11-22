@@ -20,7 +20,7 @@ const Auth = () => {
         setUser(data.user);
       }
     }
-  }, [data, isLoading, isError, error, navigate, setUser]);
+  }, []);
 
   if (isLoading) {
     return <div>Loading...</div>;

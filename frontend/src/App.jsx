@@ -32,9 +32,8 @@ const App = () => {
               <Route path="post" element={<CreatePost />} />
               <Route path="inbox" element={<Inbox />} />
               <Route path="notifications" element={<Notifications />} />
-              <Route path="profile" element={<Profile />} />
 
-              <Route path="user" element={<UserLayout />}>
+              <Route path="user/:id" element={<UserLayout />}>
                 <Route index element={<User />} />
                 <Route path="events" element={<UserEvents />} />
                 <Route path="followers" element={<UserFollowers />} />

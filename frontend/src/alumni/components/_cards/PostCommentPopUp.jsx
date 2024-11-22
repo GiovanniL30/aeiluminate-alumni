@@ -4,20 +4,13 @@ import Button from "../Button";
 
 import liked from "../../../assets/post-liked.png";
 import unliked from "../../../assets/post-unliked.png";
-import {
-  useAddComment,
-  useComments,
-  useFollowUser,
-  useIsFollowing,
-  useUnFollowUser,
-  useUserFollowerCount,
-} from "../../_api/@react-client-query/query";
+import { useAddComment, useComments, useFollowUser, useIsFollowing, useUnFollowUser, useUserFollower } from "../../_api/@react-client-query/query";
 import PostCommentLoading from "./PostCommentLoading";
 import CommentBlock from "./CommentBlock";
 
 const PostCommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, images, userID, userName, setIsShowComment, caption }) => {
   const [commentData, setCommentData] = useState("");
-  const followerCountQuery = useUserFollowerCount(userID);
+  const followerQuery = useUserFollower(userID);
   const followUserQuery = useFollowUser();
   const unFollowUserQuery = useUnFollowUser();
   const isFollowingQuery = useIsFollowing(userID);
@@ -60,12 +53,12 @@ const PostCommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, imag
               <img className="w-12 h-12 rounded-full object-cover" src={profilePic} alt="profile" />
               <div className="flex flex-col">
                 <p className="font-semibold text-lg">{userName}</p>
-                <p className="text-sm">{followerCountQuery.data ? followerCountQuery.data.total_followers : "0"} followers</p>
+                <p className="text-sm">{followerQuery.data ? followerQuery.data.length : "0"} followers</p>
               </div>
               <Button
                 onClick={followHandler}
-                text={isFollowingQuery.data.isFollowing || followerCountQuery.isFetching ? "Unfollow" : "Follow"}
-                disabled={followUserQuery.isPending || unFollowUserQuery.isPending || followerCountQuery.isFetching}
+                text={isFollowingQuery.data.isFollowing || followerQuery.isFetching ? "Unfollow" : "Follow"}
+                disabled={followUserQuery.isPending || unFollowUserQuery.isPending || followerQuery.isFetching}
                 otherStyle={`ml-10 ${isFollowingQuery.data.isFollowing && "bg-red-500 disabled"}`}
               />
             </div>

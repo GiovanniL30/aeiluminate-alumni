@@ -6,7 +6,8 @@ import {
   getUserController,
   getUsersContoller,
   unFollowUserController,
-  userFollowerCountController,
+  userFollowerController,
+  userFollowingController,
 } from "../controllers/userControler.js";
 
 import { authenticateUserCookie } from "../middleware/authenticateCookie.js";
@@ -31,7 +32,12 @@ router.delete("/user/delete/:id", deleteUserController);
 /**
  * Get user follower count
  */
-router.get("/user/follower_count/:id", userFollowerCountController);
+router.get("/user/follower/:id", userFollowerController);
+
+/**
+ * Get user following count
+ */
+router.get("/user/following/:id", userFollowingController);
 
 /**
  * Follow a user

@@ -7,13 +7,14 @@ import {
   fetchPostInformation,
   likePost,
   unlikePost,
-  fetchFollowerCount,
   followUserRequest,
   unfollowUserRequest,
   checkFollowingStatusRequest,
   addCommentRequest,
   getCommentsRequest,
   getUserRequest,
+  fetchFollower,
+  fetchFollowing,
 } from "../index.js";
 
 /**
@@ -107,15 +108,25 @@ export const useUnlikePost = () => {
 /**
  * React query to get follower count of a user
  */
-export const useUserFollowerCount = (userId) => {
+export const useUserFollower = (userId) => {
   return useQuery({
-    queryKey: ["follower_count", userId],
-    queryFn: () => fetchFollowerCount(userId),
+    queryKey: ["follower", userId],
+    queryFn: () => fetchFollower(userId),
   });
 };
 
 /**
- * React query to get unfollower count of a user
+ * React query to get following count of a user
+ */
+export const useUserFollowing = (userId) => {
+  return useQuery({
+    queryKey: ["following", userId],
+    queryFn: () => fetchFollowing(userId),
+  });
+};
+
+/**
+ * React query to unfollow a user
  */
 export const useUnFollowUser = () => {
   const client = useQueryClient();
@@ -123,14 +134,14 @@ export const useUnFollowUser = () => {
   return useMutation({
     mutationFn: (userId) => unfollowUserRequest(userId),
     onSuccess: (_, userId) => {
-      client.invalidateQueries(["follower_count", userId]);
+      client.invalidateQueries(["follower", userId]);
       client.invalidateQueries(["follow_status", userId]);
     },
   });
 };
 
 /**
- * React query to get follower count of a user
+ * React query to follow  a user
  */
 export const useFollowUser = () => {
   const client = useQueryClient();
@@ -138,7 +149,7 @@ export const useFollowUser = () => {
   return useMutation({
     mutationFn: (userId) => followUserRequest(userId),
     onSuccess: (_, userId) => {
-      client.invalidateQueries(["follower_count", userId]);
+      client.invalidateQueries(["follower", userId]);
       client.invalidateQueries(["follow_status", userId]);
     },
   });

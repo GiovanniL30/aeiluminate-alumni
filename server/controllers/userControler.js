@@ -1,4 +1,4 @@
-import { checkIsFollowing, getUser, getUserFollowerCount, getUsers } from "../mysqlQueries/readQueries.js";
+import { checkIsFollowing, getUser, getUserFollowers, getUserFollowing, getUsers } from "../mysqlQueries/readQueries.js";
 import { removeUserAccount, unfollowUser } from "../mysqlQueries/deleteQueries.js";
 import { followUser } from "../mysqlQueries/addQueries.js";
 
@@ -78,16 +78,34 @@ export const deleteUserController = async (req, res) => {
  *  @method GET
  *  @route /api/user/follower_count/:id
  */
-export const userFollowerCountController = async (req, res) => {
+export const userFollowerController = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const followerCount = await getUserFollowerCount(id);
+    const followerCount = await getUserFollowers(id);
 
     res.status(200).json(followerCount);
   } catch (error) {
     console.error("Error fetching follower count:", error);
     res.status(500).json({ message: "Internal Server Error (Failed to fetch follower count)" });
+  }
+};
+
+/**
+ *  Get following count of a user
+ *  @method GET
+ *  @route /api/user/following_count/:id
+ */
+export const userFollowingController = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const followingCount = await getUserFollowing(id);
+
+    res.status(200).json(followingCount);
+  } catch (error) {
+    console.error("Error fetching following count:", error);
+    res.status(500).json({ message: "Internal Server Error (Failed to fetch following count)" });
   }
 };
 

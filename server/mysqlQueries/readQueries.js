@@ -214,24 +214,47 @@ export const getMedia = (postId) => {
 };
 
 /**
- *
- * Get total followers of a user
+ * Get the followers of a user
  */
-export const getUserFollowerCount = (userId) => {
-  const query = "SELECT COUNT(followerID) AS total_followers FROM follows WHERE followedID = ?";
+export const getUserFollowers = (userId) => {
+  const query = `
+    SELECT u.userID, u.username, u.profile_picture
+    FROM follows f
+    JOIN users u ON f.followerID = u.userID
+    WHERE f.followedID = ?
+  `;
 
   return new Promise((resolve, reject) => {
     connection.query(query, [userId], (err, results) => {
       if (err) {
-        console.error("Failed to get follower count:", err);
-        return reject(new Error("Failed to fetch the follower count from the database"));
+        console.error("Failed to get followers:", err);
+        return reject(new Error("Failed to fetch the followers from the database"));
       }
 
-      if (results && results.length > 0) {
-        resolve(results[0]);
-      } else {
-        resolve({ total_followers: 0 });
+      resolve(results || []);
+    });
+  });
+};
+
+/**
+ * Get the users that a user is following
+ */
+export const getUserFollowing = (userId) => {
+  const query = `
+    SELECT u.userID, u.username, u.profile_picture
+    FROM follows f
+    JOIN users u ON f.followedID = u.userID
+    WHERE f.followerID = ?
+  `;
+
+  return new Promise((resolve, reject) => {
+    connection.query(query, [userId], (err, results) => {
+      if (err) {
+        console.error("Failed to get following:", err);
+        return reject(new Error("Failed to fetch the following users from the database"));
       }
+
+      resolve(results || []);
     });
   });
 };

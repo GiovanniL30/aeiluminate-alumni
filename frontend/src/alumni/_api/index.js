@@ -1,22 +1,17 @@
-import { useAuthContext } from "../context/AuthContext";
+import axios from "axios";
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 /**
- *
  * Get user info
  * @url baseurl/api/user
  */
 export const getUserRequest = async () => {
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user`, {
-      method: "GET",
-      credentials: "include",
+    const response = await axios.get(`${baseURL}/api/user`, {
+      withCredentials: true,
     });
-
-    const data = await response.json();
-
-    return data;
+    return response.data;
   } catch (error) {
     console.log(error);
     throw error;
@@ -24,94 +19,64 @@ export const getUserRequest = async () => {
 };
 
 /**
- *
  * Request to login user
  * @url baseurl/api/login
  */
 export const userLogin = async (email, password) => {
   try {
     const credentials = { email, password };
-
-    const response = await fetch(`${baseURL}/api/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(credentials),
-      credentials: "include",
+    const response = await axios.post(`${baseURL}/api/login`, credentials, {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-
-      throw new Error(errorData.message || "An error occurred while creating logging in.");
-    }
-
-    const data = await response.json();
-    return data;
+    return response.data;
   } catch (error) {
     console.log(error);
-    throw error;
+    throw new Error(error.response?.data?.message || "An error occurred while logging in.");
   }
 };
 
 /**
- *
  * Request to add a new post
  * @url baseurl/api/post
  */
 export const uploadPost = async (caption, images) => {
   try {
-    console.log(images);
     const formData = new FormData();
     formData.append("caption", caption);
     images.forEach((image) => formData.append("images", image.file));
 
-    const response = await fetch(`${baseURL}/api/post`, {
-      method: "POST",
-      body: formData,
-      credentials: "include",
+    const response = await axios.post(`${baseURL}/api/post`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+      withCredentials: true,
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "An error occurred while adding the post.");
-    }
-
-    const data = await response.json();
-    return data;
+    return response.data;
   } catch (error) {
     console.log(error.message);
-    throw new Error(error.message);
+    throw new Error(error.response?.data?.message || "An error occurred while adding the post.");
   }
 };
 
 /**
- *
- * Request to add a new aeline
+ * Request to add a new line
  * @url baseurl/api/line
  */
 export const uploadLine = async (caption) => {
   try {
-    const response = await fetch(`${baseURL}/api/line`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ caption }),
-      credentials: "include",
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "An error occurred while adding the post.");
-    }
-
-    const data = await response.json();
-    return data;
+    const response = await axios.post(
+      `${baseURL}/api/line`,
+      { caption },
+      {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      }
+    );
+    return response.data;
   } catch (error) {
     console.log(error.message);
-    throw new Error(error.message);
+    throw new Error(error.response?.data?.message || "An error occurred while adding the line.");
   }
 };
 
@@ -121,129 +86,107 @@ export const uploadLine = async (caption) => {
  */
 export const fetchPosts = async ({ pageParam = 1, length = 5 }) => {
   try {
-    const response = await fetch(`${baseURL}/api/posts?page=${pageParam}&length=${length}`, {
-      method: "GET",
-      credentials: "include",
+    const response = await axios.get(`${baseURL}/api/posts`, {
+      params: { page: pageParam, length: length },
+      withCredentials: true,
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "An error occurred while fetching lists of posts.");
-    }
-
-    const data = await response.json();
-
-    const totalPosts = data.totatPosts;
+    const totalPosts = response.data.totalPosts;
     const totalPages = Math.ceil(totalPosts / length);
 
     const nextPage = pageParam < totalPages ? pageParam + 1 : undefined;
 
     return {
-      posts: data.posts,
+      posts: response.data.posts,
       nextPage,
     };
   } catch (error) {
     console.log(error.message);
-    throw new Error(error.message);
+    throw new Error(error.response?.data?.message || "An error occurred while fetching posts.");
   }
 };
 
 /**
- * Request to get a comment and like count
+ * Request to get comment and like count
  * @url baseurl/api/post/stats/:id
  */
 export const fetchPostInformation = async (postId) => {
   try {
-    const response = await fetch(`${baseURL}/api/post/stats/${postId}`, {
-      method: "GET",
-      credentials: "include",
+    const response = await axios.get(`${baseURL}/api/post/stats/${postId}`, {
+      withCredentials: true,
     });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData);
-    }
-
-    const data = await response.json();
-
-    return data;
+    return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error(error.message);
+    throw new Error(error.response?.data || error.message);
   }
 };
 
 /**
- * Request to like a new post
+ * Request to like a post
  * @url baseurl/api/post/like/:id
  */
 export const likePost = async (postId) => {
   try {
-    const response = await fetch(`${baseURL}/api/post/like/${postId}`, {
-      method: "POST",
-      credentials: "include",
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData);
-    }
-
-    const data = await response.json();
-
-    return data;
+    const response = await axios.post(
+      `${baseURL}/api/post/like/${postId}`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error(error.message);
+    throw new Error(error.response?.data || error.message);
   }
 };
 
 /**
- * Request to unlike a new post
+ * Request to unlike a post
  * @url baseurl/api/post/unlike/:id
  */
 export const unlikePost = async (postId) => {
   try {
-    const response = await fetch(`${baseURL}/api/post/unlike/${postId}`, {
-      method: "POST",
-      credentials: "include",
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData);
-    }
-
-    const data = await response.json();
-
-    return data;
+    const response = await axios.post(
+      `${baseURL}/api/post/unlike/${postId}`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error(error.message);
+    throw new Error(error.response?.data || error.message);
   }
 };
 
 /**
- * Request to unlike a new post
- * @url baseurl/api/user/follower_count/:id
+ * Request to get follower of a user
+ * @url baseurl/api/user/follower/:id
  */
-export const fetchFollowerCount = async (userId) => {
+export const fetchFollower = async (userId) => {
   try {
-    const response = await fetch(`${baseURL}/api/user/follower_count/${userId}`, {
-      method: "GET",
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData);
-    }
-
-    const data = await response.json();
-
-    return data;
+    const response = await axios.get(`${baseURL}/api/user/follower/${userId}`);
+    return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error(error.message);
+    throw new Error(error.response?.data || error.message);
+  }
+};
+
+/**
+ * Request to get following of a user
+ * @url baseurl/api/user/followingt/:id
+ */
+export const fetchFollowing = async (userId) => {
+  try {
+    const response = await axios.get(`${baseURL}/api/user/following/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.response?.data || error.message);
   }
 };
 
@@ -253,22 +196,17 @@ export const fetchFollowerCount = async (userId) => {
  */
 export const followUserRequest = async (userId) => {
   try {
-    const response = await fetch(`${baseURL}/api/user/follow/${userId}`, {
-      method: "POST",
-      credentials: "include",
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData);
-    }
-
-    const data = await response.json();
-
-    return data;
+    const response = await axios.post(
+      `${baseURL}/api/user/follow/${userId}`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error(error.message);
+    throw new Error(error.response?.data || error.message);
   }
 };
 
@@ -278,47 +216,33 @@ export const followUserRequest = async (userId) => {
  */
 export const unfollowUserRequest = async (userId) => {
   try {
-    const response = await fetch(`${baseURL}/api/user/unfollow/${userId}`, {
-      method: "POST",
-      credentials: "include",
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData);
-    }
-
-    const data = await response.json();
-
-    return data;
+    const response = await axios.post(
+      `${baseURL}/api/user/unfollow/${userId}`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error(error.message);
+    throw new Error(error.response?.data || error.message);
   }
 };
 
 /**
  * Request to check following status
- * @url baseurl/api/user/unfollow/:id
+ * @url baseurl/api/user/follow_status/:id
  */
 export const checkFollowingStatusRequest = async (userId) => {
   try {
-    const response = await fetch(`${baseURL}/api/user/follow_status/${userId}`, {
-      method: "GET",
-      credentials: "include",
+    const response = await axios.get(`${baseURL}/api/user/follow_status/${userId}`, {
+      withCredentials: true,
     });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData);
-    }
-
-    const data = await response.json();
-
-    return data;
+    return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error(error.message);
+    throw new Error(error.response?.data || error.message);
   }
 };
 
@@ -328,25 +252,18 @@ export const checkFollowingStatusRequest = async (userId) => {
  */
 export const addCommentRequest = async (comment, postId) => {
   try {
-    const response = await fetch(`${baseURL}/api/post/comment/${postId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ comment }),
-      credentials: "include",
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData);
-    }
-
-    const data = await response.json();
-    return data;
+    const response = await axios.post(
+      `${baseURL}/api/post/comment/${postId}`,
+      { comment },
+      {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      }
+    );
+    return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error(error.message);
+    throw new Error(error.response?.data || error.message);
   }
 };
 
@@ -356,20 +273,12 @@ export const addCommentRequest = async (comment, postId) => {
  */
 export const getCommentsRequest = async (postId) => {
   try {
-    const response = await fetch(`${baseURL}/api/post/comments/${postId}`, {
-      method: "GET",
-      credentials: "include",
+    const response = await axios.get(`${baseURL}/api/post/comments/${postId}`, {
+      withCredentials: true,
     });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData);
-    }
-
-    const data = await response.json();
-    return data;
+    return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error(error.message);
+    throw new Error(error.response?.data || error.message);
   }
 };
