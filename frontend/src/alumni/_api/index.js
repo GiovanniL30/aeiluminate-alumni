@@ -19,6 +19,22 @@ export const getUserRequest = async () => {
 };
 
 /**
+ * Get user info
+ * @url baseurl/api/user/:id
+ */
+export const getSpecificUserRequest = async (id) => {
+  try {
+    const response = await axios.get(`${baseURL}/api/user/${id}`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+/**
  * Request to login user
  * @url baseurl/api/login
  */
@@ -102,6 +118,24 @@ export const fetchPosts = async ({ pageParam = 1, length = 5 }) => {
     };
   } catch (error) {
     console.log(error.message);
+    throw new Error(error.response?.data?.message || "An error occurred while fetching posts.");
+  }
+};
+
+/**
+ * Request to get a list of posts with pagination
+ * @url baseurl/api/posts/:id
+ */
+export const fetchUserPosts = async (userId) => {
+  try {
+    const response = await axios.get(`${baseURL}/api/posts/${userId}`, {
+      withCredentials: true,
+    });
+
+    const { posts } = response.data;
+    return posts;
+  } catch (error) {
+    console.error("Error fetching user posts:", error.message);
     throw new Error(error.response?.data?.message || "An error occurred while fetching posts.");
   }
 };

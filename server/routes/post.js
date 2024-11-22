@@ -4,6 +4,7 @@ import {
   getCommentsController,
   getPostCommentAndLikeCountController,
   getPostController,
+  getUserPostsController,
   likeController,
   unlikeController,
   uploadLineController,
@@ -31,6 +32,12 @@ postRouter.post("/line", authenticateUserCookie, uploadLineController);
  * Get list of posts
  */
 postRouter.get("/posts", authenticateUserCookie, getPostController);
+
+/**
+ *
+ * Get list of posts of a user
+ */
+postRouter.get("/posts/:id", authenticateUserCookie, getUserPostsController);
 
 /**
  *

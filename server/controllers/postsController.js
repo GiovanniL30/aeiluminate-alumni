@@ -4,7 +4,7 @@ import crypto from "crypto";
 import { storage } from "../appwriteconfig.js";
 
 import { addNewPost, addNewMedia, addLike, addComment } from "../mysqlQueries/addQueries.js";
-import { getPosts, getMedia, getPostStats, getPostComments } from "../mysqlQueries/readQueries.js";
+import { getPosts, getMedia, getPostStats, getPostComments, getUserPosts } from "../mysqlQueries/readQueries.js";
 import { unlikePost } from "../mysqlQueries/deleteQueries.js";
 
 /**
@@ -79,7 +79,7 @@ export const uploadLineController = async (req, res, next) => {
  * paginated list of posts
  *
  * @method GET
- * @route /api/post
+ * @route /api/posts
  */
 export const getPostController = async (req, res, next) => {
   try {
@@ -104,6 +104,27 @@ export const getPostController = async (req, res, next) => {
     });
   } catch (error) {
     console.error("Error in getting posts:", error);
+    return res.status(500).json({ message: error.message || "Internal Server Error" });
+  }
+};
+
+/**
+ *
+ * Get list of Posts of a user on the Database
+ *
+ *
+ * @method GET
+ * @route /api/posts/:id
+ */
+export const getUserPostsController = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const posts = await getUserPosts(id);
+
+    res.status(200).json({ posts });
+  } catch (error) {
+    console.error("Error in getting user posts:", error);
     return res.status(500).json({ message: error.message || "Internal Server Error" });
   }
 };

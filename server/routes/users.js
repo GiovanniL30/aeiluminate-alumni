@@ -5,6 +5,7 @@ import {
   followUserController,
   getUserController,
   getUsersContoller,
+  getUserWithIdController,
   unFollowUserController,
   userFollowerController,
   userFollowingController,
@@ -23,6 +24,11 @@ router.get("/users", getUsersContoller);
  * Get users route
  */
 router.get("/user", authenticateUserCookie, getUserController);
+
+/**
+ * Get users route with id
+ */
+router.get("/user/:id", authenticateUserCookie, getUserWithIdController);
 
 /**
  * Delete user route

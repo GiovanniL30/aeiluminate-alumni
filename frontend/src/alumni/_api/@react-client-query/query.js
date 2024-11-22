@@ -15,6 +15,8 @@ import {
   getUserRequest,
   fetchFollower,
   fetchFollowing,
+  fetchUserPosts,
+  getSpecificUserRequest,
 } from "../index.js";
 
 /**
@@ -24,6 +26,16 @@ export const useUser = () => {
   return useQuery({
     queryFn: () => getUserRequest(),
     queryKey: ["user"],
+  });
+};
+
+/**
+ * React query to get user info
+ */
+export const useGetUser = (id) => {
+  return useQuery({
+    queryFn: () => getSpecificUserRequest(id),
+    queryKey: ["user", id],
   });
 };
 
@@ -68,6 +80,16 @@ export const useGetPosts = (length) => {
     queryKey: ["posts"],
     queryFn: ({ pageParam }) => fetchPosts({ pageParam, length }),
     getNextPageParam: (lastPage) => lastPage.nextPage,
+  });
+};
+
+/**
+ * React query to handle loading of posts
+ */
+export const useGetUserPosts = (userId) => {
+  return useQuery({
+    queryKey: ["posts", userId],
+    queryFn: () => fetchUserPosts(userId),
   });
 };
 

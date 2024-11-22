@@ -196,6 +196,28 @@ export const getPosts = (page, pageSize, userId) => {
 };
 
 /**
+ * Fetches posts of a user.
+ */
+export const getUserPosts = (userId) => {
+  const query = "SELECT * FROM posts WHERE userID = ?";
+
+  return new Promise((resolve, reject) => {
+    connection.query(query, [userId], (err, results) => {
+      if (err) {
+        console.error(err);
+        return reject("Error fetching user posts");
+      }
+
+      if (results && results.length > 0) {
+        resolve(results);
+      } else {
+        resolve([]);
+      }
+    });
+  });
+};
+
+/**
  *
  * Get all list of media files of a post
  */

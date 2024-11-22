@@ -7,7 +7,7 @@ const ProfileNavbar = () => {
       <NavLink to="." end>
         Posts
       </NavLink>
-      <NavLink to="/events">Aeilines</NavLink>
+      <NavLink to="events">Aeilines</NavLink>
     </div>
   );
 };

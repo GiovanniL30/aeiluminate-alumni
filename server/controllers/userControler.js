@@ -32,13 +32,37 @@ export const getUsersContoller = async (req, res) => {
 /**
  * Get a specific user from the Database (user)
  * @method GET
- * @route /api/user/:id
+ * @route /api/user
  */
 export const getUserController = async (req, res) => {
   const { userId } = req;
 
   try {
     const user = await getUser(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const { password, ...userData } = user;
+
+    res.json({ user: userData });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Failed to fetch user (Internal Server Error)" });
+  }
+};
+
+/**
+ * Get a specific user from the Database (user)
+ * @method GET
+ * @route /api/user/:id
+ */
+export const getUserWithIdController = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await getUser(id);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });

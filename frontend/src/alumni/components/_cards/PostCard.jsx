@@ -13,6 +13,7 @@ import { ReadMore } from "../ReadMore";
 import { useLikePost, usePostInformation, useUnlikePost } from "../../_api/@react-client-query/query.js";
 import PostCardLoading from "./PostCardLoading.jsx";
 import PostCommentPopUp from "./PostCommentPopUp.jsx";
+import { NavLink } from "react-router-dom";
 
 const PostCard = ({ postID, caption, images, userID, createdAt }) => {
   const [isShowComment, setIsShowComment] = useState(false);
@@ -51,7 +52,9 @@ const PostCard = ({ postID, caption, images, userID, createdAt }) => {
 
       <div className="flex justify-between pt-4 px-4">
         <div className="flex items-center gap-6">
-          <img className="w-10 h-10 object-cover rounded-full" src={data.profile_link} alt="profile" />
+          <NavLink to={`user/${userID}`}>
+            <img className="w-10 h-10 object-cover rounded-full" src={data.profile_link} alt="profile" />
+          </NavLink>
           <p className="font-bold">{data.posted_by}</p>
         </div>
         <div className="flex gap-3 items-center justify-center">
