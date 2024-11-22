@@ -102,23 +102,30 @@ export const uploadLine = async (caption) => {
  */
 export const fetchPosts = async ({ pageParam = 1, length = 5 }) => {
   try {
-    const response = await axios.get(`${baseURL}/api/posts`, {
-      params: { page: pageParam, length: length },
-      withCredentials: true,
+    const response = await fetch(`${baseURL}/api/posts?page=${pageParam}&length=${length}`, {
+      method: "GET",
+      credentials: "include",
     });
 
-    const totalPosts = response.data.totalPosts;
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "An error occurred while fetching lists of posts.");
+    }
+
+    const data = await response.json();
+
+    const totalPosts = data.totatPosts;
     const totalPages = Math.ceil(totalPosts / length);
 
     const nextPage = pageParam < totalPages ? pageParam + 1 : undefined;
 
     return {
-      posts: response.data.posts,
+      posts: data.posts,
       nextPage,
     };
   } catch (error) {
     console.log(error.message);
-    throw new Error(error.response?.data?.message || "An error occurred while fetching posts.");
+    throw new Error(error.message);
   }
 };
 

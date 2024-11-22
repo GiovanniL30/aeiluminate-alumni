@@ -7,8 +7,10 @@ import unliked from "../../../assets/post-unliked.png";
 import { useAddComment, useComments, useFollowUser, useIsFollowing, useUnFollowUser, useUserFollower } from "../../_api/@react-client-query/query";
 import PostCommentLoading from "./PostCommentLoading";
 import CommentBlock from "./CommentBlock";
+import { useParams } from "react-router-dom";
 
 const PostCommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, images, userID, userName, setIsShowComment, caption }) => {
+  const { id } = useParams();
   const [commentData, setCommentData] = useState("");
   const followerQuery = useUserFollower(userID);
   const followUserQuery = useFollowUser();
@@ -55,12 +57,14 @@ const PostCommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, imag
                 <p className="font-semibold text-lg">{userName}</p>
                 <p className="text-sm">{followerQuery.data ? followerQuery.data.length : "0"} followers</p>
               </div>
-              <Button
-                onClick={followHandler}
-                text={isFollowingQuery.data.isFollowing || followerQuery.isFetching ? "Unfollow" : "Follow"}
-                disabled={followUserQuery.isPending || unFollowUserQuery.isPending || followerQuery.isFetching}
-                otherStyle={`ml-10 ${isFollowingQuery.data.isFollowing && "bg-red-500 disabled"}`}
-              />
+              {!id && (
+                <Button
+                  onClick={followHandler}
+                  text={isFollowingQuery.data.isFollowing || followerQuery.isFetching ? "Unfollow" : "Follow"}
+                  disabled={followUserQuery.isPending || unFollowUserQuery.isPending || followerQuery.isFetching}
+                  otherStyle={`ml-10 ${isFollowingQuery.data.isFollowing && "bg-red-500 disabled"}`}
+                />
+              )}
             </div>
             <div className="mt-8">
               <p>{caption}</p>

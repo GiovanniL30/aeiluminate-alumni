@@ -52,7 +52,7 @@ const PostCard = ({ postID, caption, images, userID, createdAt }) => {
 
       <div className="flex justify-between pt-4 px-4">
         <div className="flex items-center gap-6">
-          <NavLink to={`user/${userID}`}>
+          <NavLink to={`../user/${userID}`}>
             <img className="w-10 h-10 object-cover rounded-full" src={data.profile_link} alt="profile" />
           </NavLink>
           <p className="font-bold">{data.posted_by}</p>

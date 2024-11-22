@@ -4,15 +4,24 @@ import { useParams } from "react-router-dom";
 import PostCard from "../../components/_cards/PostCard";
 import { useAuthContext } from "../../context/AuthContext";
 
+const SkeletonLoader = () => (
+  <div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+    {[...Array(6)].map((_, index) => (
+      <div key={index} className="w-full h-[300px] bg-slate-50 animate-pulse rounded-md">
+        <div className="w-full h-full bg-slate-50 animate-pulse rounded-md"></div>
+      </div>
+    ))}
+  </div>
+);
+
 const User = () => {
   const [openPost, setOpenPost] = useState(false);
   const [postData, setPostData] = useState({});
   const { id } = useParams();
-  const { user } = useAuthContext();
 
   const { data, isLoading } = useGetUserPosts(id);
 
-  if (isLoading) return <h1>Loading posts...</h1>;
+  if (isLoading) return <SkeletonLoader />;
 
   const posts = data.filter((post) => post.postMedia.length > 0);
 
@@ -33,27 +42,24 @@ const User = () => {
         <div className=" flex max-w-[600px] mx-auto relative">
           <div className="absolute -top-14 -left-[5%] flex items-center gap-2">
             <button
-              onClick={() => setOpenPost(false)}
+              onClick={() => {
+                setOpenPost(false);
+                setPostData({});
+              }}
               className="hover-opacity flex items-center justify-center w-7 h-7  rounded-md  text-white bg-black font-bold text-sm"
             >
               &#60;
             </button>
             <p>Back to all post</p>
           </div>
-          <PostCard
-            caption={postData.caption}
-            postID={postData.postID}
-            images={postData.images}
-            userID={user.userID}
-            createdAt={postData.createdAt}
-          />
+          <PostCard caption={postData.caption} postID={postData.postID} images={postData.images} userID={id} createdAt={postData.createdAt} />
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {posts.map((post, index) => (
             <div key={index}>
               <div>
-                <button className="w-full h-full" onClick={() => handleOpenPost(post.postID)}>
+                <button className="hover-opacity w-full h-full" onClick={() => handleOpenPost(post.postID)}>
                   <img src={post.postMedia[0].mediaURL} alt="Post media" className="w-full h-[300px] object-cover" />
                 </button>
               </div>

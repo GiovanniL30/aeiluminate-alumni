@@ -12,6 +12,27 @@ import {
 import Button from "../components/Button";
 import { useParams } from "react-router-dom";
 
+const SkeletonLoader = () => (
+  <div className="mt-11 flex flex-col items-center max-w-[800px] mx-auto gap-14 md:flex-row animate-pulse">
+    <div className="w-56 h-56 rounded-full bg-slate-50"></div>
+    <div className="flex flex-col gap-2 md:gap-5 w-full">
+      <div className="flex items-center gap-10 md:gap-16">
+        <div className="w-32 h-8 bg-slate-50"></div>
+        <div className="w-32 h-10 bg-slate-50"></div>
+      </div>
+      <div className="flex justify-between">
+        <div className="w-20 h-6 bg-slate-50"></div>
+        <div className="w-20 h-6 bg-slate-50"></div>
+        <div className="w-20 h-6 bg-slate-50"></div>
+      </div>
+      <div className="flex gap-3 md:flex-col md:gap-0">
+        <div className="w-40 h-6 bbg-slate-50"></div>
+        <div className="w-40 h-6 bg-slate-50"></div>
+      </div>
+    </div>
+  </div>
+);
+
 const ProfileHeader = () => {
   const { id } = useParams();
   const { user } = useAuthContext();
@@ -25,15 +46,16 @@ const ProfileHeader = () => {
   const userPostsQuery = useGetUserPosts(id);
 
   const followHandler = () => {
+    console.log(id);
     if (isFollowStatus.data.isFollowing) {
-      unFollowUserQuery.mutate(userID);
+      unFollowUserQuery.mutate(id);
     } else {
-      followUserQuery.mutate(userID);
+      followUserQuery.mutate(id);
     }
   };
 
   if (isFollowStatus.isLoading || followingQuery.isLoading || followerQuery.isLoading || userPostsQuery.isLoading) {
-    return <h1>Loading...</h1>;
+    return <SkeletonLoader />;
   }
 
   const { bio, company, email, firstName, job_role, lastName, middleName, phoneNumber, profile_picture, role, userID, username } =
@@ -50,7 +72,7 @@ const ProfileHeader = () => {
           {id != user.userID ? (
             <Button
               onClick={followHandler}
-              text={isFollowStatus.data.isFollowing || followerQuery.isFetching ? "Unfollow" : "Follow"}
+              text={isFollowStatus.data.isFollowing ? "Unfollow" : "Follow"}
               disabled={followUserQuery.isPending || unFollowUserQuery.isPending || followerQuery.isFetching}
               otherStyle={`ml-10 ${isFollowStatus.data.isFollowing && "bg-red-500 disabled"}`}
             />
