@@ -43,6 +43,7 @@ export const loginController = async (req, res) => {
       res.cookie("token", token, {
         httpOnly: true,
         secure: process.env.MODE === "production",
+        sameSite: "None",
       });
       res.status(200).json({ user });
     }
