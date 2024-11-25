@@ -54,6 +54,23 @@ export const userLogin = async (email, password) => {
 };
 
 /**
+ * Request to logout user
+ * @url baseurl/api/login
+ */
+export const userLogout = async () => {
+  try {
+    const response = await axios.delete(`${baseURL}/api/logout`, {
+      withCredentials: true,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.response?.data?.message || "An error occurred while logging out.");
+  }
+};
+
+/**
  * Request to add a new post
  * @url baseurl/api/post
  */

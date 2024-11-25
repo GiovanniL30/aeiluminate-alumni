@@ -17,6 +17,7 @@ import {
   fetchFollowing,
   fetchUserPosts,
   getSpecificUserRequest,
+  userLogout,
 } from "../index.js";
 
 /**
@@ -45,6 +46,15 @@ export const useGetUser = (id) => {
 export const useLoginUser = () => {
   return useMutation({
     mutationFn: ({ email, password }) => userLogin(email, password),
+  });
+};
+
+/**
+ * React query to logout user
+ */
+export const useLogoutUser = () => {
+  return useMutation({
+    mutationFn: () => userLogout(),
   });
 };
 

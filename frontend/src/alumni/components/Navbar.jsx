@@ -1,16 +1,24 @@
 import React, { useState } from "react";
 import logo from "../../assets/logoCircle.png";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { navLinks } from "../constants";
 import Hamburger from "./Hamburger";
 import { useAuthContext } from "../context/AuthContext";
+import Button from "./Button";
+import { useLogoutUser } from "../_api/@react-client-query/query";
 
 const Navbar = () => {
   const [openNav, setOpenNav] = useState(false);
+  const navigate = useNavigate();
   const { user } = useAuthContext();
+  const logoutQuery = useLogoutUser();
 
   const toggleNav = () => {
     setOpenNav(!openNav);
+  };
+
+  const handleLogout = () => {
+    logoutQuery.mutate(null, { onSuccess: () => navigate("/login") });
   };
 
   return (
@@ -46,6 +54,7 @@ const Navbar = () => {
       </ul>
 
       <div className="flex gap-4 items-center">
+        <Button text="Sign out" otherStyle="bg-red-500" onClick={handleLogout} />
         <NavLink to={`/user/${user.userID}`} className="flex items-center gap-2 hover-opacity">
           <img className="w-12 h-12 rounded-full object-cover" src={user.profile_picture} alt="profile" />
         </NavLink>

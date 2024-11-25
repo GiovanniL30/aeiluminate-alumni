@@ -1,6 +1,72 @@
-import { checkIsFollowing, getUser, getUserFollowers, getUserFollowing, getUsers } from "../mysqlQueries/readQueries.js";
+import {
+  checkIsFollowing,
+  getUser,
+  getUserFollowers,
+  getUserFollowing,
+  getUsers,
+  checkEmail,
+  validateEmailAndPassword,
+} from "../mysqlQueries/readQueries.js";
 import { removeUserAccount, unfollowUser } from "../mysqlQueries/deleteQueries.js";
 import { followUser } from "../mysqlQueries/addQueries.js";
+import jwt from "jsonwebtoken";
+
+const generateToken = (userId, role) => {
+  return jwt.sign({ userId, role }, process.env.TOKEN, { expiresIn: "2h" });
+};
+
+/**
+ *
+ * login User
+ *
+ * @method POST
+ * @route /api/login
+ */
+export const loginController = async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) return res.status(400).json({ message: "Email or Password is missing" });
+
+  try {
+    const emailExists = await checkEmail(email);
+
+    if (!emailExists) return res.status(401).json({ message: "Email does not exist" });
+
+    const checkUser = await validateEmailAndPassword(email, password);
+
+    if (!checkUser) return res.status(403).json({ message: "Invalid Email or password" });
+    else {
+      const { password, ...user } = checkUser;
+
+      const token = generateToken(user.userID, user.role);
+
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.MODE === "production",
+      });
+      res.status(200).json({ user });
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: error });
+  }
+};
+
+/**
+ *
+ * Logout User
+ *
+ * @method DELETE
+ * @route /api/logout
+ */
+export const logoutController = async (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+  });
+
+  res.json({ message: "Logged out successfully" });
+};
 
 /**
  *  Get all users on the Database (user)

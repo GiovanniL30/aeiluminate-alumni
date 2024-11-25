@@ -9,11 +9,23 @@ import {
   unFollowUserController,
   userFollowerController,
   userFollowingController,
+  loginController,
+  logoutController,
 } from "../controllers/userControler.js";
 
 import { authenticateUserCookie } from "../middleware/authenticateCookie.js";
 
 export const router = express.Router();
+
+/**
+ * Login user route
+ */
+router.post("/login", loginController);
+
+/**
+ * Login user route
+ */
+router.delete("/logout", authenticateUserCookie, logoutController);
 
 /**
  * Get users route

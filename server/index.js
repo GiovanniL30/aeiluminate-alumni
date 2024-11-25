@@ -2,12 +2,9 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
-import { router as loginRoute } from "./routes/login.js";
 import { router as registerRoute } from "./routes/register.js";
 import { router as usersRoute } from "./routes/users.js";
-import { router as programsRoute } from "./routes/programs.js";
 import { postRouter } from "./routes/post.js";
-import { authenticateUserCookie } from "./middleware/authenticateCookie.js";
 
 const app = express();
 
@@ -22,7 +19,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use("/api", usersRoute);
-app.use("/api", loginRoute);
 app.use("/api/register", registerRoute);
 app.use("/api", postRouter);
 
