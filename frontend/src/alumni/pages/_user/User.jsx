@@ -3,16 +3,7 @@ import { useGetUserPosts } from "../../_api/@react-client-query/query";
 import { useParams } from "react-router-dom";
 import PostCard from "../../components/_cards/PostCard";
 import { useAuthContext } from "../../context/AuthContext";
-
-const SkeletonLoader = () => (
-  <div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-    {[...Array(6)].map((_, index) => (
-      <div key={index} className="w-full h-[300px] bg-slate-50 animate-pulse rounded-md">
-        <div className="w-full h-full bg-slate-50 animate-pulse rounded-md"></div>
-      </div>
-    ))}
-  </div>
-);
+import SimpleCardLoader from "../../components/_cards/loaders/SimpleCardLoader";
 
 const User = () => {
   const [openPost, setOpenPost] = useState(false);
@@ -21,7 +12,7 @@ const User = () => {
 
   const { data, isLoading } = useGetUserPosts(id);
 
-  if (isLoading) return <SkeletonLoader />;
+  if (isLoading) return <SimpleCardLoader />;
 
   const posts = data.filter((post) => post.postMedia.length > 0);
 

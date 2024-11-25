@@ -7,11 +7,20 @@ import SuggestedContacts from "../components/_home/SuggestedContacts";
 import { useGetPosts } from "../_api/@react-client-query/query";
 import PostCard from "../components/_cards/PostCard";
 import AelineCard from "../components/_cards/AelineCard";
-import PostCardLoading from "../components/_cards/PostCardLoading";
+import PostCardLoading from "../components/_cards/loaders/PostCardLoading";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetPosts(2);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isError, error } = useGetPosts(2);
   const observerRef = useRef(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isError) {
+      const errorMessage = error?.message || "An unexpected error occurred.";
+      navigate(`/login?error=${encodeURIComponent(errorMessage)}`);
+    }
+  }, [isError, error, navigate]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

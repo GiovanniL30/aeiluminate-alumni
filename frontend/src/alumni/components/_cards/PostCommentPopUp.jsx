@@ -5,7 +5,7 @@ import Button from "../Button";
 import liked from "../../../assets/post-liked.png";
 import unliked from "../../../assets/post-unliked.png";
 import { useAddComment, useComments, useFollowUser, useIsFollowing, useUnFollowUser, useUserFollower } from "../../_api/@react-client-query/query";
-import PostCommentLoading from "./PostCommentLoading";
+import PostCommentLoading from "./loaders/PostCommentLoading";
 import CommentBlock from "./CommentBlock";
 import { useParams } from "react-router-dom";
 

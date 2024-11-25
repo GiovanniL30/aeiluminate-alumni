@@ -6,7 +6,7 @@ export const authenticateUserCookie = (req, res, next) => {
   if (!token) {
     return res.status(401).json({
       tokenError: true,
-      message: "No token provided (CAUSE: SESSION EXPIRED). Please Login Again",
+      message: "Please Login First",
     });
   }
 
@@ -16,7 +16,7 @@ export const authenticateUserCookie = (req, res, next) => {
         return res.status(401).json({ tokenError: true, message: "Session has expired. Please log in again." });
       }
       console.error(err);
-      return res.status(403).json({ tokenError: true, message: "Token verification failed. Please log in again." });
+      return res.status(403).json({ tokenError: true, message: "Access verification failed. Please log in again." });
     }
 
     req.userId = data.userId;

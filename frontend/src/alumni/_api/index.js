@@ -124,7 +124,6 @@ export const fetchPosts = async ({ pageParam = 1, length = 5 }) => {
       nextPage,
     };
   } catch (error) {
-    console.log(error.message);
     throw new Error(error.message);
   }
 };

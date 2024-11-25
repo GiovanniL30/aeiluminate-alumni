@@ -11,7 +11,7 @@ import more_vert from "../../../assets/more_vert.png";
 import ImageCarousel from "../ImageCarousel";
 import { ReadMore } from "../ReadMore";
 import { useLikePost, usePostInformation, useUnlikePost } from "../../_api/@react-client-query/query.js";
-import PostCardLoading from "./PostCardLoading.jsx";
+import PostCardLoading from "./loaders/PostCardLoading.jsx";
 import PostCommentPopUp from "./PostCommentPopUp.jsx";
 import { NavLink } from "react-router-dom";
 

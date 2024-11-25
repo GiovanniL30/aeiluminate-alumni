@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { timeAgo } from "../../../utils.js";
 
-import logo from "../../../assets/logoCircle.png";
-
 import comment from "../../../assets/comment.png";
 import liked from "../../../assets/post-liked.png";
 import unliked from "../../../assets/post-unliked.png";
 
 import more_hor from "../../../assets/more_hor.png";
 import { usePostInformation, useLikePost, useUnlikePost } from "../../_api/@react-client-query/query.js";
+import AelineCardLoading from "./loaders/AelineCardLoading.jsx";
 
 const AelineCard = ({ postID, caption, userID, createdAt }) => {
   const likePostQuery = useLikePost();
@@ -16,7 +15,7 @@ const AelineCard = ({ postID, caption, userID, createdAt }) => {
   const { isLoading, isError, data } = usePostInformation(postID);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <AelineCardLoading />;
   }
 
   const handleLike = () => {
