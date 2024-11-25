@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useGetUserPosts } from "../../_api/@react-client-query/query";
 import { useParams } from "react-router-dom";
 import PostCard from "../../components/_cards/PostCard";
-import { useAuthContext } from "../../context/AuthContext";
 import SimpleCardLoader from "../../components/_cards/loaders/SimpleCardLoader";
 
 const User = () => {

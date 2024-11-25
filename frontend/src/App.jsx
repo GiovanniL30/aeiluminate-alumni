@@ -7,7 +7,6 @@ import {
   MainLayout,
   Notifications,
   CreatePost,
-  Profile,
   Search,
   Signin,
   Signup,

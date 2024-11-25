@@ -16,55 +16,40 @@ import { authenticateUserCookie } from "../middleware/authenticateCookie.js";
 export const postRouter = express.Router();
 
 /**
- *
- * Upload Post Route
+ * ================================================================
+ *                    POST ROUTES
+ * ================================================================
  */
+
+/** Upload Post Route */
 postRouter.post("/post", authenticateUserCookie, upload.array("images"), uploadPostController);
 
-/**
- *
- * Upload Line Route
- */
+/** Upload Line Route */
 postRouter.post("/line", authenticateUserCookie, uploadLineController);
 
-/**
- *
- * Get list of posts
- */
-postRouter.get("/posts", authenticateUserCookie, getPostController);
-
-/**
- *
- * Get list of posts of a user
- */
-postRouter.get("/posts/:id", authenticateUserCookie, getUserPostsController);
-
-/**
- *
- * Get post stats
- */
-postRouter.get("/post/stats/:id", authenticateUserCookie, getPostCommentAndLikeCountController);
-
-/**
- *
- * Like a post
- */
+/** Like a post */
 postRouter.post("/post/like/:id", authenticateUserCookie, likeController);
 
-/**
- *
- * Unike a post
- */
+/** Unike a post */
 postRouter.post("/post/unlike/:id", authenticateUserCookie, unlikeController);
 
-/**
- *
- * Add a comment
- */
+/** Add a comment */
 postRouter.post("/post/comment/:id", authenticateUserCookie, addCommentController);
 
 /**
- *
- * Get list of comments on a post
+ * ================================================================
+ *                    GET ROUTES
+ * ================================================================
  */
+
+/** Get list of posts */
+postRouter.get("/posts", authenticateUserCookie, getPostController);
+
+/** Get list of posts of a user */
+postRouter.get("/posts/:id", authenticateUserCookie, getUserPostsController);
+
+/** Get post stats */
+postRouter.get("/post/stats/:id", authenticateUserCookie, getPostCommentAndLikeCountController);
+
+/** Get list of comments on a post */
 postRouter.get("/post/comments/:id", authenticateUserCookie, getCommentsController);

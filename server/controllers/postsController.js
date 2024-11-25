@@ -1,8 +1,6 @@
 import { ID, InputFile } from "node-appwrite";
 import crypto from "crypto";
-
 import { storage } from "../appwriteconfig.js";
-
 import { addNewPost, addNewMedia, addLike, addComment } from "../mysqlQueries/addQueries.js";
 import { getPosts, getMedia, getPostStats, getPostComments, getUserPosts } from "../mysqlQueries/readQueries.js";
 import { unlikePost } from "../mysqlQueries/deleteQueries.js";

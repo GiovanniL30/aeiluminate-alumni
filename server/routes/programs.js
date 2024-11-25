@@ -4,6 +4,10 @@ import { getProgramsController } from "../controllers/programController.js";
 export const router = express.Router();
 
 /**
- * Programs route
+ * ================================================================
+ *                    GET ROUTES
+ * ================================================================
  */
+
+/** Programs route */
 router.get("/programs", getProgramsController);

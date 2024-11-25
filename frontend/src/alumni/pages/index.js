@@ -4,7 +4,6 @@ import MainLayout from "./MainLayout";
 import Notifications from "./Notifications";
 import CreatePost from "./CreatePost";
 
-import Profile from "./Profile";
 import Search from "./Search";
 import Signin from "./Signin";
 import Signup from "./Signup";
@@ -22,7 +21,6 @@ export {
   MainLayout,
   Notifications,
   CreatePost,
-  Profile,
   Search,
   Signin,
   Signup,

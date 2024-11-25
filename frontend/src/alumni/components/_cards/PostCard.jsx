@@ -46,8 +46,6 @@ const PostCard = ({ postID, caption, images, userID, createdAt }) => {
     }
   };
 
-  console.log(userQuery.data);
-
   return (
     <div className={`w-full flex flex-col gap-5 border-[1px] rounded-lg ${isShowComment && "pointer-events-none"}`}>
       {isShowComment && (

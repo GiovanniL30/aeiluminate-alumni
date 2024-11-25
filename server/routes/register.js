@@ -4,6 +4,10 @@ import { createUserAccountController } from "../controllers/registerController.j
 export const router = express.Router();
 
 /**
- * Create new user route
+ * ================================================================
+ *                    POST ROUTES
+ * ================================================================
  */
+
+/** Create new user route */
 router.post("/client", createUserAccountController);
