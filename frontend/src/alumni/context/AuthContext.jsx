@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { useUser } from "../_api/@react-client-query/query";
 
 const Auth = createContext();
 
@@ -10,6 +11,8 @@ const AuthContext = ({ children }) => {
     return storedUser ? JSON.parse(storedUser) : {};
   });
 
+  const { data, isLoading, isError, error, refetch } = useUser();
+
   useEffect(() => {
     if (Object.keys(user).length > 0) {
       localStorage.setItem("user", JSON.stringify(user));
@@ -18,7 +21,25 @@ const AuthContext = ({ children }) => {
     }
   }, [user]);
 
-  return <Auth.Provider value={{ user, setUser }}>{children}</Auth.Provider>;
+  useEffect(() => {
+    if (!isLoading) {
+      if (isError) {
+        const tokenError = error?.response?.data?.tokenError;
+
+        if (tokenError) {
+          setUser({});
+        }
+      } else if (data?.user) {
+        setUser(data.user);
+      }
+    }
+  }, [data, isLoading, isError, error]);
+
+  const fetchUser = () => {
+    refetch();
+  };
+
+  return <Auth.Provider value={{ user, setUser, fetchUser, isLoading }}>{children}</Auth.Provider>;
 };
 
 export default AuthContext;
