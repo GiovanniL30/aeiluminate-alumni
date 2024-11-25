@@ -14,6 +14,7 @@ import UserFollowers from "./_user/UserFollowers";
 import UsersFollowing from "./_user/UsersFollowing";
 import UserLayout from "./_user/UserLayout";
 import UserAeilines from "./_user/UserAeilines";
+import UserEditProfile from "./_user/UserEditProfile";
 
 export {
   Home,
@@ -31,4 +32,5 @@ export {
   UsersFollowing,
   UserLayout,
   UserAeilines,
+  UserEditProfile,
 };

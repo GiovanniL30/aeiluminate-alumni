@@ -17,6 +17,7 @@ import {
   UsersFollowing,
   UserLayout,
   UserAeilines,
+  UserEditProfile,
 } from "./alumni/pages/index.js";
 import Auth from "./alumni/_auth/Auth.jsx";
 import AuthContext from "./alumni/context/AuthContext.jsx";
@@ -40,6 +41,7 @@ const App = () => {
                 <Route path="line" element={<UserAeilines />} />
                 <Route path="followers" element={<UserFollowers />} />
                 <Route path="following" element={<UsersFollowing />} />
+                <Route path="edit" element={<UserEditProfile />} />
               </Route>
             </Route>
           </Route>

@@ -77,7 +77,11 @@ const ProfileHeader = () => {
               otherStyle={`ml-10 ${isFollowStatus.data.isFollowing && "bg-red-500 disabled"}`}
             />
           ) : (
-            <Button text="Edit Profile" />
+            <NavLink to="edit">
+              {({ isActive }) => {
+                return <Button text={isActive ? "Editing Profile" : "Edit Profile"} disabled={isActive} />;
+              }}
+            </NavLink>
           )}
         </div>
         <div className="flex justify-between">

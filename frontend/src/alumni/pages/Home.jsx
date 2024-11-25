@@ -69,6 +69,7 @@ const Home = () => {
             </>
           )}
         </div>
+        <h1 className="text-center font-bold text-light_text">You have reached the end of posts!!</h1>
       </div>
       <div className="fixed right-0 hidden xl:w-[300px] xl:flex bg-red-200">Right</div>
     </div>
