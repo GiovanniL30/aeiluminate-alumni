@@ -7,7 +7,7 @@ const Button = ({ text, variant = "filled", otherStyle, onClick, type = "button"
       type={type}
       onClick={onClick}
       className={`${
-        variant == "filled" ? "bg-primary_blue text-white" : "border-[1px]  bg-gray-100 text-black"
+        variant == "filled" ? "bg-primary_blue text-white" : "border-[1px]  bg-none text-black"
       }  font-semibold py-2 px-4 text-sm hover-opacity rounded-md ${
         disabled ? "pointer-events-none opacity-50" : "pointer-events-auto "
       } ${otherStyle} `}

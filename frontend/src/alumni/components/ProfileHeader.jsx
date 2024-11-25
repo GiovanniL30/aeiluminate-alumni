@@ -10,7 +10,7 @@ import {
   useGetUserPosts,
 } from "../_api/@react-client-query/query";
 import Button from "../components/Button";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 
 const SkeletonLoader = () => (
   <div className="mt-11 flex flex-col items-center max-w-[800px] mx-auto gap-14 md:flex-row animate-pulse">
@@ -84,12 +84,24 @@ const ProfileHeader = () => {
           <p>
             <span className="font-bold">{userPostsQuery.data.length}</span> posts
           </p>
-          <p>
-            <span className="font-bold"> {followerQuery.data.length}</span> followers
-          </p>
-          <p>
-            <span className="font-bold">{followingQuery.data.length}</span> following
-          </p>
+          <NavLink to={"followers"}>
+            {({ isActive }) => {
+              return (
+                <p className={`hover:underline ${isActive && "underline opacity-50"}`}>
+                  <span className="font-bold">{followerQuery.data.length}</span> followers
+                </p>
+              );
+            }}
+          </NavLink>
+          <NavLink to={"following"}>
+            {({ isActive }) => {
+              return (
+                <p className={`hover:underline ${isActive && "underline opacity-50"}`}>
+                  <span className="font-bold">{followingQuery.data.length}</span> following
+                </p>
+              );
+            }}
+          </NavLink>
         </div>
         <div className="flex gap-3 md:flex-col md:gap-0">
           <p className="font-bold">

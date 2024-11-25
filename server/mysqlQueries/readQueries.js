@@ -240,7 +240,12 @@ export const getMedia = (postId) => {
  */
 export const getUserFollowers = (userId) => {
   const query = `
-    SELECT u.userID, u.username, u.profile_picture
+    SELECT 
+      u.userID, 
+      u.username, 
+      u.profile_picture, 
+      u.role, 
+      (SELECT COUNT(*) FROM follows WHERE followedID = u.userID) AS total_followers
     FROM follows f
     JOIN users u ON f.followerID = u.userID
     WHERE f.followedID = ?
@@ -263,7 +268,12 @@ export const getUserFollowers = (userId) => {
  */
 export const getUserFollowing = (userId) => {
   const query = `
-    SELECT u.userID, u.username, u.profile_picture
+    SELECT 
+      u.userID, 
+      u.username, 
+      u.profile_picture, 
+      u.role, 
+      (SELECT COUNT(*) FROM follows WHERE followedID = u.userID) AS total_followers
     FROM follows f
     JOIN users u ON f.followedID = u.userID
     WHERE f.followerID = ?
