@@ -1,10 +1,11 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import "dotenv/config";
 
-import { router as registerRoute } from "./routes/register.js";
-import { router as usersRoute } from "./routes/users.js";
-import { postRouter } from "./routes/post.js";
+import { router as registerRoute } from "../routes/register.js";
+import { router as usersRoute } from "../routes/users.js";
+import { postRouter } from "../routes/post.js";
 
 const app = express();
 
