@@ -9,7 +9,13 @@ const connection = mysql.createConnection({
 });
 
 connection.connect((error) => {
-  if (error) return console.log("Error occured while connections");
+  console.log(process.env.DATABASE_HOST);
+  console.log(process.env.DATABASE_USER);
+  console.log(process.env.DATABASE_PASSWORD);
+  console.log(process.env.DATABASE_PORT);
+  console.log(process.env.DATABASE_NAME);
+
+  if (error) return console.log(error);
 
   console.log("Connection created with mysql");
 });
