@@ -13,6 +13,7 @@ const UserFollowers = () => {
   return (
     <div className="max-w-[1000px] mx-auto mt-20">
       <h1 className="font-bold text-lg mb-5">Followers ({data.length})</h1>
+
       <FollowList data={data} />
     </div>
   );

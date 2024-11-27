@@ -45,17 +45,25 @@ const User = () => {
           <PostCard caption={postData.caption} postID={postData.postID} images={postData.images} userID={id} createdAt={postData.createdAt} />
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {posts.map((post, index) => (
-            <div key={index}>
-              <div>
-                <button className="hover-opacity w-full h-full" onClick={() => handleOpenPost(post.postID)}>
-                  <img src={post.postMedia[0].mediaURL} alt="Post media" className="w-full h-[300px] object-cover" />
-                </button>
-              </div>
+        <>
+          {posts.length == 0 ? (
+            <div className="flex flex-col w-full justify-center items-center gap-5">
+              <h1 className="font-bold">No post available!</h1>
             </div>
-          ))}
-        </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {posts.map((post, index) => (
+                <div key={index}>
+                  <div>
+                    <button className="hover-opacity w-full h-full" onClick={() => handleOpenPost(post.postID)}>
+                      <img src={post.postMedia[0].mediaURL} alt="Post media" className="w-full h-[300px] object-cover" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
       )}
     </div>
   );

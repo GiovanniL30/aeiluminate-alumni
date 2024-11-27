@@ -13,36 +13,38 @@ const pool = mysql.createPool({
 
 const connection = pool.promise();
 
-pool.getConnection((error, connection) => {
+const handleReconnect = () => {
+  console.log("Attempting to reconnect...");
+  pool.getConnection((error, newConnection) => {
+    if (error) {
+      console.error("Error reconnecting to MySQL:", error);
+      setTimeout(handleReconnect, 2000);
+    } else {
+      console.log("Reconnected to MySQL");
+      newConnection.release();
+    }
+  });
+};
+
+pool.getConnection((error, conn) => {
   if (error) {
     console.error("Error connecting to MySQL:", error);
     return;
   }
 
   console.log("Connection established with MySQL");
-  connection.release();
+  conn.release();
 });
 
 pool.on("error", (err) => {
   console.error("MySQL pool error:", err);
-  if (err.code === "PROTOCOL_CONNECTION_LOST") {
-    console.log("Attempting to reconnect...");
+  if (err.code === "PROTOCOL_CONNECTION_LOST" || err.code === "ECONNRESET") {
+    console.log("Connection lost, attempting to reconnect...");
     handleReconnect();
   } else {
+    console.error("MySQL error:", err);
     throw err;
   }
 });
-
-const handleReconnect = () => {
-  pool.getConnection((error, connection) => {
-    if (error) {
-      console.error("Error reconnecting to MySQL:", error);
-      setTimeout(handleReconnect, 2000);
-    } else {
-      console.log("Reconnected to MySQL");
-      connection.release();
-    }
-  });
-};
 
 export default connection;
