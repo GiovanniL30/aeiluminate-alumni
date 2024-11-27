@@ -2,76 +2,54 @@ import connection from "../connections.js";
 import { account, users } from "../appwriteconfig.js";
 
 /**
- *
  * Validate email and password
  */
-export const validateEmailAndPassword = (email, password) => {
+export const validateEmailAndPassword = async (email, password) => {
   const query = "SELECT * FROM users WHERE email = ? AND password = ?";
 
-  return new Promise((resolve, reject) => {
-    connection.query(query, [email, password], (error, result) => {
-      if (error) {
-        console.error("Failed to check email and password:", error);
-        reject(error);
-        return;
-      }
-
-      if (result.length > 0) {
-        resolve(result[0]);
-      } else {
-        resolve(null);
-      }
-    });
-  });
+  try {
+    const [result] = await connection.query(query, [email, password]);
+    return result.length > 0 ? result[0] : null;
+  } catch (error) {
+    console.error("Failed to check email and password:", error);
+    throw new Error("Failed to validate email and password");
+  }
 };
 
 /**
- *
- * Get a specific user on the database
+ * Get a specific user from the database
  */
-export const getUser = (id) => {
+export const getUser = async (id) => {
   const query = "SELECT * FROM users WHERE userID = ?";
 
-  return new Promise((resolve, reject) => {
-    connection.query(query, [id], (error, result) => {
-      if (error) {
-        console.error("Failed to get user:", error);
-        reject(error);
-        return;
-      }
-
-      if (result.length > 0) {
-        resolve(result[0]);
-      } else {
-        resolve(null);
-      }
-    });
-  });
+  try {
+    const [result] = await connection.query(query, [id]);
+    return result.length > 0 ? result[0] : null;
+  } catch (error) {
+    console.error("Failed to get user:", error);
+    throw new Error("Failed to retrieve user data");
+  }
 };
 
 /**
- * Gets all list of programs
+ * Get a list of all programs
  */
-export const getPrograms = () => {
+export const getPrograms = async () => {
   const query = "SELECT * FROM academic_programs";
 
-  return new Promise((resolve, reject) => {
-    connection.query(query, (error, result) => {
-      if (error) {
-        console.error("Failed to get programs");
-        reject(error);
-      }
-
-      resolve(result);
-    });
-  });
+  try {
+    const [result] = await connection.query(query);
+    return result;
+  } catch (error) {
+    console.error("Failed to get programs:", error);
+    throw new Error("Failed to retrieve programs");
+  }
 };
 
 /**
- *
  * Get comment, like count, and user's like status for a specific post
  */
-export const getPostStats = (postId, userId) => {
+export const getPostStats = async (postId, userId) => {
   const query = `
     SELECT 
         p.postID, 
@@ -94,151 +72,113 @@ export const getPostStats = (postId, userId) => {
         p.postID, u.username
   `;
 
-  return new Promise((resolve, reject) => {
-    connection.query(query, [userId, postId], (error, result) => {
-      if (error) {
-        console.error("Failed to get post comment, like count, and user like status", error);
-        reject(error);
-      }
-
-      if (result && result.length > 0) {
-        resolve(result[0]);
-      } else {
-        resolve(null);
-      }
-    });
-  });
+  try {
+    const [result] = await connection.query(query, [userId, postId]);
+    return result.length > 0 ? result[0] : null;
+  } catch (error) {
+    console.error("Failed to get post stats:", error);
+    throw new Error("Failed to get post stats");
+  }
 };
 
 /**
- * Checks if the username is already in the database
+ * Check if the username is already in the database
  */
-export const checkUsername = (username) => {
+export const checkUsername = async (username) => {
   const query = "SELECT COUNT(*) as users FROM users WHERE username = ?";
 
-  return new Promise((resolve, reject) => {
-    connection.query(query, [username], (err, results) => {
-      if (err) {
-        console.error("Failed to check username");
-        return reject(false);
-      }
-      resolve(results[0].users > 0);
-    });
-  });
+  try {
+    const [results] = await connection.query(query, [username]);
+    return results[0].users > 0;
+  } catch (error) {
+    console.error("Failed to check username:", error);
+    throw new Error("Failed to check username");
+  }
 };
 
 /**
- * Checks if the email is already in the database
+ * Check if the email is already in the database
  */
-export const checkEmail = (email) => {
+export const checkEmail = async (email) => {
   const query = "SELECT * FROM users WHERE email = ?";
 
-  return new Promise((resolve, reject) => {
-    connection.query(query, [email], (err, results) => {
-      if (err) {
-        console.error("Failed to check email");
-        return reject(false);
-      }
-      resolve(results.length > 0);
-    });
-  });
+  try {
+    const [results] = await connection.query(query, [email]);
+    return results.length > 0;
+  } catch (error) {
+    console.error("Failed to check email:", error);
+    throw new Error("Failed to check email");
+  }
 };
 
 /**
- * Fetches paginated users and total count from the database.
+ * Fetch paginated users and total count from the database
  */
-export const getUsers = (page, pageSize) => {
+export const getUsers = async (page, pageSize) => {
   const query = "SELECT * FROM users LIMIT ? OFFSET ?";
   const offset = (page - 1) * pageSize;
 
-  return new Promise((resolve, reject) => {
-    connection.query(query, [parseInt(pageSize), parseInt(offset)], (err, results) => {
-      if (err) {
-        return reject("Error fetching paginated users");
-      }
-
-      connection.query("SELECT COUNT(*) AS total FROM users", (err, countResult) => {
-        if (err) {
-          return reject("Error fetching total user count");
-        }
-
-        const totalCount = countResult[0].total;
-        resolve({ users: results, total: totalCount });
-      });
-    });
-  });
+  try {
+    const [results] = await connection.query(query, [parseInt(pageSize), parseInt(offset)]);
+    const [[countResult]] = await connection.query("SELECT COUNT(*) AS total FROM users");
+    return { users: results, total: countResult.total };
+  } catch (error) {
+    console.error("Error fetching paginated users:", error);
+    throw new Error("Error fetching paginated users");
+  }
 };
 
 /**
- * Fetches paginated posts and total count from the database.
+ * Fetch paginated posts and total count from the database
  */
-export const getPosts = (page, pageSize, userId) => {
+export const getPosts = async (page, pageSize, userId) => {
   const query = "SELECT * FROM posts WHERE userID != ? LIMIT ? OFFSET ?";
   const offset = (page - 1) * pageSize;
 
-  return new Promise((resolve, reject) => {
-    connection.query(query, [userId, parseInt(pageSize), parseInt(offset)], (err, results) => {
-      if (err) {
-        console.error(err);
-        return reject("Error fetching paginated posts");
-      }
-
-      connection.query("SELECT COUNT(*) AS total FROM posts", (err, countResult) => {
-        if (err) {
-          return reject("Error fetching total post count");
-        }
-
-        const totalCount = countResult[0].total;
-        resolve({ posts: results, total: totalCount });
-      });
-    });
-  });
+  try {
+    const [results] = await connection.query(query, [userId, parseInt(pageSize), parseInt(offset)]);
+    const [[countResult]] = await connection.query("SELECT COUNT(*) AS total FROM posts");
+    return { posts: results, total: countResult.total };
+  } catch (error) {
+    console.error("Error fetching paginated posts:", error);
+    throw new Error("Error fetching paginated posts");
+  }
 };
 
 /**
- * Fetches posts of a user.
+ * Fetch posts of a user
  */
-export const getUserPosts = (userId) => {
+export const getUserPosts = async (userId) => {
   const query = "SELECT * FROM posts WHERE userID = ?";
 
-  return new Promise((resolve, reject) => {
-    connection.query(query, [userId], (err, results) => {
-      if (err) {
-        console.error(err);
-        return reject("Error fetching user posts");
-      }
-
-      if (results && results.length > 0) {
-        resolve(results);
-      } else {
-        resolve([]);
-      }
-    });
-  });
+  try {
+    const [results] = await connection.query(query, [userId]);
+    return results.length > 0 ? results : [];
+  } catch (error) {
+    console.error("Error fetching user posts:", error);
+    throw new Error("Error fetching user posts");
+  }
 };
 
 /**
- *
  * Get all list of media files of a post
  */
-export const getMedia = (postId) => {
+export const getMedia = async (postId) => {
   const query = "SELECT mediaID, mediaURL, mediaType FROM media WHERE postID = ?";
 
-  return new Promise((resolve, reject) => {
-    connection.query(query, [postId], (err, results) => {
-      if (err) {
-        return reject("Failed to get media of the post");
-      }
-
-      resolve(results);
-    });
-  });
+  try {
+    const [results] = await connection.query(query, [postId]);
+    return results;
+  } catch (error) {
+    console.error("Failed to get media of the post:", error);
+    throw new Error("Failed to get media");
+  }
 };
 
 /**
  * Get the followers of a user
  */
-export const getUserFollowers = (userId) => {
+export const getUserFollowers = async (userId) => {
   const query = `
     SELECT 
       u.userID, 
@@ -251,22 +191,19 @@ export const getUserFollowers = (userId) => {
     WHERE f.followedID = ?
   `;
 
-  return new Promise((resolve, reject) => {
-    connection.query(query, [userId], (err, results) => {
-      if (err) {
-        console.error("Failed to get followers:", err);
-        return reject(new Error("Failed to fetch the followers from the database"));
-      }
-
-      resolve(results || []);
-    });
-  });
+  try {
+    const [results] = await connection.query(query, [userId]);
+    return results || [];
+  } catch (error) {
+    console.error("Failed to get followers:", error);
+    throw new Error("Failed to fetch followers");
+  }
 };
 
 /**
  * Get the users that a user is following
  */
-export const getUserFollowing = (userId) => {
+export const getUserFollowing = async (userId) => {
   const query = `
     SELECT 
       u.userID, 
@@ -279,45 +216,34 @@ export const getUserFollowing = (userId) => {
     WHERE f.followerID = ?
   `;
 
-  return new Promise((resolve, reject) => {
-    connection.query(query, [userId], (err, results) => {
-      if (err) {
-        console.error("Failed to get following:", err);
-        return reject(new Error("Failed to fetch the following users from the database"));
-      }
-
-      resolve(results || []);
-    });
-  });
+  try {
+    const [results] = await connection.query(query, [userId]);
+    return results || [];
+  } catch (error) {
+    console.error("Failed to get following:", error);
+    throw new Error("Failed to fetch following users");
+  }
 };
 
 /**
- *
  * Check if the user is following a user
  */
-export const checkIsFollowing = (followerID, followingID) => {
+export const checkIsFollowing = async (followerID, followingID) => {
   const query = "SELECT COUNT(*) AS is_following FROM follows WHERE followerID = ? AND followedID = ?";
 
-  return new Promise((resolve, reject) => {
-    connection.query(query, [followerID, followingID], (err, results) => {
-      if (err) {
-        console.error("Failed to check following status:", err);
-        return reject(new Error("Failed to fetch following status from the database"));
-      }
-
-      if (results && results.length > 0) {
-        resolve(results[0].is_following > 0);
-      } else {
-        resolve(false);
-      }
-    });
-  });
+  try {
+    const [results] = await connection.query(query, [followerID, followingID]);
+    return results.length > 0 && results[0].is_following > 0;
+  } catch (error) {
+    console.error("Failed to check following status:", error);
+    throw new Error("Failed to check following status");
+  }
 };
 
 /**
  * Get comments for a specific post
  */
-export const getPostComments = (postId) => {
+export const getPostComments = async (postId) => {
   const query = `
       SELECT 
         c.commentID,
@@ -332,20 +258,13 @@ export const getPostComments = (postId) => {
           users u ON c.userID = u.userID
       WHERE 
           c.postID = ?
-    `;
+  `;
 
-  return new Promise((resolve, reject) => {
-    connection.query(query, [postId], (err, results) => {
-      if (err) {
-        console.error("Failed to fetch comments:", err);
-        return reject(new Error("Failed to fetch comments from the database"));
-      }
-
-      if (results && results.length > 0) {
-        resolve(results);
-      } else {
-        resolve([]);
-      }
-    });
-  });
+  try {
+    const [comments] = await connection.query(query, [postId]);
+    return comments || [];
+  } catch (error) {
+    console.error("Failed to get post comments:", error);
+    throw new Error("Failed to retrieve comments");
+  }
 };

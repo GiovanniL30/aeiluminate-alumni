@@ -15,8 +15,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "node --watch index.js",
-    "start": "pm2 start index.js --name aeiluminate"
+    "start": "node --watch index.js"
   },
   "keywords": [],
   "author": "",

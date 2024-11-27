@@ -4,7 +4,7 @@ import { useAuthContext } from "../context/AuthContext";
 const FollowList = ({ data }) => {
   const { user } = useAuthContext();
   return (
-    <div>
+    <div className="flex flex-col gap-10">
       {data.map((follower) => (
         <div className="flex gap-4">
           <div className="w-11">
