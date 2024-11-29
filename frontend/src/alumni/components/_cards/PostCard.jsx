@@ -22,7 +22,7 @@ import {
 import PostCardLoading from "./loaders/PostCardLoading.jsx";
 import PostCommentPopUp from "./PostCommentPopUp.jsx";
 import { NavLink } from "react-router-dom";
-import UserProfile from "../UserProfile.jsx";
+import UserProfilePic from "../UserProfilePic.jsx";
 
 const PostCard = ({ postID, caption, images, userID, createdAt }) => {
   const [isShowComment, setIsShowComment] = useState(false);
@@ -61,8 +61,8 @@ const PostCard = ({ postID, caption, images, userID, createdAt }) => {
 
       <div className="flex justify-between pt-4 px-4">
         <div className="relative flex items-center gap-6 group">
-          <UserProfile userID={userID} profile_link={data.profile_link} />
-          <p className="font-bold">{data.posted_by}</p>
+          <UserProfilePic userID={userID} profile_link={data.profile_link} />
+          <p className="font-bold pointer-events-none">{data.posted_by}</p>
         </div>
 
         <div className="flex gap-3 items-center justify-center">

@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { useGetUser, useGetUserPosts, useUserFollower, useUserFollowing } from "../_api/@react-client-query/query";
 
-const UserProfile = ({ userID, profile_link, otherContainerStyle }) => {
+const UserProfilePic = ({ userID, profile_link, otherContainerStyle, otherImageStyle }) => {
   const followingQuery = useUserFollowing(userID);
   const followerQuery = useUserFollower(userID);
   const userPostsQuery = useGetUserPosts(userID);
@@ -13,9 +13,9 @@ const UserProfile = ({ userID, profile_link, otherContainerStyle }) => {
   }
 
   return (
-    <div className={`relative flex items-center gap-6 group ${otherContainerStyle}`}>
-      <NavLink to={`../user/${userID}`} className="hover-opacity group-hover:opacity-100">
-        <img className="w-10 h-10 object-cover rounded-full" src={profile_link} alt="profile" />
+    <div className={`relative flex items-center group ${otherContainerStyle}`}>
+      <NavLink to={`/user/${userID}`} className="hover-opacity group-hover:opacity-100">
+        <img className={`w-10 h-10 object-cover rounded-full ${otherImageStyle}`} src={profile_link} alt="profile" />
       </NavLink>
 
       <div className="pointer-events-none absolute bg-white top-14 left-5 z-20 flex flex-col p-4 w-80 rounded-lg shadow-2xl border-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -36,4 +36,4 @@ const UserProfile = ({ userID, profile_link, otherContainerStyle }) => {
   );
 };
 
-export default UserProfile;
+export default UserProfilePic;

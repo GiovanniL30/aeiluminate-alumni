@@ -1,5 +1,6 @@
 import React from "react";
 import { useAuthContext } from "../context/AuthContext";
+import UserProfilePic from "./UserProfilePic";
 
 const FollowList = ({ data }) => {
   const { user } = useAuthContext();
@@ -8,7 +9,7 @@ const FollowList = ({ data }) => {
       {data.map((follower) => (
         <div className="flex gap-4">
           <div className="w-11">
-            <img className="w-full h-11 rounded-full object-cover" src={follower.profile_picture} alt="" />
+            <UserProfilePic profile_link={follower.profile_picture} userID={follower.userID} otherImageStyle="h-11 w-11" />
           </div>
           <div>
             <h1 className="font-bold">{follower.username}</h1>

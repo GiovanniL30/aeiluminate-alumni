@@ -8,8 +8,11 @@ import unliked from "../../../assets/post-unliked.png";
 import more_hor from "../../../assets/more_hor.png";
 import { usePostInformation, useLikePost, useUnlikePost } from "../../_api/@react-client-query/query.js";
 import AelineCardLoading from "./loaders/AelineCardLoading.jsx";
+import PostCommentPopUp from "./PostCommentPopUp.jsx";
+import UserProfilePic from "../UserProfilePic.jsx";
 
 const AelineCard = ({ postID, caption, userID, createdAt }) => {
+  const [isShowComment, setIsShowComment] = useState(false);
   const likePostQuery = useLikePost();
   const unlikePostQuery = useUnlikePost();
   const { isLoading, isError, data } = usePostInformation(postID);
@@ -28,8 +31,22 @@ const AelineCard = ({ postID, caption, userID, createdAt }) => {
 
   return (
     <div className="flex gap-7 w-full">
+      {isShowComment && (
+        <PostCommentPopUp
+          postId={postID}
+          profilePic={data.profile_link}
+          handleLike={handleLike}
+          images={null}
+          userID={userID}
+          userName={data.posted_by}
+          setIsShowComment={setIsShowComment}
+          caption={caption}
+          isLiked={data.is_liked}
+          likes={data.total_likes}
+        />
+      )}
       <div className="flex items-start justify-start ">
-        <img className="w-14 h-14 rounded-full object-cover" src={data.profile_link} alt="profile" />
+        <UserProfilePic profile_link={data.profile_link} userID={userID} otherImageStyle="w-14 h-14" />
       </div>
       <div className="flex flex-col gap-2 mt-2">
         <p className="font-bold text-lg -mb-2">{data.posted_by}</p>
@@ -38,7 +55,7 @@ const AelineCard = ({ postID, caption, userID, createdAt }) => {
           <button className="w-5 h-5" onClick={handleLike}>
             <img src={data.is_liked == 1 ? liked : unliked} alt="unliked" />
           </button>
-          <button className="w-5 h-5">
+          <button className="w-5 h-5" onClick={() => setIsShowComment(true)}>
             <img src={comment} alt="comment" />
           </button>
         </div>

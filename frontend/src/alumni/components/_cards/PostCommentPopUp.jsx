@@ -8,7 +8,7 @@ import { useAddComment, useComments, useFollowUser, useIsFollowing, useUnFollowU
 import PostCommentLoading from "./loaders/PostCommentLoading";
 import CommentBlock from "./CommentBlock";
 import { useParams } from "react-router-dom";
-import UserProfile from "../UserProfile";
+import UserProfilePic from "../UserProfilePic";
 
 const PostCommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, images, userID, userName, setIsShowComment, caption }) => {
   const { id } = useParams();
@@ -46,14 +46,16 @@ const PostCommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, imag
         &#10005;
       </button>
       <div className="w-full h-full bg-white rounded-md flex flex-col lg:flex-row">
-        <div className="w-full lg:w-1/2 h-full max-h-[300px] lg:max-h-full bg-gray-300 bg-opacity-20">
-          <ImageCarousel images={images} otherImageStyle="max-h-[300px] lg:max-h-full" />
-        </div>
+        {images && (
+          <div className="w-full lg:w-1/2 h-full max-h-[300px] lg:max-h-full bg-gray-300 bg-opacity-20">
+            <ImageCarousel images={images} otherImageStyle="max-h-[300px] lg:max-h-full" />
+          </div>
+        )}
 
-        <div className="px-4 w-full lg:w-1/2 h-full p-5 overflow-y-auto flex flex-col justify-between">
+        <div className={`px-4 w-full ${images && "lg:w-1/2"} h-full p-5 overflow-y-auto flex flex-col justify-between`}>
           <div>
             <div className="flex items-center gap-5">
-              <UserProfile userID={userID} profile_link={profilePic} />
+              <UserProfilePic userID={userID} profile_link={profilePic} />
               <div className="flex flex-col">
                 <p className="font-semibold text-lg">{userName}</p>
                 <p className="text-sm">{followerQuery.data ? followerQuery.data.length : "0"} followers</p>
