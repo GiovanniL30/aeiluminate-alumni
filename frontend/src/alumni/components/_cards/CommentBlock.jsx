@@ -1,12 +1,14 @@
 import React from "react";
 import { timeAgo } from "../../../utils";
 import { useAuthContext } from "../../context/AuthContext";
+import UserProfilePic from "../UserProfilePic";
 
 const CommentBlock = ({ userProfilePic, userName, userID, commentID, commentCreatedAt, commentContent }) => {
   const { user } = useAuthContext();
   return (
     <div className="flex items-center gap-3">
-      <img className="w-10 h-10 rounded-full  object-cover" src={userProfilePic} alt="profile" />
+      <UserProfilePic userID={userID} profile_link={userProfilePic} />
+
       <div className="flex flex-col">
         <div className="flex text-sm gap-8">
           <p className="font-bold">{user.userID == userID ? "You" : userName}</p>

@@ -21,7 +21,7 @@ const UserAeilines = () => {
           <h1 className="font-bold">No post available!</h1>
         </div>
       ) : (
-        <div className="flex flex-col justify-center items-center max-w-[500px] mx-auto gap-20">
+        <div className="flex flex-col justify-center items-center max-w-[550px] mx-auto gap-20">
           {lines.map((post, index) => (
             <AelineCard key={index} postID={post.postID} caption={post.caption} userID={id} createdAt={post.createdAt} />
           ))}

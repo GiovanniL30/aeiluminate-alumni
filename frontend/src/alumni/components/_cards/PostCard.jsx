@@ -60,7 +60,7 @@ const PostCard = ({ postID, caption, images, userID, createdAt }) => {
       )}
 
       <div className="flex justify-between pt-4 px-4">
-        <div className="relative flex items-center gap-6 group">
+        <div className="relative flex items-center gap-6">
           <UserProfilePic userID={userID} profile_link={data.profile_link} />
           <p className="font-bold pointer-events-none">{data.posted_by}</p>
         </div>

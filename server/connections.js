@@ -13,19 +13,6 @@ const pool = mysql.createPool({
 
 const connection = pool.promise();
 
-const handleReconnect = () => {
-  console.log("Attempting to reconnect...");
-  pool.getConnection((error, newConnection) => {
-    if (error) {
-      console.error("Error reconnecting to MySQL:", error);
-      setTimeout(handleReconnect, 2000);
-    } else {
-      console.log("Reconnected to MySQL");
-      newConnection.release();
-    }
-  });
-};
-
 pool.getConnection((error, conn) => {
   if (error) {
     console.error("Error connecting to MySQL:", error);
@@ -36,15 +23,14 @@ pool.getConnection((error, conn) => {
   conn.release();
 });
 
-pool.on("error", (err) => {
-  console.error("MySQL pool error:", err);
-  if (err.code === "PROTOCOL_CONNECTION_LOST" || err.code === "ECONNRESET") {
-    console.log("Connection lost, attempting to reconnect...");
-    handleReconnect();
-  } else {
-    console.error("MySQL error:", err);
-    throw err;
-  }
-});
+setInterval(() => {
+  pool.query("SELECT 1", (err) => {
+    if (err) {
+      console.error("Ping to database failed:", err);
+    } else {
+      console.log("Database connection is active.");
+    }
+  });
+}, 60000);
 
 export default connection;

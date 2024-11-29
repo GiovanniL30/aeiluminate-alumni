@@ -10,7 +10,7 @@ import { useLogoutUser } from "../_api/@react-client-query/query";
 const Navbar = () => {
   const [openNav, setOpenNav] = useState(false);
   const navigate = useNavigate();
-  const { user } = useAuthContext();
+  const { user, setUser } = useAuthContext();
   const logoutQuery = useLogoutUser();
 
   const toggleNav = () => {
@@ -18,7 +18,12 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    logoutQuery.mutate(null, { onSuccess: () => navigate("/login") });
+    logoutQuery.mutate(null, {
+      onSuccess: () => {
+        setUser({});
+        navigate("/login");
+      },
+    });
   };
 
   return (
