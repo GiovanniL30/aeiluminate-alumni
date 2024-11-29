@@ -11,7 +11,7 @@ const Signin = () => {
   const [data, setData] = useState({ email: "", password: "" });
   const [redirecting, setRedirecting] = useState(false);
   const userQuery = useLoginUser();
-  const { setUser } = useAuthContext();
+  const { user, isLoading, setUser } = useAuthContext();
   const [searchParams] = useSearchParams();
   const error = searchParams.get("error");
 
@@ -36,6 +36,8 @@ const Signin = () => {
     );
   };
 
+  if (isLoading) return <h1>Loading....</h1>;
+  if (Object.keys(user).length !== 0) return <Navigate to="/" />;
   if (redirecting) return <Navigate to="/" />;
 
   return (
