@@ -12,6 +12,9 @@ export default {
         grey_bg: "#BBB8B8",
         secondary_blue: "#9EC0D7",
       },
+      fontFamily: {
+        jost: ["Jost", "serif"],
+      },
     },
   },
   plugins: [],

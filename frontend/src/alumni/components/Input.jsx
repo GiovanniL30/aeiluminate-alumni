@@ -1,6 +1,6 @@
 import React from "react";
 
-const Input = ({ label, placeholder, name, value, type = "text", handleChange, min = 8, otherStyle }) => {
+const Input = ({ label, placeholder, name, value, type = "text", handleChange, min = 1, otherStyle }) => {
   return (
     <div className="w-full flex flex-col gap-2">
       <label className="text-light_text text-sm font-semibold">{label}</label>
@@ -22,6 +22,7 @@ const Input = ({ label, placeholder, name, value, type = "text", handleChange, m
           name={name}
           value={value}
           onChange={handleChange}
+          minLength={min}
           min={min}
           placeholder={placeholder}
         />

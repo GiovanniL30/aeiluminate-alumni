@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import logo from "../../assets/logo-login.png";
+import logo from "../../assets/logo-login-small.png";
+import commet from "../../assets/commet.webp";
+import earth from "../../assets/earth.webp";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { useLoginUser } from "../_api/@react-client-query/query";
 import { useAuthContext } from "../context/AuthContext";
-import { Navigate, useSearchParams } from "react-router-dom";
+import { Navigate, NavLink, useSearchParams } from "react-router-dom";
 import TopPopUp from "../components/TopPopUp";
 
 const Signin = () => {
@@ -17,7 +19,7 @@ const Signin = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setData((prev) => ({ ...prev, [name]: value }));
+    setData((prev) => ({ ...prev, [name]: value.trim() }));
   };
 
   const submit = (e) => {
@@ -41,21 +43,52 @@ const Signin = () => {
   if (redirecting) return <Navigate to="/" />;
 
   return (
-    <div className="padding">
-      <div className="max-container flex flex-col justify-center items-center gap-10">
-        {error && <TopPopUp text={error} />}
-        <div className="max-w-[500px]">
-          <img className="w-full" src={logo} alt="aeiluminate" />
-        </div>
-
-        <form className="w-full max-w-[600px] flex flex-col gap-5" onSubmit={submit}>
-          <Input label="Email" type="email" name="email" value={data.email} handleChange={handleChange} />
-          <Input type="password" label="Password" name="password" value={data.password} handleChange={handleChange} />
-          <Button type="submit" text={userQuery.isPending ? "Logging in..." : "Login"} otherStyle="w-full" disabled={userQuery.isPending} />
-        </form>
-
-        {userQuery.isError && <p className="text-red-500 mt-4">Login failed: {userQuery.error?.message}</p>}
+    <div className="padding bg-black min-h-screen flex w-full items-center">
+      {error && <TopPopUp text={error} />}
+      <div className="fixed top-5 z-30">
+        <img className="w-12" src={logo} alt="logo" />
       </div>
+      <div className="flex w-full">
+        <div className="fixed top-[20%] h-full md:top-[10%] lg:top-[-15%] xl:relative w-full z-20 xl:block">
+          <img className="absolute xl:min-h-full object-cover xl:-bottom-[650px] w-full xl:-left-20" src={commet} alt="" />
+        </div>
+        <div className="text-white relative w-full z-30 xl:bg-black">
+          <h1 className="z-20 text-4xl font-bold">
+            Make The First Impact – <br /> Share Your Light with ælluminate.
+          </h1>
+          <form className="z-20 w-full flex flex-col gap-5 items-center" onSubmit={submit}>
+            <Input
+              otherStyle="border-[1px] border-white bg-black"
+              label="Email"
+              type="email"
+              name="email"
+              value={data.email}
+              handleChange={handleChange}
+            />
+            <Input
+              otherStyle="border-[1px] border-white bg-black"
+              type="password"
+              label="Password"
+              name="password"
+              value={data.password}
+              handleChange={handleChange}
+            />
+            <Button type="submit" text={userQuery.isPending ? "Logging in..." : "Login"} otherStyle="w-full" disabled={userQuery.isPending} />
+            <p>
+              Don't have an account?{" "}
+              <NavLink className="underline hover-opacity" to="/register">
+                Sign Up
+              </NavLink>
+            </p>
+          </form>
+        </div>
+      </div>
+
+      <img
+        className="fixed max-h-[500px] bottom-0 left-0 right-0 w-full xl:w-1/2 xl:left-auto xl:-bottom-40 xl:max-w-auto xl:rotate-[-30deg] xl:-right-40"
+        src={earth}
+        alt=""
+      />
     </div>
   );
 };
