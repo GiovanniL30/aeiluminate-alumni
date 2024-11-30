@@ -50,7 +50,7 @@ const AelineCard = ({ postID, caption, userID, createdAt }) => {
       </div>
       <div className="flex flex-col gap-2 mt-2">
         <p className="font-bold text-lg -mb-2">{data.posted_by}</p>
-        <p className="font-thin">{caption}</p>
+        <p>{caption}</p>
         <div className="flex mt-4 gap-2 items-center">
           <button className="w-5 h-5" onClick={handleLike}>
             <img src={data.is_liked == 1 ? liked : unliked} alt="unliked" />

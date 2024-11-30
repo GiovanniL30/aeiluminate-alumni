@@ -17,6 +17,7 @@ import {
   UserLayout,
   UserAeilines,
   UserEditProfile,
+  NotFound,
 } from "./alumni/pages/index.js";
 import Auth from "./alumni/_auth/Auth.jsx";
 import AuthContext from "./alumni/context/AuthContext.jsx";
@@ -47,6 +48,7 @@ const App = () => {
 
           <Route path="login" element={<Signin />} />
           <Route path="register" element={<Signup />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </AuthContext>

@@ -15,6 +15,8 @@ import UserLayout from "./_user/UserLayout";
 import UserAeilines from "./_user/UserAeilines";
 import UserEditProfile from "./_user/UserEditProfile";
 
+import NotFound from "./NotFound";
+
 export {
   Home,
   Inbox,
@@ -31,4 +33,5 @@ export {
   UserLayout,
   UserAeilines,
   UserEditProfile,
+  NotFound,
 };
