@@ -35,9 +35,14 @@ const Signup = () => {
               <Input placeholder="First Name" otherStyle="border-[1px] border-white bg-transparent" />
               <Input placeholder="Middle Name" otherStyle="border-[1px] border-white bg-transparent" />
               <Input placeholder="Last Name" otherStyle="border-[1px] border-white bg-transparent" />
+              <Input placeholder="User Name" otherStyle="border-[1px] border-white bg-transparent" />
+              <div className="flex gap-3">
+                <Input type="password" placeholder="Password" otherStyle="border-[1px] border-white bg-transparent" />
+                <Input type="password" placeholder="Confirm Password" otherStyle="border-[1px] border-white bg-transparent" />
+              </div>
             </div>
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-3">
               <h1>Secondary Information</h1>
               <Input type="email" placeholder="Email" otherStyle="border-[1px] border-white bg-transparent" />
               <div className="lg:flex gap-3">
