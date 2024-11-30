@@ -1,7 +1,7 @@
 import express from "express";
 import { getProgramsController } from "../controllers/programController.js";
 
-export const router = express.Router();
+export const programRouter = express.Router();
 
 /**
  * ================================================================
@@ -10,4 +10,4 @@ export const router = express.Router();
  */
 
 /** Programs route */
-router.get("/programs", getProgramsController);
+programRouter.get("/programs", getProgramsController);

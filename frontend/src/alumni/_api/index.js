@@ -339,3 +339,17 @@ export const getCommentsRequest = async (postId) => {
     throw new Error(error.response?.data || error.message);
   }
 };
+
+/**
+ * Request to get list of programs
+ * @url baseurl/api/programs
+ */
+export const getProgramsRequest = async () => {
+  try {
+    const response = await axios.get(`${baseURL}/api/programs`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.response?.data || error.message);
+  }
+};

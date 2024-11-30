@@ -48,15 +48,12 @@ const Signin = () => {
       <div className="fixed top-5 z-30">
         <img className="w-12" src={logo} alt="logo" />
       </div>
-      <div className="flex w-full">
-        <div className="fixed top-[20%] h-full md:top-[10%] lg:top-[-15%] xl:relative w-full z-20 xl:block">
-          <img className="absolute xl:min-h-full object-cover xl:-bottom-[650px] w-full xl:-left-20" src={commet} alt="" />
-        </div>
-        <div className="text-white relative w-full z-30 xl:bg-black">
+      <div className="flex w-full ">
+        <div className="text-white relative w-full z-30 max-w-[600px] mx-auto ">
           <h1 className="z-20 text-4xl font-bold">
             Make The First Impact – <br /> Share Your Light with ælluminate.
           </h1>
-          <form className="z-20 w-full flex flex-col gap-5 items-center" onSubmit={submit}>
+          <form className="z-20 w-full flex flex-col gap-5 items-center " onSubmit={submit}>
             <Input
               otherStyle="border-[1px] border-white bg-black"
               label="Email"
@@ -84,11 +81,7 @@ const Signin = () => {
         </div>
       </div>
 
-      <img
-        className="fixed max-h-[500px] bottom-0 left-0 right-0 w-full xl:w-1/2 xl:left-auto xl:-bottom-40 xl:max-w-auto xl:rotate-[-30deg] xl:-right-40"
-        src={earth}
-        alt=""
-      />
+      <img className="fixed max-h-[500px] bottom-0 left-0 right-0 w-full " src={earth} alt="" />
     </div>
   );
 };

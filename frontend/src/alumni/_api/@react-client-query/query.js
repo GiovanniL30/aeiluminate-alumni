@@ -18,6 +18,7 @@ import {
   fetchUserPosts,
   getSpecificUserRequest,
   userLogout,
+  getProgramsRequest,
 } from "../index.js";
 
 /**
@@ -216,5 +217,15 @@ export const useComments = (postId) => {
   return useQuery({
     queryFn: () => getCommentsRequest(postId),
     queryKey: ["post_comments", postId],
+  });
+};
+
+/**
+ * React query to get comments
+ */
+export const usePrograms = () => {
+  return useQuery({
+    queryFn: () => getProgramsRequest(),
+    queryKey: ["programs"],
   });
 };

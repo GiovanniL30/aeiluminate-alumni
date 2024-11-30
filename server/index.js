@@ -6,6 +6,7 @@ import "dotenv/config";
 import { router as registerRoute } from "./routes/register.js";
 import { router as usersRoute } from "./routes/users.js";
 import { postRouter } from "./routes/post.js";
+import { programRouter } from "./routes/programs.js";
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use("/api", usersRoute);
 app.use("/api/register", registerRoute);
 app.use("/api", postRouter);
+app.use("/api", programRouter);
 
 const PORT = process.env.PORT || 1099;
 
