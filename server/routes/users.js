@@ -14,6 +14,7 @@ import {
 } from "../controllers/userControler.js";
 
 import { authenticateUserCookie } from "../middleware/authenticateCookie.js";
+import { upload } from "../multer.js";
 
 export const router = express.Router();
 
@@ -69,3 +70,12 @@ router.delete("/logout", authenticateUserCookie, logoutController);
 
 /**  Delete user */
 router.delete("/user/delete/:id", deleteUserController);
+
+/**
+ * ================================================================
+ *                    UPDATE ROUTES
+ * ================================================================
+ */
+router.patch("/user/update", authenticateUserCookie, upload.single("image"), (req, res) => {
+  const { firstName, lastName, userName, company, jobRole, bio, phoneNumber } = req.body;
+});
