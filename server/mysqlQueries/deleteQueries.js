@@ -7,18 +7,12 @@ import { account, users } from "../appwriteconfig.js";
  */
 export const removeUserAccount = async (userId) => {
   try {
-    // Delete the user from Appwrite
-    await users.delete(userId);
-
     const query = "DELETE FROM users WHERE userID = ?";
-
-    // Use async/await with the promise-based pool
     const [result] = await connection.query(query, [userId]);
-
     return result.affectedRows > 0;
   } catch (error) {
-    console.error("Error removing user from Appwrite:", error.message);
-    throw new Error("Error removing user from Appwrite");
+    console.error("Error Deleting user", error.message);
+    throw new Error("Failed to delete user");
   }
 };
 

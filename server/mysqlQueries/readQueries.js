@@ -32,6 +32,33 @@ export const getUser = async (id) => {
 };
 
 /**
+ * Get an application and user data from the database
+ */
+export const getApplication = async (email) => {
+  const query = `
+    SELECT 
+      u.*, 
+      a.appID 
+    FROM 
+      users u
+    JOIN 
+      application a 
+    ON 
+      u.userID = a.userID
+    WHERE 
+      u.email = ?
+  `;
+
+  try {
+    const [result] = await connection.query(query, [email]);
+    return result.length > 0 ? result[0] : null;
+  } catch (error) {
+    console.error("Failed to get application data:", error);
+    throw new Error("Failed to retrieve application data");
+  }
+};
+
+/**
  * Get a list of all programs
  */
 export const getPrograms = async () => {

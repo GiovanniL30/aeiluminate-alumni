@@ -24,14 +24,14 @@ export const addNewUser = async (userId, role, email, username, password, firstN
  * Adds a new alumni
  * @affectedDatabase = alumni
  */
-export const addNewAlumni = async (userID, yeaGraduated, programID, isEmployed) => {
+export const addNewAlumni = async (userID, yeaGraduated, programID) => {
   const insertUserQuery = `
-    INSERT INTO alumni (userID, year_graduated, programID, isEmployed) 
-    VALUES (?, ?, ?, ?)
+    INSERT INTO alumni (userID, year_graduated, programID) 
+    VALUES (?, ?, ?)
   `;
 
   try {
-    const [result] = await connection.query(insertUserQuery, [userID, yeaGraduated, programID, isEmployed]);
+    const [result] = await connection.query(insertUserQuery, [userID, yeaGraduated, programID]);
     return result.affectedRows > 0;
   } catch (err) {
     console.error("Error inserting new alumni", err);
@@ -116,5 +116,21 @@ export const addComment = async (commentID, content, postID, userID) => {
   } catch (err) {
     console.error("Error adding a comment", err);
     throw new Error("Failed to comment");
+  }
+};
+
+/**
+ * Add a new application
+ * @affectedDatabase = application
+ */
+export const addApplication = async (appID, diplomaURL, schoolIdURL, userID) => {
+  const query = "INSERT INTO application (appID, diplomaURL, schoolIdURL, userID, createdAt) VALUES (?, ?, ?, ?, ?);";
+
+  try {
+    const [result] = await connection.query(query, [appID, diplomaURL, schoolIdURL, userID, new Date()]);
+    return result.affectedRows > 0;
+  } catch (err) {
+    console.error("Error application", err);
+    throw new Error("Failed to add application");
   }
 };
