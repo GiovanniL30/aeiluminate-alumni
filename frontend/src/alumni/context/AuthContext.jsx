@@ -27,6 +27,7 @@ const AuthContext = ({ children }) => {
         const tokenError = error?.response?.data?.tokenError;
 
         if (tokenError) {
+          console.log("remove user");
           setUser({});
         }
       } else if (data?.user) {

@@ -13,7 +13,6 @@ const UserAeilines = () => {
 
   const lines = data.filter((post) => post.postMedia.length == 0);
 
-  console.log(lines);
   return (
     <div className="max-w-[1200px] mx-auto mt-20">
       {lines.length == 0 ? (

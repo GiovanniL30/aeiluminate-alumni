@@ -12,6 +12,10 @@ import {
 import Button from "../components/Button";
 import { NavLink, useParams } from "react-router-dom";
 
+import companyIcon from "../../assets/enterprise.png";
+import phoneIcon from "../../assets/phone-call.png";
+import emailIcon from "../../assets/mail.png";
+
 const SkeletonLoader = () => (
   <div className="mt-11 flex flex-col items-center max-w-[800px] mx-auto gap-14 md:flex-row animate-pulse">
     <div className="w-56 h-56 rounded-full bg-slate-50"></div>
@@ -109,10 +113,31 @@ const ProfileHeader = () => {
         </div>
         <div className="flex gap-3 md:flex-col md:gap-0">
           <p className="font-bold">
-            {firstName} {lastName}
+            {firstName} {lastName} {job_role && `(${job_role})`}
           </p>
-          <p className="underline text-light_text">@{email}</p>
+          {company && (
+            <p className="flex items-center gap-2">
+              <img className="w-5" src={companyIcon} alt="" />
+              {company}
+            </p>
+          )}
+
+          <p className="underline text-light_text flex items-center gap-2">
+            <img className="w-5" src={emailIcon} alt="" />
+            {email}
+          </p>
+          {phoneNumber && (
+            <p className="underline text-light_text flex items-center gap-2">
+              <img className="w-5" src={phoneIcon} alt="" />
+              {phoneNumber}
+            </p>
+          )}
         </div>
+        {bio && (
+          <div className="max-w-[300px]">
+            <p className="w-full break-words">{bio}</p>
+          </div>
+        )}
       </div>
     </div>
   );

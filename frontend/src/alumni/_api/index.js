@@ -13,8 +13,7 @@ export const getUserRequest = async () => {
     });
     return response.data;
   } catch (error) {
-    console.log(error);
-    throw new Error(error.response?.data.message || error.message);
+    throw error;
   }
 };
 
@@ -29,8 +28,7 @@ export const getSpecificUserRequest = async (id) => {
     });
     return response.data;
   } catch (error) {
-    console.log(error);
-    throw new Error(error.response?.data.message || error.message);
+    throw error;
   }
 };
 
@@ -407,6 +405,30 @@ export const updateUserDetailsRequest = async ({ firstName, middleName, lastName
   try {
     const data = { firstName, middleName, lastName, userName, company, jobRole, bio, phoneNumber };
     const response = await axios.patch(`${baseURL}/api/user/update/details`, data, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.response?.data.message || error.message);
+  }
+};
+
+/**
+ * Request to update user profile
+ * @url baseurl/api/user/update/profile
+ */
+export const updateUserProfileRequest = async ({ oldProfileURL, newImage }) => {
+  try {
+    const formData = new FormData();
+
+    formData.append("oldProfile", oldProfileURL);
+    formData.append("image", newImage);
+
+    const response = await axios.patch(`${baseURL}/api/user/update/profile`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
       withCredentials: true,
     });
     return response.data;

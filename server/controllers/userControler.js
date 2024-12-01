@@ -10,7 +10,21 @@ import {
 } from "../mysqlQueries/readQueries.js";
 import { removeUserAccount, unfollowUser } from "../mysqlQueries/deleteQueries.js";
 import { followUser } from "../mysqlQueries/addQueries.js";
+import { updateProfileDetails, updateProfilePicture } from "../mysqlQueries/updateQueries.js";
+import { storage } from "../appwriteconfig.js";
+import { ID, InputFile } from "node-appwrite";
 import jwt from "jsonwebtoken";
+
+const getFileIdFromUrl = (url) => {
+  const regex = /\/files\/([a-z0-9]+)\//;
+  const match = url.match(regex);
+
+  if (match && match[1]) {
+    return match[1];
+  } else {
+    throw new Error("File ID not found in the URL.");
+  }
+};
 
 const generateToken = (userId, role) => {
   return jwt.sign({ userId, role }, process.env.TOKEN, { expiresIn: "2h" });
@@ -265,5 +279,62 @@ export const checkIsFollowingController = async (req, res) => {
   } catch (error) {
     console.error("Error following checking status:", error);
     res.status(500).json({ message: "Internal Server Error (Failed to check follow status)" });
+  }
+};
+
+/**
+ *  Update User Details
+ *  @method PATCH
+ *  @route /api/user/update/details
+ */
+export const updateUserDetailsController = async (req, res) => {
+  const { firstName, middleName, lastName, userName, company, jobRole, bio, phoneNumber } = req.body;
+  const { userId } = req;
+
+  try {
+    const update = await updateProfileDetails(userId, firstName, middleName, lastName, userName, company, jobRole, bio, phoneNumber);
+    if (!update) throw new Error("Failed to update user details");
+
+    res.status(200).json({ message: "Update Success" });
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
+};
+
+/**
+ *  Update User Profile Pic
+ *  @method PATCH
+ *  @route /api/user/update/profile
+ */
+export const updateUserProfilePictureController = async (req, res) => {
+  try {
+    const { userId } = req;
+    const { oldProfile } = req.body;
+
+    if (!oldProfile) {
+      return res.status(400).json({ message: "Old profile URL is required." });
+    }
+
+    const oldFileId = getFileIdFromUrl(oldProfile);
+
+    if (req.file) {
+      await storage.deleteFile(process.env.APP_WRITE_IMAGES_BUCKET, oldFileId);
+      const result = await storage.createFile(
+        process.env.APP_WRITE_IMAGES_BUCKET,
+        ID.unique(),
+        InputFile.fromBuffer(req.file.buffer, req.file.originalname)
+      );
+
+      const mediaURL = `https://cloud.appwrite.io/v1/storage/buckets/${process.env.APP_WRITE_IMAGES_BUCKET}/files/${result.$id}/view?project=${process.env.APP_WRITE_PROJECT_ID}&mode=admin`;
+      await updateProfilePicture(userId, mediaURL);
+      return res.status(200).json({
+        message: "Profile updated successfully!",
+      });
+    } else {
+      return res.status(400).json({ message: "No new image file provided." });
+    }
+  } catch (error) {
+    console.error("Error updating profile:", error.message);
+    res.status(500).json({ message: "Failed to update profile." });
   }
 };

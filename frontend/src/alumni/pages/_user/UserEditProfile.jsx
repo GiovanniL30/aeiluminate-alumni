@@ -3,7 +3,7 @@ import Input from "../../components/Input";
 import { useAuthContext } from "../../context/AuthContext";
 import Button from "../../components/Button";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
-import { useUpdateUserDetails } from "../../_api/@react-client-query/query";
+import { useUpdateUserDetails, useUpdateUserProfile } from "../../_api/@react-client-query/query";
 
 const UserEditProfile = () => {
   const { user } = useAuthContext();
@@ -21,6 +21,7 @@ const UserEditProfile = () => {
   });
   const [newProfile, setNewProfile] = useState();
   const updateUserDetailsQuery = useUpdateUserDetails();
+  const updateUserProfileQuery = useUpdateUserProfile();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -68,25 +69,39 @@ const UserEditProfile = () => {
       return;
     }
 
-    updateUserDetailsQuery.mutate(
-      {
-        firstName: userData.firstName,
-        middleName: userData.middleName,
-        lastName: userData.lastName,
-        userName: userData.username,
-        company: userData.company,
-        jobRole: userData.job_role,
-        bio: userData.bio,
-        phoneNumber: userData.phoneNumber,
-        id: id,
-      },
-      {
-        onSuccess: () => {
-          navigate(`/user/${id}`);
-          alert("Success");
+    if (hasChanges) {
+      updateUserDetailsQuery.mutate(
+        {
+          firstName: userData.firstName,
+          middleName: userData.middleName,
+          lastName: userData.lastName,
+          userName: userData.username,
+          company: userData.company,
+          jobRole: userData.job_role,
+          bio: userData.bio,
+          phoneNumber: userData.phoneNumber,
+          id: id,
         },
-      }
-    );
+        {
+          onSuccess: () => {
+            alert("Success Change User Details");
+            navigate(`/user/${id}`);
+          },
+        }
+      );
+    }
+
+    if (newProfile) {
+      updateUserProfileQuery.mutate(
+        { oldProfileURL: profile_picture, newImage: newProfile, userId: id },
+        {
+          onSuccess: () => {
+            alert("Profile Updated");
+            navigate(`/user/${id}`);
+          },
+        }
+      );
+    }
   };
 
   return (
@@ -121,7 +136,11 @@ const UserEditProfile = () => {
           <NavLink to="..">
             <Button text="Cancel" otherStyle="bg-red-500" />
           </NavLink>
-          <Button text={updateUserDetailsQuery.isPending ? "Updating" : "Save"} disabled={updateUserDetailsQuery.isPending} type="submit" />
+          <Button
+            text={updateUserDetailsQuery.isPending || updateUserProfileQuery.isPending ? "Updating" : "Save"}
+            disabled={updateUserDetailsQuery.isPending || updateUserProfileQuery.isPending}
+            type="submit"
+          />
         </div>
       </form>
     </div>

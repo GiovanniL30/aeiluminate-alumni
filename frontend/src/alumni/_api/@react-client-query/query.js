@@ -21,6 +21,7 @@ import {
   getProgramsRequest,
   postApplication,
   updateUserDetailsRequest,
+  updateUserProfileRequest,
 } from "../index.js";
 
 /**
@@ -251,6 +252,20 @@ export const useUpdateUserDetails = () => {
     mutationFn: (userDetails) => updateUserDetailsRequest(userDetails),
     onSuccess: (_, userDetails) => {
       const userId = userDetails.id;
+      client.invalidateQueries(["user", userId]);
+    },
+  });
+};
+
+/**
+ * React query to update user details
+ */
+export const useUpdateUserProfile = () => {
+  const client = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ oldProfileURL, newImage, userId }) => updateUserProfileRequest({ oldProfileURL, newImage }),
+    onSuccess: (_, { userId }) => {
       client.invalidateQueries(["user", userId]);
     },
   });

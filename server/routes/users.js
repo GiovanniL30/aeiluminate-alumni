@@ -11,11 +11,12 @@ import {
   userFollowingController,
   loginController,
   logoutController,
+  updateUserDetailsController,
+  updateUserProfilePictureController,
 } from "../controllers/userControler.js";
 
 import { authenticateUserCookie } from "../middleware/authenticateCookie.js";
 import { upload } from "../multer.js";
-import { updateProfileDetails } from "../mysqlQueries/updateQueries.js";
 
 export const router = express.Router();
 
@@ -77,18 +78,6 @@ router.delete("/user/delete/:id", deleteUserController);
  *                    UPDATE ROUTES
  * ================================================================
  */
-router.patch("/user/update/details", authenticateUserCookie, async (req, res) => {
-  const { firstName, middleName, lastName, userName, company, jobRole, bio, phoneNumber } = req.body;
-  const { userId } = req;
+router.patch("/user/update/details", authenticateUserCookie, updateUserDetailsController);
 
-  try {
-    const update = await updateProfileDetails(userId, firstName, middleName, lastName, userName, company, jobRole, bio, phoneNumber);
-    if (!update) throw new Error("Failed to update user details");
-
-    res.status(200).json({ message: "Update Success" });
-  } catch (error) {
-    return res.status(500).json({ message: error });
-  }
-});
-
-router.patch("/user/update/profile", authenticateUserCookie, upload.single("image"), (req, res) => {});
+router.patch("/user/update/profile", upload.single("image"), authenticateUserCookie, updateUserProfilePictureController);
