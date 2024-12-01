@@ -11,8 +11,6 @@ import crypto from "crypto";
 export const createUserAccountController = async (req, res, next) => {
   const { email, roleType, userName, password, firstName, lastName, middleName, program, yearGraduated, type } = req.body;
 
-  console.log(req.body);
-
   if (!email || !roleType || !userName || !password || !firstName || !lastName || !middleName || !program || !yearGraduated) {
     return res.status(400).json({ message: "Bad request: Missing required fields." });
   }
