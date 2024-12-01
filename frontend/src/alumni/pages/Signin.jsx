@@ -1,49 +1,45 @@
 import React, { useState } from "react";
-import logo from "../../assets/logo-login-small.png";
-import commet from "../../assets/commet.webp";
-import earth from "../../assets/earth.webp";
-import Input from "../components/Input";
-import Button from "../components/Button";
+import { Navigate, NavLink, useSearchParams } from "react-router-dom";
 import { useLoginUser } from "../_api/@react-client-query/query";
 import { useAuthContext } from "../context/AuthContext";
-import { Navigate, NavLink, useSearchParams } from "react-router-dom";
+import Input from "../components/Input";
+import Button from "../components/Button";
 import TopPopUp from "../components/TopPopUp";
+import logo from "../../assets/logo-login-small.png";
+import earth from "../../assets/earth.webp";
 
 const Signin = () => {
   const [data, setData] = useState({ email: "", password: "" });
-  const [redirecting, setRedirecting] = useState(false);
-  const userQuery = useLoginUser();
-  const { user, isLoading, setUser } = useAuthContext();
+  const [errorMessage, setErrorMessage] = useState("");
+  const { mutate, isPending } = useLoginUser();
+  const { user, setUser } = useAuthContext();
   const [searchParams] = useSearchParams();
   const error = searchParams.get("error");
-  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value.trim() }));
   };
 
-  const submit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    userQuery.mutate(
-      { email: data.email, password: data.password },
-      {
-        onSuccess: (data) => {
-          setErrorMessage("");
-          setUser(data.user);
-          setRedirecting(true);
-        },
-        onError: (error) => {
-          console.log(error);
-          setErrorMessage(error.message);
-        },
-      }
-    );
+    mutate(data, {
+      onSuccess: (response) => {
+        const { user, token } = response;
+        setErrorMessage("");
+        setUser(user);
+        localStorage.setItem("token", token);
+      },
+      onError: (error) => {
+        console.error(error);
+        setErrorMessage(error.response?.data?.message || "An error occurred. Please try again.");
+      },
+    });
   };
 
-  if (isLoading) return <h1>Loading....</h1>;
-  if (Object.keys(user).length !== 0) return <Navigate to="/" />;
-  if (redirecting) return <Navigate to="/" />;
+  if (Object.keys(user).length > 0) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <div className="padding bg-black min-h-screen flex w-full items-center">
@@ -51,12 +47,12 @@ const Signin = () => {
       <div className="fixed top-5 z-30">
         <img className="w-12" src={logo} alt="logo" />
       </div>
-      <div className="flex w-full ">
-        <div className="text-white relative w-full z-30 max-w-[600px] mx-auto ">
+      <div className="flex w-full">
+        <div className="text-white relative w-full z-30 max-w-[600px] mx-auto">
           <h1 className="z-20 text-4xl font-bold">
             Make The First Impact – <br /> Share Your Light with ælluminate.
           </h1>
-          <form className="z-20 w-full flex flex-col gap-5 items-center " onSubmit={submit}>
+          <form className="z-20 w-full flex flex-col gap-5 items-center" onSubmit={handleSubmit}>
             <Input
               otherStyle="border-[1px] border-white bg-black"
               label="Email"
@@ -73,9 +69,8 @@ const Signin = () => {
               value={data.password}
               handleChange={handleChange}
             />
-
             {errorMessage && <h1 className="text-red-500 text-center">{errorMessage}</h1>}
-            <Button type="submit" text={userQuery.isPending ? "Logging in..." : "Login"} otherStyle="w-full" disabled={userQuery.isPending} />
+            <Button type="submit" text={isPending ? "Logging in..." : "Login"} otherStyle="w-full" disabled={isPending} />
             <p>
               Don't have an account?{" "}
               <NavLink className="underline hover-opacity" to="/register">
@@ -85,8 +80,7 @@ const Signin = () => {
           </form>
         </div>
       </div>
-
-      <img className="fixed max-h-[500px] bottom-0 left-0 right-0 w-full " src={earth} alt="" />
+      <img className="fixed max-h-[500px] bottom-0 left-0 right-0 w-full" src={earth} alt="Earth background" />
     </div>
   );
 };

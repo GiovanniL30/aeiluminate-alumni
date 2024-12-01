@@ -1,5 +1,4 @@
 import connection from "../connections.js";
-import { account, users } from "../appwriteconfig.js";
 
 export const updateProfileDetails = async (userId, firstName, middleName, lastName, userName, company, jobRole, bio, phoneNumber) => {
   const query = `

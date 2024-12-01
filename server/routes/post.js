@@ -11,7 +11,7 @@ import {
   uploadPostController,
 } from "../controllers/postsController.js";
 import { upload } from "../multer.js";
-import { authenticateUserCookie } from "../middleware/authenticateCookie.js";
+import { authenticateUserToken } from "../middleware/authenticateCookie.js";
 
 export const postRouter = express.Router();
 
@@ -22,19 +22,19 @@ export const postRouter = express.Router();
  */
 
 /** Upload Post Route */
-postRouter.post("/post", authenticateUserCookie, upload.array("images"), uploadPostController);
+postRouter.post("/post", authenticateUserToken, upload.array("images"), uploadPostController);
 
 /** Upload Line Route */
-postRouter.post("/line", authenticateUserCookie, uploadLineController);
+postRouter.post("/line", authenticateUserToken, uploadLineController);
 
 /** Like a post */
-postRouter.post("/post/like/:id", authenticateUserCookie, likeController);
+postRouter.post("/post/like/:id", authenticateUserToken, likeController);
 
 /** Unike a post */
-postRouter.post("/post/unlike/:id", authenticateUserCookie, unlikeController);
+postRouter.post("/post/unlike/:id", authenticateUserToken, unlikeController);
 
 /** Add a comment */
-postRouter.post("/post/comment/:id", authenticateUserCookie, addCommentController);
+postRouter.post("/post/comment/:id", authenticateUserToken, addCommentController);
 
 /**
  * ================================================================
@@ -43,13 +43,13 @@ postRouter.post("/post/comment/:id", authenticateUserCookie, addCommentControlle
  */
 
 /** Get list of posts */
-postRouter.get("/posts", authenticateUserCookie, getPostController);
+postRouter.get("/posts", authenticateUserToken, getPostController);
 
 /** Get list of posts of a user */
-postRouter.get("/posts/:id", authenticateUserCookie, getUserPostsController);
+postRouter.get("/posts/:id", authenticateUserToken, getUserPostsController);
 
 /** Get post stats */
-postRouter.get("/post/stats/:id", authenticateUserCookie, getPostCommentAndLikeCountController);
+postRouter.get("/post/stats/:id", authenticateUserToken, getPostCommentAndLikeCountController);
 
 /** Get list of comments on a post */
-postRouter.get("/post/comments/:id", authenticateUserCookie, getCommentsController);
+postRouter.get("/post/comments/:id", authenticateUserToken, getCommentsController);

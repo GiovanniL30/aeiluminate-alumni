@@ -12,7 +12,6 @@ import {
   checkFollowingStatusRequest,
   addCommentRequest,
   getCommentsRequest,
-  getUserRequest,
   fetchFollower,
   fetchFollowing,
   fetchUserPosts,
@@ -23,16 +22,6 @@ import {
   updateUserDetailsRequest,
   updateUserProfileRequest,
 } from "../index.js";
-
-/**
- * React query to get user info
- */
-export const useUser = () => {
-  return useQuery({
-    queryFn: () => getUserRequest(),
-    queryKey: ["user"],
-  });
-};
 
 /**
  * React query to get user info

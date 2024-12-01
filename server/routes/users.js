@@ -15,7 +15,7 @@ import {
   updateUserProfilePictureController,
 } from "../controllers/userControler.js";
 
-import { authenticateUserCookie } from "../middleware/authenticateCookie.js";
+import { authenticateUserToken } from "../middleware/authenticateCookie.js";
 import { upload } from "../multer.js";
 
 export const router = express.Router();
@@ -27,10 +27,10 @@ export const router = express.Router();
  */
 
 /** Follow a user */
-router.post("/user/follow/:id", authenticateUserCookie, followUserController);
+router.post("/user/follow/:id", authenticateUserToken, followUserController);
 
 /** Unfollow a user */
-router.post("/user/unfollow/:id", authenticateUserCookie, unFollowUserController);
+router.post("/user/unfollow/:id", authenticateUserToken, unFollowUserController);
 
 /** Login user route*/
 router.post("/login", loginController);
@@ -45,10 +45,10 @@ router.post("/login", loginController);
 router.get("/users", getUsersContoller);
 
 /** Get user*/
-router.get("/user", authenticateUserCookie, getUserController);
+router.get("/user", authenticateUserToken, getUserController);
 
 /** Get user with id */
-router.get("/user/:id", authenticateUserCookie, getUserWithIdController);
+router.get("/user/:id", authenticateUserToken, getUserWithIdController);
 
 /** Get user follower count */
 router.get("/user/follower/:id", userFollowerController);
@@ -57,7 +57,7 @@ router.get("/user/follower/:id", userFollowerController);
 router.get("/user/following/:id", userFollowingController);
 
 /** Checks follow status */
-router.get("/user/follow_status/:id", authenticateUserCookie, checkIsFollowingController);
+router.get("/user/follow_status/:id", authenticateUserToken, checkIsFollowingController);
 
 /**
  * ================================================================
@@ -68,7 +68,7 @@ router.get("/user/follow_status/:id", authenticateUserCookie, checkIsFollowingCo
 /**
  * Logout user
  */
-router.delete("/logout", authenticateUserCookie, logoutController);
+router.delete("/logout", authenticateUserToken, logoutController);
 
 /**  Delete user */
 router.delete("/user/delete/:id", deleteUserController);
@@ -78,6 +78,6 @@ router.delete("/user/delete/:id", deleteUserController);
  *                    UPDATE ROUTES
  * ================================================================
  */
-router.patch("/user/update/details", authenticateUserCookie, updateUserDetailsController);
+router.patch("/user/update/details", authenticateUserToken, updateUserDetailsController);
 
-router.patch("/user/update/profile", upload.single("image"), authenticateUserCookie, updateUserProfilePictureController);
+router.patch("/user/update/profile", upload.single("image"), authenticateUserToken, updateUserProfilePictureController);

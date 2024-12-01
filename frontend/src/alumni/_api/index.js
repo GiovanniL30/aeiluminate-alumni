@@ -2,29 +2,16 @@ import axios from "axios";
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
-/**
- * Get user info
- * @url baseurl/api/user
- */
-export const getUserRequest = async () => {
-  try {
-    const response = await axios.get(`${baseURL}/api/user`, {
-      withCredentials: true,
-    });
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
+const getAuthToken = () => {
+  return localStorage.getItem("token");
 };
 
-/**
- * Get user info
- * @url baseurl/api/user/:id
- */
+// Get specific user info
 export const getSpecificUserRequest = async (id) => {
   try {
+    const token = getAuthToken();
     const response = await axios.get(`${baseURL}/api/user/${id}`, {
-      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
   } catch (error) {
@@ -32,55 +19,45 @@ export const getSpecificUserRequest = async (id) => {
   }
 };
 
-/**
- * Request to login user
- * @url baseurl/api/login
- */
+// Login user
 export const userLogin = async (email, password) => {
   try {
     const credentials = { email, password };
     const response = await axios.post(`${baseURL}/api/login`, credentials, {
       headers: { "Content-Type": "application/json" },
-      withCredentials: true,
     });
 
     return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error(error.response?.data.message || error.message);
+    throw error;
   }
 };
 
-/**
- * Request to logout user
- * @url baseurl/api/login
- */
+// Logout user
 export const userLogout = async () => {
   try {
-    const response = await axios.delete(`${baseURL}/api/logout`, {
-      withCredentials: true,
-    });
-
-    return response.data;
+    localStorage.removeItem("token");
+    return true;
   } catch (error) {
     console.log(error);
     throw new Error(error.response?.data.message || error.message);
   }
 };
 
-/**
- * Request to add a new post
- * @url baseurl/api/post
- */
+// Upload a post
 export const uploadPost = async (caption, images) => {
   try {
+    const token = getAuthToken();
     const formData = new FormData();
     formData.append("caption", caption);
     images.forEach((image) => formData.append("images", image.file));
 
     const response = await axios.post(`${baseURL}/api/post`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-      withCredentials: true,
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     return response.data;
@@ -90,18 +67,18 @@ export const uploadPost = async (caption, images) => {
   }
 };
 
-/**
- * Request to add a new line
- * @url baseurl/api/line
- */
+// Upload a line
 export const uploadLine = async (caption) => {
   try {
+    const token = getAuthToken();
     const response = await axios.post(
       `${baseURL}/api/line`,
       { caption },
       {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
     return response.data;
@@ -111,15 +88,13 @@ export const uploadLine = async (caption) => {
   }
 };
 
-/**
- * Request to get a list of posts with pagination
- * @url baseurl/api/posts
- */
+// Fetch posts with pagination
 export const fetchPosts = async ({ pageParam = 1, length = 5 }) => {
   try {
+    const token = getAuthToken();
     const response = await fetch(`${baseURL}/api/posts?page=${pageParam}&length=${length}`, {
       method: "GET",
-      credentials: "include",
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     if (!response.ok) {
@@ -128,10 +103,8 @@ export const fetchPosts = async ({ pageParam = 1, length = 5 }) => {
     }
 
     const data = await response.json();
-
-    const totalPosts = data.totatPosts;
+    const totalPosts = data.totalPosts;
     const totalPages = Math.ceil(totalPosts / length);
-
     const nextPage = pageParam < totalPages ? pageParam + 1 : undefined;
 
     return {
@@ -143,14 +116,12 @@ export const fetchPosts = async ({ pageParam = 1, length = 5 }) => {
   }
 };
 
-/**
- * Request to get a list of posts with pagination
- * @url baseurl/api/posts/:id
- */
+// Fetch user posts
 export const fetchUserPosts = async (userId) => {
   try {
+    const token = getAuthToken();
     const response = await axios.get(`${baseURL}/api/posts/${userId}`, {
-      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     const { posts } = response.data;
@@ -161,14 +132,12 @@ export const fetchUserPosts = async (userId) => {
   }
 };
 
-/**
- * Request to get comment and like count
- * @url baseurl/api/post/stats/:id
- */
+// Fetch post information (likes, comments, etc.)
 export const fetchPostInformation = async (postId) => {
   try {
+    const token = getAuthToken();
     const response = await axios.get(`${baseURL}/api/post/stats/${postId}`, {
-      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
   } catch (error) {
@@ -177,17 +146,15 @@ export const fetchPostInformation = async (postId) => {
   }
 };
 
-/**
- * Request to like a post
- * @url baseurl/api/post/like/:id
- */
+// Like a post
 export const likePost = async (postId) => {
   try {
+    const token = getAuthToken();
     const response = await axios.post(
       `${baseURL}/api/post/like/${postId}`,
       {},
       {
-        withCredentials: true,
+        headers: { Authorization: `Bearer ${token}` },
       }
     );
     return response.data;
@@ -197,17 +164,15 @@ export const likePost = async (postId) => {
   }
 };
 
-/**
- * Request to unlike a post
- * @url baseurl/api/post/unlike/:id
- */
+// Unlike a post
 export const unlikePost = async (postId) => {
   try {
+    const token = getAuthToken();
     const response = await axios.post(
       `${baseURL}/api/post/unlike/${postId}`,
       {},
       {
-        withCredentials: true,
+        headers: { Authorization: `Bearer ${token}` },
       }
     );
     return response.data;
@@ -217,13 +182,13 @@ export const unlikePost = async (postId) => {
   }
 };
 
-/**
- * Request to get follower of a user
- * @url baseurl/api/user/follower/:id
- */
+// Fetch followers of a user
 export const fetchFollower = async (userId) => {
   try {
-    const response = await axios.get(`${baseURL}/api/user/follower/${userId}`);
+    const token = getAuthToken();
+    const response = await axios.get(`${baseURL}/api/user/follower/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return response.data;
   } catch (error) {
     console.log(error);
@@ -231,13 +196,13 @@ export const fetchFollower = async (userId) => {
   }
 };
 
-/**
- * Request to get following of a user
- * @url baseurl/api/user/followingt/:id
- */
+// Fetch following of a user
 export const fetchFollowing = async (userId) => {
   try {
-    const response = await axios.get(`${baseURL}/api/user/following/${userId}`);
+    const token = getAuthToken();
+    const response = await axios.get(`${baseURL}/api/user/following/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return response.data;
   } catch (error) {
     console.log(error);
@@ -245,17 +210,15 @@ export const fetchFollowing = async (userId) => {
   }
 };
 
-/**
- * Request to follow a user
- * @url baseurl/api/user/follow/:id
- */
+// Follow a user
 export const followUserRequest = async (userId) => {
   try {
+    const token = getAuthToken();
     const response = await axios.post(
       `${baseURL}/api/user/follow/${userId}`,
       {},
       {
-        withCredentials: true,
+        headers: { Authorization: `Bearer ${token}` },
       }
     );
     return response.data;
@@ -265,17 +228,15 @@ export const followUserRequest = async (userId) => {
   }
 };
 
-/**
- * Request to unfollow a user
- * @url baseurl/api/user/unfollow/:id
- */
+// Unfollow a user
 export const unfollowUserRequest = async (userId) => {
   try {
+    const token = getAuthToken();
     const response = await axios.post(
       `${baseURL}/api/user/unfollow/${userId}`,
       {},
       {
-        withCredentials: true,
+        headers: { Authorization: `Bearer ${token}` },
       }
     );
     return response.data;
@@ -285,14 +246,12 @@ export const unfollowUserRequest = async (userId) => {
   }
 };
 
-/**
- * Request to check following status
- * @url baseurl/api/user/follow_status/:id
- */
+// Check following status
 export const checkFollowingStatusRequest = async (userId) => {
   try {
+    const token = getAuthToken();
     const response = await axios.get(`${baseURL}/api/user/follow_status/${userId}`, {
-      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
   } catch (error) {
@@ -301,18 +260,18 @@ export const checkFollowingStatusRequest = async (userId) => {
   }
 };
 
-/**
- * Request to add a new comment
- * @url baseurl/api/post/comment/:id
- */
+// Add comment to post
 export const addCommentRequest = async (comment, postId) => {
   try {
+    const token = getAuthToken();
     const response = await axios.post(
       `${baseURL}/api/post/comment/${postId}`,
       { comment },
       {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
     return response.data;
@@ -322,14 +281,12 @@ export const addCommentRequest = async (comment, postId) => {
   }
 };
 
-/**
- * Request to get comments of a post
- * @url baseurl/api/post/comments/:id
- */
+// Get comments of a post
 export const getCommentsRequest = async (postId) => {
   try {
+    const token = getAuthToken();
     const response = await axios.get(`${baseURL}/api/post/comments/${postId}`, {
-      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
   } catch (error) {
@@ -338,13 +295,13 @@ export const getCommentsRequest = async (postId) => {
   }
 };
 
-/**
- * Request to get list of programs
- * @url baseurl/api/programs
- */
+// Get list of programs
 export const getProgramsRequest = async () => {
   try {
-    const response = await axios.get(`${baseURL}/api/programs`);
+    const token = getAuthToken();
+    const response = await axios.get(`${baseURL}/api/programs`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return response.data;
   } catch (error) {
     console.log(error);
@@ -352,10 +309,7 @@ export const getProgramsRequest = async () => {
   }
 };
 
-/**
- * Request to apply for a new user account
- * @url baseurl/api/apply
- */
+//Request to apply for a new user account
 export const postApplication = async ({
   email,
   roleType,
@@ -371,6 +325,7 @@ export const postApplication = async ({
   schoolIdImage,
 }) => {
   try {
+    const token = getAuthToken();
     const formData = new FormData();
 
     formData.append("email", email);
@@ -387,7 +342,10 @@ export const postApplication = async ({
     formData.append("images", schoolIdImage);
 
     const response = await axios.post(`${baseURL}/api/apply`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     return response.data;
@@ -397,15 +355,13 @@ export const postApplication = async ({
   }
 };
 
-/**
- * Request to update user details
- * @url baseurl/api/user/update/details
- */
+//Request to update user details
 export const updateUserDetailsRequest = async ({ firstName, middleName, lastName, userName, company, jobRole, bio, phoneNumber }) => {
   try {
+    const token = getAuthToken();
     const data = { firstName, middleName, lastName, userName, company, jobRole, bio, phoneNumber };
     const response = await axios.patch(`${baseURL}/api/user/update/details`, data, {
-      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
   } catch (error) {
@@ -414,12 +370,10 @@ export const updateUserDetailsRequest = async ({ firstName, middleName, lastName
   }
 };
 
-/**
- * Request to update user profile
- * @url baseurl/api/user/update/profile
- */
+//Request to update user profile
 export const updateUserProfileRequest = async ({ oldProfileURL, newImage }) => {
   try {
+    const token = getAuthToken();
     const formData = new FormData();
 
     formData.append("oldProfile", oldProfileURL);
@@ -428,8 +382,8 @@ export const updateUserProfileRequest = async ({ oldProfileURL, newImage }) => {
     const response = await axios.patch(`${baseURL}/api/user/update/profile`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
       },
-      withCredentials: true,
     });
     return response.data;
   } catch (error) {

@@ -6,9 +6,9 @@ import FollowList from "../../components/FollowList";
 const UsersFollowing = () => {
   const { id } = useParams();
 
-  const { data, isLoading } = useUserFollowing(id);
+  const { data, isLoading, isFetching } = useUserFollowing(id);
 
-  if (isLoading) return <h1>Loading...</h1>;
+  if (isLoading || isFetching) return <h1>Loading...</h1>;
 
   return (
     <div className="max-w-[1000px] mx-auto mt-20">

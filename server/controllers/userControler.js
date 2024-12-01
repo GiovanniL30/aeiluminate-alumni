@@ -60,13 +60,7 @@ export const loginController = async (req, res) => {
       const { password, ...user } = checkUser;
 
       const token = generateToken(user.userID, user.role);
-
-      res.cookie("token", token, {
-        httpOnly: true,
-        secure: process.env.MODE === "production",
-        // sameSite: "None",
-      });
-      res.status(200).json({ user });
+      res.status(200).json({ user, token });
     }
   } catch (error) {
     console.error(error.message);
@@ -309,16 +303,16 @@ export const updateUserDetailsController = async (req, res) => {
 export const updateUserProfilePictureController = async (req, res) => {
   try {
     const { userId } = req;
-    const { oldProfile } = req.body;
+    // const { oldProfile } = req.body;
 
-    if (!oldProfile) {
-      return res.status(400).json({ message: "Old profile URL is required." });
-    }
+    // if (!oldProfile) {
+    //   return res.status(400).json({ message: "Old profile URL is required." });
+    // }
 
-    const oldFileId = getFileIdFromUrl(oldProfile);
+    // const oldFileId = getFileIdFromUrl(oldProfile);
 
     if (req.file) {
-      await storage.deleteFile(process.env.APP_WRITE_IMAGES_BUCKET, oldFileId);
+      //await storage.deleteFile(process.env.APP_WRITE_IMAGES_BUCKET, oldFileId);
       const result = await storage.createFile(
         process.env.APP_WRITE_IMAGES_BUCKET,
         ID.unique(),

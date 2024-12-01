@@ -1,26 +1,29 @@
 import jwt from "jsonwebtoken";
 
-export const authenticateUserCookie = (req, res, next) => {
-  const token = req.cookies.token;
+export const authenticateUserToken = (req, res, next) => {
+  const authHeader = req.headers.authorization;
 
-  if (!token) {
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res.status(401).json({
       tokenError: true,
-      message: "Please Login First",
+      message: "Authorization token is missing or invalid.",
     });
   }
 
-  jwt.verify(token, process.env.TOKEN, (err, data) => {
+  const token = authHeader.split(" ")[1];
+
+  jwt.verify(token, process.env.TOKEN, (err, decoded) => {
     if (err) {
-      if (err.name === "TokenExpiredError") {
-        return res.status(401).json({ tokenError: true, message: "Session has expired. Please log in again." });
-      }
-      console.error(err);
-      return res.status(403).json({ tokenError: true, message: "Access verification failed. Please log in again." });
+      const errorMessage = err.name === "TokenExpiredError" ? "Your session has expired. Please log in again." : "Invalid token. Access denied.";
+
+      return res.status(401).json({
+        tokenError: true,
+        message: errorMessage,
+      });
     }
 
-    req.userId = data.userId;
-    req.role = data.role;
+    req.userId = decoded.userId;
+    req.role = decoded.role;
 
     next();
   });

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { useUser } from "../_api/@react-client-query/query";
+import { useGetUser } from "../_api/@react-client-query/query";
 
 const Auth = createContext();
 
@@ -11,7 +11,9 @@ const AuthContext = ({ children }) => {
     return storedUser ? JSON.parse(storedUser) : {};
   });
 
-  const { data, isLoading, isError, error, refetch } = useUser();
+  const { data, isLoading, isError, error, refetch } = useGetUser(user?.userID, {
+    enabled: !!user?.userID,
+  });
 
   useEffect(() => {
     if (Object.keys(user).length > 0) {
@@ -22,22 +24,20 @@ const AuthContext = ({ children }) => {
   }, [user]);
 
   useEffect(() => {
-    if (!isLoading) {
-      if (isError) {
-        const tokenError = error?.response?.data?.tokenError;
-
-        if (tokenError) {
-          console.log("remove user");
-          setUser({});
-        }
-      } else if (data?.user) {
-        setUser(data.user);
-      }
+    if (data?.user) {
+      setUser(data.user);
+      localStorage.setItem("user", JSON.stringify(data.user));
     }
-  }, [data, isLoading, isError, error]);
+
+    if (isError && error?.response?.data?.tokenError) {
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      setUser({});
+    }
+  }, [data, isError, error]);
 
   const fetchUser = () => {
-    refetch();
+    if (user?.userID) refetch();
   };
 
   return <Auth.Provider value={{ user, setUser, fetchUser, isLoading }}>{children}</Auth.Provider>;
