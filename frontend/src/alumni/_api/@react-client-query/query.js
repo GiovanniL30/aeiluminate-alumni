@@ -20,6 +20,7 @@ import {
   userLogout,
   getProgramsRequest,
   postApplication,
+  updateUserDetailsRequest,
 } from "../index.js";
 
 /**
@@ -237,5 +238,20 @@ export const usePrograms = () => {
 export const useApplication = () => {
   return useMutation({
     mutationFn: (applicationDetails) => postApplication(applicationDetails),
+  });
+};
+
+/**
+ * React query to update user details
+ */
+export const useUpdateUserDetails = () => {
+  const client = useQueryClient();
+
+  return useMutation({
+    mutationFn: (userDetails) => updateUserDetailsRequest(userDetails),
+    onSuccess: (_, userDetails) => {
+      const userId = userDetails.id;
+      client.invalidateQueries(["user", userId]);
+    },
   });
 };

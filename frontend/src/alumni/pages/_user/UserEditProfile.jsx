@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import Input from "../../components/Input";
 import { useAuthContext } from "../../context/AuthContext";
 import Button from "../../components/Button";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { useUpdateUserDetails } from "../../_api/@react-client-query/query";
 
 const UserEditProfile = () => {
   const { user } = useAuthContext();
-
+  const { id } = useParams();
   const { bio, company, firstName, job_role, lastName, middleName, phoneNumber, profile_picture, username } = user;
-
   const [userData, setUserData] = useState({
     firstName,
     lastName,
@@ -19,8 +19,9 @@ const UserEditProfile = () => {
     username,
     job_role: job_role ? job_role : "",
   });
-
   const [newProfile, setNewProfile] = useState();
+  const updateUserDetailsQuery = useUpdateUserDetails();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,9 +47,51 @@ const UserEditProfile = () => {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const hasChanges =
+      JSON.stringify(userData) !==
+      JSON.stringify({
+        firstName,
+        lastName,
+        middleName: middleName ? middleName : "",
+        phoneNumber: phoneNumber ? phoneNumber : "",
+        bio: bio ? bio : "",
+        company: company ? company : "",
+        username,
+        job_role: job_role ? job_role : "",
+      });
+
+    if (!hasChanges && !newProfile) {
+      alert("No changes detected.");
+      return;
+    }
+
+    updateUserDetailsQuery.mutate(
+      {
+        firstName: userData.firstName,
+        middleName: userData.middleName,
+        lastName: userData.lastName,
+        userName: userData.username,
+        company: userData.company,
+        jobRole: userData.job_role,
+        bio: userData.bio,
+        phoneNumber: userData.phoneNumber,
+        id: id,
+      },
+      {
+        onSuccess: () => {
+          navigate(`/user/${id}`);
+          alert("Success");
+        },
+      }
+    );
+  };
+
   return (
     <div className="max-w-[1000px] mx-auto mt-10">
-      <div className="flex flex-col gap-7 mt-6">
+      <form className="flex flex-col gap-7 mt-6" onSubmit={handleSubmit}>
         <h1 className="font-semibold text-light_text">Profile Picture</h1>
         <div className="relative group overflow-hidden w-[300px] mx-auto">
           <img
@@ -67,20 +110,20 @@ const UserEditProfile = () => {
           <input type="file" id="upload" className="hidden" onChange={handleImageChange} accept="image/*" />
         </div>
         <Input value={userData.firstName} name="firstName" handleChange={handleChange} label="First Name" />
-        <Input value={userData.middleName} name="middleName" handleChange={handleChange} label="Middle Name" />
+        <Input value={userData.middleName} name="middleName" handleChange={handleChange} label="Middle Name" required={false} />
         <Input value={userData.lastName} name="lastName" handleChange={handleChange} label="Last Name" />
         <Input value={userData.username} name="username" handleChange={handleChange} label="Username" />
-        <Input value={userData.phoneNumber} name="phoneNumber" handleChange={handleChange} label="Phone Number" type="number" />
-        <Input value={userData.company} name="company" handleChange={handleChange} label="Company" />
-        <Input value={userData.job_role} name="job_role" handleChange={handleChange} label="Job Role" />
-        <Input value={userData.bio} name="bio" handleChange={handleChange} label="Bio" type="textarea" otherStyle="h-20" />
+        <Input value={userData.phoneNumber} name="phoneNumber" handleChange={handleChange} label="Phone Number" type="number" required={false} />
+        <Input value={userData.company} name="company" handleChange={handleChange} label="Company" required={false} />
+        <Input value={userData.job_role} name="job_role" handleChange={handleChange} label="Job Role" required={false} />
+        <Input value={userData.bio} name="bio" handleChange={handleChange} label="Bio" type="textarea" otherStyle="h-20" required={false} />
         <div className="flex gap-5 self-end">
           <NavLink to="..">
             <Button text="Cancel" otherStyle="bg-red-500" />
           </NavLink>
-          <Button text="Save" />
+          <Button text={updateUserDetailsQuery.isPending ? "Updating" : "Save"} disabled={updateUserDetailsQuery.isPending} type="submit" />
         </div>
-      </div>
+      </form>
     </div>
   );
 };
