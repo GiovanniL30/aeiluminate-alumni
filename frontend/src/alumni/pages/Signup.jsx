@@ -3,11 +3,13 @@ import logo from "../../assets/logo-login-small.png";
 import earth from "../../assets/earth.webp";
 import Input from "../components/Input";
 import Button from "../components/Button";
-import { usePrograms } from "../_api/@react-client-query/query";
+import { useApplication, usePrograms } from "../_api/@react-client-query/query";
 import { NavLink } from "react-router-dom";
+import { postApplication } from "../_api";
 
 const Signup = () => {
   const programsQuery = usePrograms();
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -23,6 +25,8 @@ const Signup = () => {
     diploma: null,
     schoolId: null,
   });
+
+  const applyQuery = useApplication();
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -65,34 +69,83 @@ const Signup = () => {
       !formData.confirmPassword ||
       !formData.email ||
       !formData.graduationYear ||
-      !formData.programID ||
-      !formData.termsAccepted
+      !formData.programID
     ) {
+      setErrorMessage("Please fill in all the fields.");
       alert("Please fill in all the fields.");
       return;
     }
 
+    if (!formData.termsAccepted) {
+      setErrorMessage("Please Agree to Terms and Conditions");
+      alert("Please Agree to Terms and Conditions");
+      return;
+    }
+
     if (!formData.diploma || !formData.schoolId) {
+      setErrorMessage("Please upload diploma and school id image");
       alert("Please upload diploma and school id image");
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
+      setErrorMessage("Passwords do not match.");
       alert("Passwords do not match.");
       return;
     }
 
     if (formData.diploma && formData.diploma.size > 5242880) {
+      setErrorMessage("Diploma file size must be less than 5MB.");
       alert("Diploma file size must be less than 5MB.");
       return;
     }
 
     if (formData.schoolId && formData.schoolId.size > 5242880) {
+      setErrorMessage("School ID file size must be less than 5MB.");
       alert("School ID file size must be less than 5MB.");
       return;
     }
 
-    console.log("Form Submitted", formData);
+    applyQuery.mutate(
+      {
+        email: formData.email,
+        roleType: "Alumni",
+        userName: formData.userName,
+        password: formData.password,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        middleName: formData.middleName,
+        program: formData.programID,
+        yearGraduated: formData.graduationYear,
+        type: "Application",
+        diplomaImage: formData.diploma,
+        schoolIdImage: formData.schoolId,
+      },
+      {
+        onSuccess: () => {
+          setErrorMessage("");
+          alert("Application is Successfull, please check your email");
+          setFormData({
+            firstName: "",
+            middleName: "",
+            lastName: "",
+            userName: "",
+            password: "",
+            confirmPassword: "",
+            email: "",
+            graduationYear: "",
+            programID: 1,
+            termsAccepted: false,
+            diploma: null,
+            schoolId: null,
+          });
+        },
+        onError: (error) => {
+          setErrorMessage(error.message);
+          alert(error.message);
+        },
+      }
+    );
   };
   if (programsQuery.isLoading) return <h1>Loading...</h1>;
 
@@ -107,6 +160,7 @@ const Signup = () => {
           <h1 className="text-4xl font-bold lg:text-5xl max-w-[700px]">
             Make The First Impact – <br /> Share Your Light with ælluminate.
           </h1>
+
           <NavLink to="/login">
             <p className="hidden text-center mt-20 text-4xl lg:flex gap-10 justify-center hover-opacity">
               <span>&larr; </span> <span>Login</span>
@@ -119,6 +173,7 @@ const Signup = () => {
             <div className="flex flex-col gap-2">
               <h1>Primary Information</h1>
               <Input
+                disabled={applyQuery.isPending}
                 name="firstName"
                 placeholder="First Name"
                 value={formData.firstName}
@@ -126,6 +181,7 @@ const Signup = () => {
                 otherStyle="border-[1px] border-white bg-transparent"
               />
               <Input
+                disabled={applyQuery.isPending}
                 name="middleName"
                 placeholder="Middle Name"
                 value={formData.middleName}
@@ -133,6 +189,7 @@ const Signup = () => {
                 otherStyle="border-[1px] border-white bg-transparent"
               />
               <Input
+                disabled={applyQuery.isPending}
                 name="lastName"
                 placeholder="Last Name"
                 value={formData.lastName}
@@ -140,6 +197,7 @@ const Signup = () => {
                 otherStyle="border-[1px] border-white bg-transparent"
               />
               <Input
+                disabled={applyQuery.isPending}
                 name="userName"
                 placeholder="User Name"
                 value={formData.userName}
@@ -148,6 +206,7 @@ const Signup = () => {
               />
               <div className="flex gap-3">
                 <Input
+                  disabled={applyQuery.isPending}
                   type="password"
                   name="password"
                   placeholder="Password"
@@ -156,6 +215,7 @@ const Signup = () => {
                   otherStyle="border-[1px] border-white bg-transparent"
                 />
                 <Input
+                  disabled={applyQuery.isPending}
                   type="password"
                   name="confirmPassword"
                   placeholder="Confirm Password"
@@ -169,6 +229,7 @@ const Signup = () => {
             <div className="flex flex-col gap-3">
               <h1>Secondary Information</h1>
               <Input
+                disabled={applyQuery.isPending}
                 type="email"
                 name="email"
                 placeholder="Email"
@@ -178,6 +239,7 @@ const Signup = () => {
               />
 
               <Input
+                disabled={applyQuery.isPending}
                 name="graduationYear"
                 placeholder="Graduation Year"
                 type="number"
@@ -206,23 +268,31 @@ const Signup = () => {
             <div className="flex flex-col gap-3 w-full">
               <h1>Documents</h1>
               <div className="flex gap-10 justify-between w-full h-full">
-                <ImageUpload name="diploma" handleChange={handleChange} value={formData.diploma} />
-                <ImageUpload name="schoolId" handleChange={handleChange} value={formData.schoolId} />
+                <ImageUpload disabled={applyQuery.isPending} name="diploma" handleChange={handleChange} value={formData.diploma} />
+                <ImageUpload disabled={applyQuery.isPending} name="schoolId" handleChange={handleChange} value={formData.schoolId} />
               </div>
             </div>
 
             <div className="flex items-center gap-2">
-              <input type="checkbox" id="terms" name="termsAccepted" checked={formData.termsAccepted} onChange={handleCheckboxChange} />
+              <input
+                disabled={applyQuery.isPending}
+                type="checkbox"
+                id="terms"
+                name="termsAccepted"
+                checked={formData.termsAccepted}
+                onChange={handleCheckboxChange}
+              />
               <label className="text-sm" htmlFor="terms">
                 I agree to ælluminate Terms and Conditions
               </label>
             </div>
 
-            <Button text="Sign Up" type="submit" />
+            {errorMessage && <h1 className="text-center text-red-500">{errorMessage}</h1>}
+            <Button disabled={applyQuery.isPending} text={`${applyQuery.isPending ? "Submitting Application" : "Sign Up"}`} type="submit" />
 
             <p className="text-center lg:hidden">
               Already have an account?{" "}
-              <NavLink to="/login" className="underline hover-opacity">
+              <NavLink to="/login" className={`underline hover-opacity ${applyQuery.isPending && "pointer-events-none"}`}>
                 Login
               </NavLink>
             </p>
@@ -241,14 +311,17 @@ const Signup = () => {
 
 export default Signup;
 
-const ImageUpload = ({ name, handleChange, value }) => {
+const ImageUpload = ({ name, handleChange, value, disabled }) => {
   const handleRemoveFile = () => {
     handleChange({ target: { name, value: null } });
   };
 
   return (
     <div className="w-full">
-      <label htmlFor={name} className="text-sm bg-white text-black py-2 px-4 rounded-md hover-opacity cursor-pointer w-full">
+      <label
+        htmlFor={name}
+        className={`text-sm bg-white text-black py-2 px-4 rounded-md hover-opacity cursor-pointer w-full ${disabled && "pointer-events-none"}`}
+      >
         Upload {name === "diploma" ? "Diploma" : "School ID"}
       </label>
       <input id={name} type="file" name={name} accept=".jpg, .jpeg, .png" className="hidden" onChange={(e) => handleChange(e)} />

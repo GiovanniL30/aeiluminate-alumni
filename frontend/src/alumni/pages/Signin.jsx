@@ -16,6 +16,7 @@ const Signin = () => {
   const { user, isLoading, setUser } = useAuthContext();
   const [searchParams] = useSearchParams();
   const error = searchParams.get("error");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,11 +29,13 @@ const Signin = () => {
       { email: data.email, password: data.password },
       {
         onSuccess: (data) => {
+          setErrorMessage("");
           setUser(data.user);
           setRedirecting(true);
         },
         onError: (error) => {
-          console.error("Login failed:", error);
+          console.log(error);
+          setErrorMessage(error.message);
         },
       }
     );
@@ -70,6 +73,8 @@ const Signin = () => {
               value={data.password}
               handleChange={handleChange}
             />
+
+            {errorMessage && <h1 className="text-red-500 text-center">{errorMessage}</h1>}
             <Button type="submit" text={userQuery.isPending ? "Logging in..." : "Login"} otherStyle="w-full" disabled={userQuery.isPending} />
             <p>
               Don't have an account?{" "}

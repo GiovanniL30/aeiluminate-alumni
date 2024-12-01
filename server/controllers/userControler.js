@@ -6,6 +6,7 @@ import {
   getUsers,
   checkEmail,
   validateEmailAndPassword,
+  getApplication,
 } from "../mysqlQueries/readQueries.js";
 import { removeUserAccount, unfollowUser } from "../mysqlQueries/deleteQueries.js";
 import { followUser } from "../mysqlQueries/addQueries.js";
@@ -29,11 +30,17 @@ export const loginController = async (req, res) => {
 
   try {
     const emailExists = await checkEmail(email);
-
     if (!emailExists) return res.status(401).json({ message: "Email does not exist" });
 
-    const checkUser = await validateEmailAndPassword(email, password);
+    const checkApplication = await getApplication(email);
 
+    if (checkApplication) {
+      return res.status(409).json({
+        message: `Account is currently Pending for Application, please check your email for updates about your account application (Application ID: ${checkApplication.appID})`,
+      });
+    }
+
+    const checkUser = await validateEmailAndPassword(email, password);
     if (!checkUser) return res.status(403).json({ message: "Invalid Email or password" });
     else {
       const { password, ...user } = checkUser;

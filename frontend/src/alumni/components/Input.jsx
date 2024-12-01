@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Input = ({ label, placeholder, name, value, type = "text", handleChange, min = 1, otherStyle }) => {
+const Input = ({ label, placeholder, name, value, type = "text", handleChange, min = 1, otherStyle, disabled }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -16,6 +16,7 @@ const Input = ({ label, placeholder, name, value, type = "text", handleChange, m
       <div className="relative w-full">
         {type === "textarea" ? (
           <textarea
+            disabled={disabled}
             required
             className={`resize-none w-full p-2 text-sm text-light_text border-[1px] rounded-sm border-gray-100 focus:outline-primary_blue ${otherStyle}`}
             name={name}
@@ -26,6 +27,7 @@ const Input = ({ label, placeholder, name, value, type = "text", handleChange, m
         ) : (
           <>
             <input
+              disabled={disabled}
               required
               className={`w-full p-2 text-sm  border-[1px] rounded-sm border-gray-100 focus:outline-primary_blue ${otherStyle}`}
               type={isPasswordField && showPassword ? "text" : type}
@@ -38,6 +40,7 @@ const Input = ({ label, placeholder, name, value, type = "text", handleChange, m
             />
             {isPasswordField && (
               <button
+                disabled={disabled}
                 type="button"
                 className="hover-opacity absolute top-2.5 right-2 text-xs text-primary_blue font-semibold"
                 onClick={togglePasswordVisibility}

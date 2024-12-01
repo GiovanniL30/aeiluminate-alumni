@@ -18,12 +18,31 @@ export const uploadPostController = async (req, res) => {
     const { caption } = req.body;
     const postId = crypto.randomUUID();
 
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ message: "No files uploaded." });
+    }
+
+    const allowedTypes = ["image/jpeg", "image/png"];
+    const maxFileSize = 5 * 1024 * 1024; // 5 MB
     const mediaInfo = [];
 
     for (const file of req.files) {
+      const isValidType = allowedTypes.includes(file.mimetype);
+      if (!isValidType) {
+        return res.status(422).json({
+          message: `Invalid file type: ${file.originalname}. Allowed types: ${allowedTypes.join(", ")}`,
+        });
+      }
+
+      if (file.size > maxFileSize) {
+        return res.status(422).json({
+          message: `File size too large: ${file.originalname}. Max size is ${maxFileSize / 1024 / 1024} MB.`,
+        });
+      }
+
       const result = await storage.createFile(process.env.APP_WRITE_IMAGES_BUCKET, ID.unique(), InputFile.fromBuffer(file.buffer, file.originalname));
 
-      const mediaURL = `https://cloud.appwrite.io/v1/storage/buckets/${process.env.APP_WRITE_IMAGES_BUCKET}/files/${result.$id}/view?project=${process.env.APP_WRITE_PROJECT_ID}&project=${process.env.APP_WRITE_PROJECT_ID}&mode=admin`;
+      const mediaURL = `https://cloud.appwrite.io/v1/storage/buckets/${process.env.APP_WRITE_IMAGES_BUCKET}/files/${result.$id}/view?project=${process.env.APP_WRITE_PROJECT_ID}&mode=admin`;
 
       mediaInfo.push({
         mediaID: result.$id,

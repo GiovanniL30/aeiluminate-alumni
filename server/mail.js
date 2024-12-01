@@ -11,23 +11,24 @@ export const transporter = nodemailer.createTransport({
   },
 });
 
-export const applicationEmail = (receiver, applicationId) => ({
+export const applicationEmail = (receiver, applicationId, roleType, firstName, lastName, middleName) => ({
   from: "aeiluminate@gmail.com",
   to: receiver,
   subject: "Application Successful: aeIluminate Alumni Account",
   html: `
-      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-        <h2 style="color: #0056b3;">Application Successful!</h2>
-        <p>Dear applicant,</p>
-        <p>We are pleased to inform you that your application for an <b>aeIluminate Alumni Account</b> has been received successfully.</p>
-        <p><strong>Application ID:</strong> ${applicationId}</p>
-        <p>Please wait for further notifications regarding your account application. The verification process typically takes up to <strong>3 working days</strong>.</p>
-        <p>If you have any questions, feel free to contact us at <a href="mailto:aeiluminate100@gmail.com">aeiluminate100@gmail.com</a>.</p>
-        <br/>
-        <p>Best regards,</p>
-        <p>The aeIluminate Team</p>
-      </div>
-    `,
+    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+      <h2 style="color: #0056b3;">Application Successful!</h2>
+      <p>Dear ${firstName} ${middleName ? middleName + " " : ""}${lastName},</p>
+      <p>We are pleased to inform you that your application for an <b>aeIluminate Alumni Account</b> has been successfully received.</p>
+      <p><strong>Application ID:</strong> ${applicationId}</p>
+      <p><strong>Role Type:</strong> ${roleType}</p>
+      <p>Please wait for further notifications regarding your account application. The verification process typically takes up to <strong>3 working days</strong>.</p>
+      <p>If you have any questions, feel free to contact us at <a href="mailto:aeiluminate100@gmail.com">aeiluminate100@gmail.com</a>.</p>
+      <br/>
+      <p>Best regards,</p>
+      <p>The aeIluminate Team</p>
+    </div>
+  `,
 });
 
 export const applicationAcceptedEmail = (receiver, applicationId) => ({

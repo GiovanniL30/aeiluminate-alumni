@@ -14,7 +14,7 @@ export const getUserRequest = async () => {
     return response.data;
   } catch (error) {
     console.log(error);
-    throw error;
+    throw new Error(error.response?.data.message || error.message);
   }
 };
 
@@ -30,7 +30,7 @@ export const getSpecificUserRequest = async (id) => {
     return response.data;
   } catch (error) {
     console.log(error);
-    throw error;
+    throw new Error(error.response?.data.message || error.message);
   }
 };
 
@@ -49,7 +49,7 @@ export const userLogin = async (email, password) => {
     return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error(error.response?.data?.message || "An error occurred while logging in.");
+    throw new Error(error.response?.data.message || error.message);
   }
 };
 
@@ -66,7 +66,7 @@ export const userLogout = async () => {
     return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error(error.response?.data?.message || "An error occurred while logging out.");
+    throw new Error(error.response?.data.message || error.message);
   }
 };
 
@@ -88,7 +88,7 @@ export const uploadPost = async (caption, images) => {
     return response.data;
   } catch (error) {
     console.log(error.message);
-    throw new Error(error.response?.data?.message || "An error occurred while adding the post.");
+    throw new Error(error.response?.data.message || error.message);
   }
 };
 
@@ -109,7 +109,7 @@ export const uploadLine = async (caption) => {
     return response.data;
   } catch (error) {
     console.log(error.message);
-    throw new Error(error.response?.data?.message || "An error occurred while adding the line.");
+    throw new Error(error.response?.data.message || error.message);
   }
 };
 
@@ -159,7 +159,7 @@ export const fetchUserPosts = async (userId) => {
     return posts;
   } catch (error) {
     console.error("Error fetching user posts:", error.message);
-    throw new Error(error.response?.data?.message || "An error occurred while fetching posts.");
+    throw new Error(error.response?.data.message || error.message);
   }
 };
 
@@ -175,7 +175,7 @@ export const fetchPostInformation = async (postId) => {
     return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error(error.response?.data || error.message);
+    throw new Error(error.response?.data.message || error.message);
   }
 };
 
@@ -195,7 +195,7 @@ export const likePost = async (postId) => {
     return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error(error.response?.data || error.message);
+    throw new Error(error.response?.data.message || error.message);
   }
 };
 
@@ -215,7 +215,7 @@ export const unlikePost = async (postId) => {
     return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error(error.response?.data || error.message);
+    throw new Error(error.response?.data.message || error.message);
   }
 };
 
@@ -229,7 +229,7 @@ export const fetchFollower = async (userId) => {
     return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error(error.response?.data || error.message);
+    throw new Error(error.response?.data.message || error.message);
   }
 };
 
@@ -243,7 +243,7 @@ export const fetchFollowing = async (userId) => {
     return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error(error.response?.data || error.message);
+    throw new Error(error.response?.data.message || error.message);
   }
 };
 
@@ -263,7 +263,7 @@ export const followUserRequest = async (userId) => {
     return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error(error.response?.data || error.message);
+    throw new Error(error.response?.data.message || error.message);
   }
 };
 
@@ -283,7 +283,7 @@ export const unfollowUserRequest = async (userId) => {
     return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error(error.response?.data || error.message);
+    throw new Error(error.response?.data.message || error.message);
   }
 };
 
@@ -299,7 +299,7 @@ export const checkFollowingStatusRequest = async (userId) => {
     return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error(error.response?.data || error.message);
+    throw new Error(error.response?.data.message || error.message);
   }
 };
 
@@ -320,7 +320,7 @@ export const addCommentRequest = async (comment, postId) => {
     return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error(error.response?.data || error.message);
+    throw new Error(error.response?.data.message || error.message);
   }
 };
 
@@ -336,7 +336,7 @@ export const getCommentsRequest = async (postId) => {
     return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error(error.response?.data || error.message);
+    throw new Error(error.response?.data.message || error.message);
   }
 };
 
@@ -350,6 +350,55 @@ export const getProgramsRequest = async () => {
     return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error(error.response?.data || error.message);
+    throw new Error(error.response?.data.message || error.message);
+  }
+};
+
+/**
+ * Request to apply for a new user account
+ * @url baseurl/api/apply
+ */
+export const postApplication = async ({
+  email,
+  roleType,
+  userName,
+  password,
+  firstName,
+  lastName,
+  middleName,
+  program,
+  yearGraduated,
+  type,
+  diplomaImage,
+  schoolIdImage,
+}) => {
+  try {
+    const formData = new FormData();
+
+    formData.append("email", email);
+    formData.append("roleType", roleType);
+    formData.append("userName", userName);
+    formData.append("password", password);
+    formData.append("firstName", firstName);
+    formData.append("lastName", lastName);
+    formData.append("middleName", middleName);
+    formData.append("program", program);
+    formData.append("yearGraduated", yearGraduated);
+    formData.append("type", type);
+    formData.append("images", diplomaImage);
+    formData.append("images", schoolIdImage);
+
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+
+    const response = await axios.post(`${baseURL}/api/apply`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error submitting application:", error.response?.data || error.message);
+    throw new Error(error.response?.data.message || error.message);
   }
 };

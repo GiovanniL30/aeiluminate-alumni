@@ -19,6 +19,7 @@ import {
   getSpecificUserRequest,
   userLogout,
   getProgramsRequest,
+  postApplication,
 } from "../index.js";
 
 /**
@@ -227,5 +228,14 @@ export const usePrograms = () => {
   return useQuery({
     queryFn: () => getProgramsRequest(),
     queryKey: ["programs"],
+  });
+};
+
+/**
+ * React query to post new application
+ */
+export const useApplication = () => {
+  return useMutation({
+    mutationFn: (applicationDetails) => postApplication(applicationDetails),
   });
 };
