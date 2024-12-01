@@ -1,5 +1,8 @@
 import connection from "../connections.js";
 
+/**
+ * Updates user details
+ */
 export const updateProfileDetails = async (userId, firstName, middleName, lastName, userName, company, jobRole, bio, phoneNumber) => {
   const query = `
     UPDATE users 
@@ -22,6 +25,9 @@ export const updateProfileDetails = async (userId, firstName, middleName, lastNa
   }
 };
 
+/**
+ * Updates user profile picture
+ */
 export const updateProfilePicture = async (userId, profilePicture) => {
   const query = `
     UPDATE users 

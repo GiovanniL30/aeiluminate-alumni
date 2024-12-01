@@ -15,7 +15,7 @@ import {
   updateUserProfilePictureController,
 } from "../controllers/userControler.js";
 
-import { authenticateUserToken } from "../middleware/authenticateCookie.js";
+import { authenticateUserToken } from "../middleware/authenticateToken.js";
 import { upload } from "../multer.js";
 
 export const router = express.Router();

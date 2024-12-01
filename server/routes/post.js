@@ -11,7 +11,7 @@ import {
   uploadPostController,
 } from "../controllers/postsController.js";
 import { upload } from "../multer.js";
-import { authenticateUserToken } from "../middleware/authenticateCookie.js";
+import { authenticateUserToken } from "../middleware/authenticateToken.js";
 
 export const postRouter = express.Router();
 
