@@ -36,7 +36,7 @@ const Home = () => {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <div className="max-container flex justify-between gap-20">
+    <div className="max-container flex justify-between gap-20 w-full">
       <div className="fixed left-0 hidden w-[300px] md:flex bg-red-50">Left</div>
       <div className="flex w-full justify-center flex-col gap-10  md:ml-[250px] xl:mx-auto max-w-[600px]">
         {data?.pages[0].posts.length === 0 && <h1>No posts available.</h1>}
