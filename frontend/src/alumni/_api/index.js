@@ -38,6 +38,7 @@ export const userLogin = async (email, password) => {
 export const userLogout = async () => {
   try {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     return true;
   } catch (error) {
     console.log(error);

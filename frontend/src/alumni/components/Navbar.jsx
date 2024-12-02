@@ -20,6 +20,7 @@ const Navbar = () => {
   const handleLogout = () => {
     logoutQuery.mutate(null, {
       onSuccess: () => {
+        console.log("asc");
         setUser({});
         navigate("/login");
       },

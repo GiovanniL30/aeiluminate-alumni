@@ -385,7 +385,7 @@ export const getAllUserConversations = async (userID) => {
     LEFT JOIN 
       users u2 ON c.memberTwoID = u2.userID
     WHERE 
-      c.memberOneID = ? OR c.memberTwoID = ?
+      c.memberOneID = ?
     ORDER BY 
       c.conversationID ASC;
   `;

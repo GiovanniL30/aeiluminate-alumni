@@ -48,8 +48,10 @@ export const useLoginUser = () => {
  * React query to logout user
  */
 export const useLogoutUser = () => {
+  const client = useQueryClient();
   return useMutation({
     mutationFn: () => userLogout(),
+    onSuccess: () => client.clear(),
   });
 };
 
