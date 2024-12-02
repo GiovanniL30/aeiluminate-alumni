@@ -3,7 +3,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import {
   Home,
-  Inbox,
+  ChatMessage,
+  InboxLayout,
   MainLayout,
   Notifications,
   CreatePost,
@@ -32,7 +33,9 @@ const App = () => {
               <Route index element={<Home />} />
               <Route path="search" element={<Search />} />
               <Route path="post" element={<CreatePost />} />
-              <Route path="inbox" element={<Inbox />} />
+              <Route path="inbox" element={<InboxLayout />}>
+                <Route path=":id" element={<ChatMessage />} />
+              </Route>
               <Route path="notifications" element={<Notifications />} />
 
               <Route path="user/:id" element={<UserLayout />}>

@@ -1,8 +1,9 @@
 import Home from "./Home";
-import Inbox from "./Inbox";
 import MainLayout from "./MainLayout";
 import Notifications from "./Notifications";
 import CreatePost from "./CreatePost";
+import InboxLayout from "./_inbox/InboxLayout";
+import ChatMessage from "./_inbox/ChatMessage";
 
 import Search from "./Search";
 import Signin from "./Signin";
@@ -18,8 +19,8 @@ import UserEditProfile from "./_user/UserEditProfile";
 import NotFound from "./NotFound";
 
 export {
+  ChatMessage,
   Home,
-  Inbox,
   MainLayout,
   Notifications,
   CreatePost,
@@ -34,4 +35,5 @@ export {
   UserAeilines,
   UserEditProfile,
   NotFound,
+  InboxLayout,
 };
