@@ -412,7 +412,7 @@ export const getConversationMessagesRequest = async (receiverId) => {
 };
 
 //Request to get conversation list
-export const getConversationListRequest = async (receiverId) => {
+export const getConversationListRequest = async () => {
   try {
     const token = getAuthToken();
 
@@ -421,6 +421,27 @@ export const getConversationListRequest = async (receiverId) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.response?.data.message || error.message);
+  }
+};
+
+//Request to add new message
+export const addNewMessageRequest = async ({ receiverId, conversationID, content }) => {
+  try {
+    const token = getAuthToken();
+
+    const response = await axios.post(
+      `${baseURL}/api/conversation/message`,
+      { receiverId, conversationID, content },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     console.log(error);

@@ -32,9 +32,9 @@ const UserProfilePic = ({ userID, profile_link, otherContainerStyle, otherImageS
               </div>
             </div>
             <div className="flex self-center mt-4 gap-4 font-semibold">
-              <p>{userPostsQuery.data.length} posts</p>
-              <p>{followerQuery.data.length} followers</p>
-              <p>{followingQuery.data.length} following</p>
+              <p>{userPostsQuery?.data?.length} posts</p>
+              <p>{followerQuery?.data?.length} followers</p>
+              <p>{followingQuery?.data?.length} following</p>
             </div>
           </div>
         </>

@@ -23,6 +23,7 @@ import {
   updateUserProfileRequest,
   getConversationMessagesRequest,
   getConversationListRequest,
+  addNewMessageRequest,
 } from "../index.js";
 
 /**
@@ -281,5 +282,20 @@ export const useConversationList = () => {
   return useQuery({
     queryKey: ["conversation", "list"],
     queryFn: () => getConversationListRequest(),
+  });
+};
+
+/**
+ * React query to add new message
+ */
+export const useAddMessage = () => {
+  const client = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ receiverId, conversationID, content }) => addNewMessageRequest({ receiverId, conversationID, content }),
+    onSuccess: (_, { receiverId }) => {
+      client.invalidateQueries(["conversation", "messages", receiverId]);
+      client.invalidateQueries(["conversation", "list"]);
+    },
   });
 };

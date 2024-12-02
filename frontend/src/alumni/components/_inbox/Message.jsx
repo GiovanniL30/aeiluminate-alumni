@@ -1,11 +1,9 @@
 import React from "react";
-import logo from "../../../assets/logoCircle.png";
 
 const Message = ({ fromMe, content, date, image }) => {
   return (
     <div className={`flex items-center gap-4 ${fromMe ? "flex-row-reverse" : "flex-row"}`}>
-      <img className="w-12 h-12 rounded-full" src={logo} alt="Profile" />
-
+      <img className="w-12 h-12 rounded-full" src={image} alt="Profile" />
       <div className="relative max-w-[50%]">
         <p
           className={`p-3 rounded-lg text-sm ${

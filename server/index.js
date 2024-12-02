@@ -47,14 +47,16 @@ app.use("/api", applicationRoute);
  * =======================
  */
 
-const users = new Map();
+const users = {};
 
 const addUser = (userId, socketId) => {
-  users.set(userId, socketId);
+  users[userId] = socketId;
+  io.emit("onlineUsers", Object.keys(users));
 };
 
 const removeUser = (userId) => {
-  users.delete(userId);
+  delete users[userId];
+  io.emit("onlineUsers", Object.keys(users));
 };
 
 const io = new SocketIO(httpServer, {
@@ -73,6 +75,21 @@ io.on("connection", (socket) => {
     removeUser(userId);
     console.log(`User disconnected: userId: ${userId} socketId: ${socket.id}`);
   });
+
+  socket.on("sendMessage", (data) => {
+    console.log("Message data received:", data);
+
+    const receiverSocketId = users[data.receiverId];
+
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("receiveMessage", data);
+      console.log(`Message sent to ${data.receiverId}:`, data);
+    } else {
+      console.log("Receiver not connected.");
+    }
+  });
+
+  console.log(users);
 });
 
 /**

@@ -297,56 +297,56 @@ export const getPostComments = async (postId) => {
 };
 
 /**
- * Check if there is already existing conversation
+ * Check if a conversation already exists between two users
  */
-export const checkIfConversationAvailable = async (memberOne, memberTwo) => {
+export const checkIfConversationAvailable = async (senderID, receiverID) => {
   const query = `
-    SELECT * 
-    FROM conversation
-    WHERE (memberOneID = ? AND memberTwoID = ?) 
+    SELECT c.*
+    FROM conversation c
+    JOIN private_messages pm
+      ON c.conversationID = pm.conversationID
+    WHERE (pm.senderID = ? AND pm.receiverID = ?)
+       OR (pm.senderID = ? AND pm.receiverID = ?)
+    GROUP BY c.conversationID
+    LIMIT 1;
   `;
 
   try {
-    const [conversations] = await connection.query(query, [memberOne, memberTwo]);
-    return conversations.length > 0 ? conversations[0] : null;
+    const [result] = await connection.query(query, [senderID, receiverID, receiverID, senderID]);
+    return result.length > 0 ? result[0] : null;
   } catch (error) {
-    console.error("Error checking conversation:", error);
+    console.error("Error checking if conversation exists:", error);
     throw new Error("Failed to check if conversation exists");
   }
 };
 
 /**
- * Get conversation details and messages
+ * Get conversation messages for a specific conversation
  */
 export const getConversationMessages = async (conversationID) => {
   const query = `
     SELECT 
-      c.conversationID,
-      c.memberOneID,
-      c.memberTwoID,
-      u1.firstName AS memberOneFirstName,
-      u1.lastName AS memberOneLastName,
-      u1.username AS memberOneUsername,
-      u1.profile_picture AS memberOneProfilePicture,
-      u2.firstName AS memberTwoFirstName,
-      u2.lastName AS memberTwoLastName,
-      u2.username AS memberTwoUsername,
-      u2.profile_picture AS memberTwoProfilePicture,
       pm.messageID,
       pm.senderID,
       pm.receiverID,
       pm.content,
-      pm.createdAt AS messageTimestamp
+      pm.createdAt AS messageTimestamp,
+      u1.firstName AS senderFirstName,
+      u1.lastName AS senderLastName,
+      u1.username AS senderUsername,
+      u1.profile_picture AS senderProfilePicture,
+      u2.firstName AS receiverFirstName,
+      u2.lastName AS receiverLastName,
+      u2.username AS receiverUsername,
+      u2.profile_picture AS receiverProfilePicture
     FROM 
-      conversation c
+      private_messages pm
     LEFT JOIN 
-      users u1 ON c.memberOneID = u1.userID
+      users u1 ON pm.senderID = u1.userID
     LEFT JOIN 
-      users u2 ON c.memberTwoID = u2.userID
-    LEFT JOIN 
-      private_messages pm ON pm.conversationID = c.conversationID
+      users u2 ON pm.receiverID = u2.userID
     WHERE 
-      c.conversationID = ?
+      pm.conversationID = ?
     ORDER BY 
       pm.createdAt ASC;
   `;
@@ -361,14 +361,14 @@ export const getConversationMessages = async (conversationID) => {
 };
 
 /**
- * Get all conversations for a certain user and include the receiver's details
+ * Get all conversations for a certain user, relying on private_messages
  */
 export const getAllUserConversations = async (userID) => {
   const query = `
-    SELECT 
+    SELECT DISTINCT 
       c.conversationID,
-      c.memberOneID,
-      c.memberTwoID,
+      u1.userID AS memberOneID,
+      u2.userID AS memberTwoID,
       u1.firstName AS memberOneFirstName,
       u1.lastName AS memberOneLastName,
       u1.username AS memberOneUsername,
@@ -380,17 +380,22 @@ export const getAllUserConversations = async (userID) => {
     FROM 
       conversation c
     LEFT JOIN 
-      users u1 ON c.memberOneID = u1.userID
+      private_messages pm ON pm.conversationID = c.conversationID
     LEFT JOIN 
-      users u2 ON c.memberTwoID = u2.userID
+      users u1 ON pm.senderID = u1.userID
+    LEFT JOIN 
+      users u2 ON pm.receiverID = u2.userID
     WHERE 
-      c.memberOneID = ? 
+      pm.senderID = ? OR pm.receiverID = ?
+    GROUP BY
+      c.conversationID
     ORDER BY 
-      c.conversationID ASC;
+      c.createdAt DESC;
+
   `;
 
   try {
-    const [conversations] = await connection.query(query, [userID]);
+    const [conversations] = await connection.query(query, [userID, userID]);
     return conversations || null;
   } catch (error) {
     console.error("Failed to retrieve conversations:", error);

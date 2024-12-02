@@ -136,17 +136,48 @@ export const addApplication = async (appID, diplomaURL, schoolIdURL, userID) => 
 };
 
 /**
- * Add a new conversation
- * @affectedDatabase = conversation
+ * Add a new conversation and the first message.
+ * @affectedDatabase = conversation, private_messages
  */
-export const createConverstaion = async (conversationID, memberOneID, memberTwoID) => {
-  const query = "INSERT INTO conversation (conversationID, memberOneID, memberTwoID, createdAt) VALUES (?, ?, ?, ?);";
+export const createConverstaion = async (conversationID, senderID, receiverID) => {
+  const query = "INSERT INTO conversation (conversationID, createdAt) VALUES (?, ?);";
 
   try {
-    const [result] = await connection.query(query, [conversationID, memberOneID, memberTwoID, new Date()]);
-    return result.affectedRows > 0;
+    const [result] = await connection.query(query, [conversationID, new Date()]);
+    if (result.affectedRows > 0) {
+      const messageID = crypto.randomUUID();
+      const content = "Conversation started";
+
+      const messageSent = await addNewMessage(messageID, conversationID, senderID, receiverID, content);
+
+      if (!messageSent) {
+        throw new Error("Failed to send the first message in the conversation");
+      }
+
+      return { conversationID, messageSent: true };
+    } else {
+      throw new Error("Failed to create conversation");
+    }
   } catch (err) {
-    console.error("Error conversation", err);
-    throw new Error("Failed to create new conversation");
+    console.error("Error in createConverstaion:", err);
+    throw new Error("Failed to create new conversation and send the first message");
+  }
+};
+
+/**
+ * Add a new message to the conversation
+ */
+export const addNewMessage = async (messageID, conversationID, senderID, receiverID, content) => {
+  const query = `
+    INSERT INTO private_messages (messageID, conversationID, senderID, receiverID, content, createdAt)
+    VALUES (?, ?, ?, ?, ?, ?);
+  `;
+
+  try {
+    const [result] = await connection.query(query, [messageID, conversationID, senderID, receiverID, content, new Date()]);
+    return result.affectedRows > 0;
+  } catch (error) {
+    console.error("Failed to add new message:", error);
+    throw new Error("Failed to add new message");
   }
 };

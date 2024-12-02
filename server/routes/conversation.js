@@ -1,7 +1,7 @@
 import express from "express";
 import { authenticateUserToken } from "../middleware/authenticateToken.js";
 import { checkIfConversationAvailable, getAllUserConversations, getConversationMessages } from "../mysqlQueries/readQueries.js";
-import { createConverstaion } from "../mysqlQueries/addQueries.js";
+import { addNewMessage, createConverstaion } from "../mysqlQueries/addQueries.js";
 
 import crypto from "crypto";
 
@@ -22,10 +22,10 @@ conversationRoute.get("/messages", authenticateUserToken, async (req, res) => {
       return res.status(200).json({ conversationID: convoId });
     }
 
-    const conversationMessages = await getConversationMessages(conversation.conversionID);
+    const conversationMessages = await getConversationMessages(conversation.conversationID);
     if (!conversationMessages) throw new Error("Failed to get conversation messages");
 
-    return res.status(200).json({ messages: conversationMessages });
+    return res.status(200).json({ messages: conversationMessages, conversationId: conversation.conversationID });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error });
@@ -40,6 +40,21 @@ conversationRoute.get("/list", authenticateUserToken, async (req, res) => {
     if (!conversations) throw new Error("Failed to get Conversation lists");
 
     return res.status(200).json({ conversations });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error });
+  }
+});
+
+conversationRoute.post("/message", authenticateUserToken, async (req, res) => {
+  const { userId: senderID } = req;
+  const { receiverId, conversationID, content } = req.body;
+
+  try {
+    const newMessage = await addNewMessage(crypto.randomUUID(), conversationID, senderID, receiverId, content);
+
+    if (!newMessage) throw new Error("Failed to send message");
+    return res.status(200).json({ message: "Sent" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error });
