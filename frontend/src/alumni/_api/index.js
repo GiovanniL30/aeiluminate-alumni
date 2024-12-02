@@ -391,3 +391,38 @@ export const updateUserProfileRequest = async ({ oldProfileURL, newImage }) => {
     throw new Error(error.response?.data.message || error.message);
   }
 };
+
+//Request to get conversation messages
+export const getConversationMessagesRequest = async (receiverId) => {
+  try {
+    const token = getAuthToken();
+
+    const response = await axios.get(`${baseURL}/api/conversation/messages`, {
+      params: { receiverId },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.response?.data.message || error.message);
+  }
+};
+
+//Request to get conversation list
+export const getConversationListRequest = async (receiverId) => {
+  try {
+    const token = getAuthToken();
+
+    const response = await axios.get(`${baseURL}/api/conversation/list`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.response?.data.message || error.message);
+  }
+};

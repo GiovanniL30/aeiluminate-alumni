@@ -295,3 +295,106 @@ export const getPostComments = async (postId) => {
     throw new Error("Failed to retrieve comments");
   }
 };
+
+/**
+ * Check if there is already existing conversation
+ */
+export const checkIfConversationAvailable = async (memberOne, memberTwo) => {
+  const query = `
+    SELECT * 
+    FROM conversation
+    WHERE (memberOneID = ? AND memberTwoID = ?) 
+      OR (memberOneID = ? AND memberTwoID = ?);
+  `;
+
+  try {
+    const [conversations] = await connection.query(query, [memberOne, memberTwo, memberTwo, memberOne]);
+    return conversations.length > 0 ? conversations[0] : null;
+  } catch (error) {
+    console.error("Error checking conversation:", error);
+    throw new Error("Failed to check if conversation exists");
+  }
+};
+
+/**
+ * Get conversation details and messages
+ */
+export const getConversationMessages = async (conversationID) => {
+  const query = `
+    SELECT 
+      c.conversationID,
+      c.memberOneID,
+      c.memberTwoID,
+      u1.firstName AS memberOneFirstName,
+      u1.lastName AS memberOneLastName,
+      u1.username AS memberOneUsername,
+      u1.profile_picture AS memberOneProfilePicture,
+      u2.firstName AS memberTwoFirstName,
+      u2.lastName AS memberTwoLastName,
+      u2.username AS memberTwoUsername,
+      u2.profile_picture AS memberTwoProfilePicture,
+      pm.messageID,
+      pm.senderID,
+      pm.receiverID,
+      pm.content,
+      pm.createdAt AS messageTimestamp
+    FROM 
+      conversation c
+    LEFT JOIN 
+      users u1 ON c.memberOneID = u1.userID
+    LEFT JOIN 
+      users u2 ON c.memberTwoID = u2.userID
+    LEFT JOIN 
+      private_messages pm ON pm.conversationID = c.conversationID
+    WHERE 
+      c.conversationID = ?
+    ORDER BY 
+      pm.createdAt ASC;
+  `;
+
+  try {
+    const [messages] = await connection.query(query, [conversationID]);
+    return messages || null;
+  } catch (error) {
+    console.error("Failed to retrieve conversation messages:", error);
+    throw new Error("Failed to retrieve conversation messages");
+  }
+};
+
+/**
+ * Get all conversations for a certain user and include the receiver's details
+ */
+export const getAllUserConversations = async (userID) => {
+  const query = `
+    SELECT 
+      c.conversationID,
+      c.memberOneID,
+      c.memberTwoID,
+      u1.firstName AS memberOneFirstName,
+      u1.lastName AS memberOneLastName,
+      u1.username AS memberOneUsername,
+      u1.profile_picture AS memberOneProfilePicture,
+      u2.firstName AS memberTwoFirstName,
+      u2.lastName AS memberTwoLastName,
+      u2.username AS memberTwoUsername,
+      u2.profile_picture AS memberTwoProfilePicture
+    FROM 
+      conversation c
+    LEFT JOIN 
+      users u1 ON c.memberOneID = u1.userID
+    LEFT JOIN 
+      users u2 ON c.memberTwoID = u2.userID
+    WHERE 
+      c.memberOneID = ? OR c.memberTwoID = ?
+    ORDER BY 
+      c.conversationID ASC;
+  `;
+
+  try {
+    const [conversations] = await connection.query(query, [userID, userID]);
+    return conversations || null;
+  } catch (error) {
+    console.error("Failed to retrieve conversations:", error);
+    throw new Error("Failed to retrieve conversations");
+  }
+};

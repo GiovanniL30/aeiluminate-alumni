@@ -10,6 +10,7 @@ import { router as usersRoute } from "./routes/users.js";
 import { postRouter } from "./routes/post.js";
 import { programRouter } from "./routes/programs.js";
 import { applicationRoute } from "./routes/application.js";
+import { conversationRoute } from "./routes/conversation.js";
 
 const app = express();
 const httpServer = createServer(app);
@@ -22,7 +23,6 @@ const httpServer = createServer(app);
 app.use(
   cors({
     origin: process.env.ENDPOINT,
-    credentials: true,
   })
 );
 app.use(express.json());
@@ -36,6 +36,7 @@ app.use(cookieParser());
  */
 app.use("/api", usersRoute);
 app.use("/api/register", registerRoute);
+app.use("/api/conversation", conversationRoute);
 app.use("/api", postRouter);
 app.use("/api", programRouter);
 app.use("/api", applicationRoute);

@@ -6,8 +6,8 @@ const FollowList = ({ data }) => {
   const { user } = useAuthContext();
   return (
     <div className="flex flex-col gap-10">
-      {data.map((follower) => (
-        <div className="flex gap-4">
+      {data.map((follower, index) => (
+        <div key={index} className="flex gap-4">
           <div className="w-11">
             <UserProfilePic profile_link={follower.profile_picture} userID={follower.userID} otherImageStyle="h-11 w-11" />
           </div>

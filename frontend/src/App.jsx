@@ -34,7 +34,7 @@ const App = () => {
               <Route path="search" element={<Search />} />
               <Route path="post" element={<CreatePost />} />
               <Route path="inbox" element={<InboxLayout />}>
-                <Route path=":id" element={<ChatMessage />} />
+                <Route path=":receiverId" element={<ChatMessage />} />
               </Route>
               <Route path="notifications" element={<Notifications />} />
 

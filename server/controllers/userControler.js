@@ -27,7 +27,7 @@ const getFileIdFromUrl = (url) => {
 };
 
 const generateToken = (userId, role) => {
-  return jwt.sign({ userId, role }, process.env.TOKEN, { expiresIn: "2h" });
+  return jwt.sign({ userId, role }, process.env.TOKEN, { expiresIn: "1d" });
 };
 
 /**

@@ -134,3 +134,19 @@ export const addApplication = async (appID, diplomaURL, schoolIdURL, userID) => 
     throw new Error("Failed to add application");
   }
 };
+
+/**
+ * Add a new conversation
+ * @affectedDatabase = conversation
+ */
+export const createConverstaion = async (conversationID, memberOneID, memberTwoID) => {
+  const query = "INSERT INTO conversation (conversationID, memberOneID, memberTwoID, createdAt) VALUES (?, ?, ?, ?);";
+
+  try {
+    const [result] = await connection.query(query, [conversationID, memberOneID, memberTwoID, new Date()]);
+    return result.affectedRows > 0;
+  } catch (err) {
+    console.error("Error conversation", err);
+    throw new Error("Failed to create new conversation");
+  }
+};

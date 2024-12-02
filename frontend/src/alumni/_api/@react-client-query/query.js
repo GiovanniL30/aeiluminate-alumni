@@ -21,6 +21,8 @@ import {
   postApplication,
   updateUserDetailsRequest,
   updateUserProfileRequest,
+  getConversationMessagesRequest,
+  getConversationListRequest,
 } from "../index.js";
 
 /**
@@ -257,5 +259,25 @@ export const useUpdateUserProfile = () => {
     onSuccess: (_, { userId }) => {
       client.invalidateQueries(["user", userId]);
     },
+  });
+};
+
+/**
+ * React query to get conversation messages
+ */
+export const useConversationMessages = (receiverID) => {
+  return useQuery({
+    queryKey: ["conversation", "messages", receiverID],
+    queryFn: () => getConversationMessagesRequest(receiverID),
+  });
+};
+
+/**
+ * React query to get conversation list
+ */
+export const useConversationList = () => {
+  return useQuery({
+    queryKey: ["conversation", "list"],
+    queryFn: () => getConversationListRequest(),
   });
 };
