@@ -50,7 +50,6 @@ const ProfileHeader = () => {
   const userPostsQuery = useGetUserPosts(id);
 
   const followHandler = () => {
-    console.log(id);
     if (isFollowStatus.data.isFollowing) {
       unFollowUserQuery.mutate(id);
     } else {
@@ -74,12 +73,17 @@ const ProfileHeader = () => {
         <div className="flex items-center gap-10 md:gap-16">
           <p className="flex font-bold text-4xl">{username}</p>
           {id != user.userID ? (
-            <Button
-              onClick={followHandler}
-              text={isFollowStatus.data.isFollowing ? "Unfollow" : "Follow"}
-              disabled={followUserQuery.isPending || unFollowUserQuery.isPending || followerQuery.isFetching}
-              otherStyle={`ml-10 ${isFollowStatus.data.isFollowing && "bg-red-500 disabled"}`}
-            />
+            <div className="flex gap-2">
+              <Button
+                onClick={followHandler}
+                text={isFollowStatus.data.isFollowing ? "Unfollow" : "Follow"}
+                disabled={followUserQuery.isPending || unFollowUserQuery.isPending || followerQuery.isFetching}
+                otherStyle={`ml-10 ${isFollowStatus.data.isFollowing && "bg-red-500 disabled"}`}
+              />
+              <NavLink to={`/inbox/${id}`}>
+                <Button text="Message" />
+              </NavLink>
+            </div>
           ) : (
             <NavLink to="edit">
               {({ isActive }) => {
