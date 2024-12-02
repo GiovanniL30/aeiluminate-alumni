@@ -15,7 +15,7 @@ const ChatMessage = () => {
 
   if (convesationQuery.isLoading || receiverUser.isLoading) return <h1>Loading Conversation....</h1>;
 
-  if (convesationQuery.isFetched) {
+  if (convesationQuery.isFetched && !convesationQuery.isError) {
     queryClient.invalidateQueries(["conversation", "list"]);
   }
 

@@ -11,8 +11,6 @@ conversationRoute.get("/messages", authenticateUserToken, async (req, res) => {
   const { userId } = req;
   const { receiverId } = req.query;
 
-  if (userId == receiverId) return res.status(200).json({ message: "Ok" });
-
   try {
     const conversation = await checkIfConversationAvailable(userId, receiverId);
 

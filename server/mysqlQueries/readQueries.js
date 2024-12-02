@@ -304,11 +304,10 @@ export const checkIfConversationAvailable = async (memberOne, memberTwo) => {
     SELECT * 
     FROM conversation
     WHERE (memberOneID = ? AND memberTwoID = ?) 
-      OR (memberOneID = ? AND memberTwoID = ?);
   `;
 
   try {
-    const [conversations] = await connection.query(query, [memberOne, memberTwo, memberTwo, memberOne]);
+    const [conversations] = await connection.query(query, [memberOne, memberTwo]);
     return conversations.length > 0 ? conversations[0] : null;
   } catch (error) {
     console.error("Error checking conversation:", error);
@@ -385,13 +384,13 @@ export const getAllUserConversations = async (userID) => {
     LEFT JOIN 
       users u2 ON c.memberTwoID = u2.userID
     WHERE 
-      c.memberOneID = ?
+      c.memberOneID = ? 
     ORDER BY 
       c.conversationID ASC;
   `;
 
   try {
-    const [conversations] = await connection.query(query, [userID, userID]);
+    const [conversations] = await connection.query(query, [userID]);
     return conversations || null;
   } catch (error) {
     console.error("Failed to retrieve conversations:", error);

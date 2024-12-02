@@ -14,7 +14,7 @@ const InboxSidebar = () => {
 
   return (
     <div className="h-full">
-      <h1 className="font-semibold text-light_text text-2xl mb-4">Chats</h1>
+      <h1 className="font-semibold text-light_text text-2xl mb-4">Chats ({conversationList.data.conversations.length})</h1>
       <div className="flex flex-col gap-3 max-h-[600px] overflow-y-auto overflow-x-hidden w-full">
         {conversationList.data.conversations.map((convesation, index) => (
           <ChatProfile
