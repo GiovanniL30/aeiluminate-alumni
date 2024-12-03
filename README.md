@@ -12,6 +12,7 @@
 - **Tailwind CSS**
 - **Node.js**
 - **Express**
+- **Socket.io**
 
 ### Project Structure
 
