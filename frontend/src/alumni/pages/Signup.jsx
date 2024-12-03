@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import logo from "../../assets/logo-login-small.png";
 import earth from "../../assets/earth.webp";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { useApplication, usePrograms } from "../_api/@react-client-query/query";
 import { NavLink } from "react-router-dom";
-import { postApplication } from "../_api";
 
 const Signup = () => {
   const programsQuery = usePrograms();
   const [errorMessage, setErrorMessage] = useState("");
+  const [selectedSchool, setSelectedSchool] = useState("SAMCIS");
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -149,6 +149,9 @@ const Signup = () => {
   };
   if (programsQuery.isLoading) return <h1>Loading...</h1>;
 
+  const schoolNames = programsQuery.data.map((school) => school.school_name);
+  const uniqueValues = [...new Set(schoolNames)];
+
   return (
     <div className="padding bg-black min-h-screen flex w-full items-center">
       <div className="fixed top-0 z-30 bg-black w-full h-20 flex items-center">
@@ -247,22 +250,42 @@ const Signup = () => {
                 handleChange={handleChange}
                 otherStyle="border-[1px] border-white bg-transparent"
               />
-              {programsQuery.data && (
-                <div className="h-full mt-2 flex items-center">
+
+              <div className="flex gap-2">
+                <div className="w-full">
                   <select
-                    name="programID"
-                    value={formData.programID}
-                    onChange={handleChange}
+                    value={selectedSchool}
+                    onChange={(e) => setSelectedSchool(e.target.value)}
+                    name="schoolId"
                     className="py-2 h-full lg:h-[39.5px] lg:mb-[3px] bg-transparent text-sm border-[1px] rounded-sm border-gray-100 focus:outline-primary_blue w-full"
                   >
-                    {programsQuery.data.map((program) => (
-                      <option className="text-black" key={program.programID} value={program.programID}>
-                        {program.program_name} - {program.school_name}
+                    {uniqueValues.map((schools, index) => (
+                      <option className="text-black" key={index} value={schools}>
+                        {schools}
                       </option>
                     ))}
                   </select>
                 </div>
-              )}
+
+                {programsQuery.data && (
+                  <div className="w-full">
+                    <select
+                      name="programID"
+                      value={formData.programID}
+                      onChange={handleChange}
+                      className="py-2 h-full lg:h-[39.5px] lg:mb-[3px] bg-transparent text-sm border-[1px] rounded-sm border-gray-100 focus:outline-primary_blue w-full"
+                    >
+                      {programsQuery.data
+                        .filter((program) => program.school_name == selectedSchool)
+                        .map((program) => (
+                          <option className="text-black" key={program.programID} value={program.programID}>
+                            {program.program_name}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="flex flex-col gap-3 w-full">
