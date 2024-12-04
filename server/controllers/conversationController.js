@@ -3,6 +3,13 @@ import { addNewMessage, createConverstaion } from "../mysqlQueries/addQueries.js
 
 import crypto from "crypto";
 
+/**
+ *
+ * Get messages
+ *
+ * @method GET
+ * @route /api/conversation/messages
+ */
 export const getMessagesController = async (req, res) => {
   const { userId } = req;
   const { receiverId } = req.query;
@@ -28,6 +35,13 @@ export const getMessagesController = async (req, res) => {
   }
 };
 
+/**
+ *
+ * Get list of conversations
+ *
+ * @method GET
+ * @route /api/conversation/list
+ */
 export const conversationListController = async (req, res) => {
   const { userId } = req;
 
@@ -42,6 +56,13 @@ export const conversationListController = async (req, res) => {
   }
 };
 
+/**
+ *
+ * Adds a new message
+ *
+ * @method POST
+ * @route /api/conversation/message
+ */
 export const addNewMessageController = async (req, res) => {
   const { userId: senderID } = req;
   const { receiverId, conversationID, content } = req.body;

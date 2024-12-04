@@ -4,6 +4,23 @@ import express from "express";
 
 export const conversationRoute = express.Router();
 
-conversationRoute.get("/messages", authenticateUserToken, getMessagesController);
-conversationRoute.get("/list", authenticateUserToken, conversationListController);
+/**
+ * ================================================================
+ *                    POST ROUTES
+ * ================================================================
+ */
+
+/** Add new message Route */
 conversationRoute.post("/message", authenticateUserToken, addNewMessageController);
+
+/**
+ * ================================================================
+ *                    GET ROUTES
+ * ================================================================
+ */
+
+/** Get conversation Route */
+conversationRoute.get("/list", authenticateUserToken, conversationListController);
+
+/** Get messages Route */
+conversationRoute.get("/messages", authenticateUserToken, getMessagesController);
