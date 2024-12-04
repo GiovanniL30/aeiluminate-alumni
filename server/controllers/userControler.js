@@ -282,11 +282,11 @@ export const checkIsFollowingController = async (req, res) => {
  *  @route /api/user/update/details
  */
 export const updateUserDetailsController = async (req, res) => {
-  const { firstName, middleName, lastName, userName, company, jobRole, bio, phoneNumber } = req.body;
+  const { firstName, middleName, lastName, userName, company, jobRole, bio, phoneNumber, isPrivate } = req.body;
   const { userId } = req;
 
   try {
-    const update = await updateProfileDetails(userId, firstName, middleName, lastName, userName, company, jobRole, bio, phoneNumber);
+    const update = await updateProfileDetails(userId, firstName, middleName, lastName, userName, company, jobRole, bio, phoneNumber, isPrivate);
     if (!update) throw new Error("Failed to update user details");
 
     res.status(200).json({ message: "Update Success" });

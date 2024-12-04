@@ -22,6 +22,7 @@ import {
 } from "./alumni/pages/index.js";
 import Auth from "./alumni/_auth/Auth.jsx";
 import AuthContext from "./alumni/context/AuthContext.jsx";
+import PrivateProtected from "./alumni/pages/_user/PrivateProtected.jsx";
 
 const App = () => {
   return (
@@ -39,9 +40,11 @@ const App = () => {
               <Route path="notifications" element={<Notifications />} />
 
               <Route path="user/:id" element={<UserLayout />}>
-                <Route index element={<User />} />
-                <Route path="events" element={<UserEvents />} />
-                <Route path="line" element={<UserAeilines />} />
+                <Route element={<PrivateProtected />}>
+                  <Route index element={<User />} />
+                  <Route path="events" element={<UserEvents />} />
+                  <Route path="line" element={<UserAeilines />} />
+                </Route>
                 <Route path="followers" element={<UserFollowers />} />
                 <Route path="following" element={<UsersFollowing />} />
                 <Route path="edit" element={<UserEditProfile />} />

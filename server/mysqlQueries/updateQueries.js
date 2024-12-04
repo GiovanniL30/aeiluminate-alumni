@@ -3,7 +3,7 @@ import connection from "../connections.js";
 /**
  * Updates user details
  */
-export const updateProfileDetails = async (userId, firstName, middleName, lastName, userName, company, jobRole, bio, phoneNumber) => {
+export const updateProfileDetails = async (userId, firstName, middleName, lastName, userName, company, jobRole, bio, phoneNumber, isPrivate) => {
   const query = `
     UPDATE users 
     SET 
@@ -14,11 +14,23 @@ export const updateProfileDetails = async (userId, firstName, middleName, lastNa
         company = ?, 
         job_role = ?, 
         bio = ?, 
+        isPrivate = ?,
         phoneNumber = ?
     WHERE userID = ?`;
 
   try {
-    const [result] = await connection.query(query, [firstName, middleName, lastName, userName, company, jobRole, bio, phoneNumber, userId]);
+    const [result] = await connection.query(query, [
+      firstName,
+      middleName,
+      lastName,
+      userName,
+      company,
+      jobRole,
+      bio,
+      isPrivate,
+      phoneNumber,
+      userId,
+    ]);
     return result.affectedRows > 0;
   } catch (error) {
     throw new Error("Failed to update user details: " + error.message);

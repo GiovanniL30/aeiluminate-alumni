@@ -357,10 +357,10 @@ export const postApplication = async ({
 };
 
 //Request to update user details
-export const updateUserDetailsRequest = async ({ firstName, middleName, lastName, userName, company, jobRole, bio, phoneNumber }) => {
+export const updateUserDetailsRequest = async ({ isPrivate, firstName, middleName, lastName, userName, company, jobRole, bio, phoneNumber }) => {
   try {
     const token = getAuthToken();
-    const data = { firstName, middleName, lastName, userName, company, jobRole, bio, phoneNumber };
+    const data = { firstName, middleName, lastName, userName, company, jobRole, bio, phoneNumber, isPrivate };
     const response = await axios.patch(`${baseURL}/api/user/update/details`, data, {
       headers: { Authorization: `Bearer ${token}` },
     });
