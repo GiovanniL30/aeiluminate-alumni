@@ -24,6 +24,10 @@
     @apply hover:opacity-50 duration-500 ease-in-out;
   }
 
+  .my-shadow {
+    @apply shadow-[0px_0px_10px_0px_rgba(0,0,0,0.1)];
+  }
+
   .hover-scaledown {
     @apply hover:scale-75 duration-500 ease-in-out;
   }

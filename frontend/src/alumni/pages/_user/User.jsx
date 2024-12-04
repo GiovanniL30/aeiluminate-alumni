@@ -53,7 +53,7 @@ const User = () => {
           ) : (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {posts.map((post, index) => (
-                <div key={index}>
+                <div key={index} className="p-3 rounded-xl my-shadow">
                   <div>
                     <button className="hover-opacity w-full h-full" onClick={() => handleOpenPost(post.postID)}>
                       <img src={post.postMedia[0].mediaURL} alt="Post media" className="w-full h-[300px] object-cover" />

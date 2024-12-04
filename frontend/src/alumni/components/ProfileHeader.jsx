@@ -66,12 +66,12 @@ const ProfileHeader = () => {
     userQuery.data.user;
 
   return (
-    <div className="mt-11 flex flex-col items-center max-w-[800px] mx-auto gap-14  md:flex-row">
+    <div className="w-full mt-11 flex flex-col  items-center max-w-[800px] mx-auto gap-14  md:flex-row">
       <div>
         <img className="w-56 h-56 rounded-full object-cover" src={profile_picture ? profile_picture : default_img} alt="profile" />
       </div>
-      <div className="flex flex-col gap-2 md:gap-5">
-        <div className="flex items-center gap-10 md:gap-16">
+      <div className="flex flex-col  gap-2 md:gap-5">
+        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
           <p className="flex font-bold text-4xl">{username}</p>
           {id != user.userID ? (
             <div className="flex gap-2">
@@ -79,7 +79,7 @@ const ProfileHeader = () => {
                 onClick={followHandler}
                 text={isFollowStatus.data.isFollowing ? "Unfollow" : "Follow"}
                 disabled={followUserQuery.isPending || unFollowUserQuery.isPending || followerQuery.isFetching}
-                otherStyle={`ml-10 ${isFollowStatus.data.isFollowing && "bg-red-500 disabled"}`}
+                otherStyle={`md:ml-10 ${isFollowStatus.data.isFollowing && "bg-red-500 disabled"}`}
               />
               <NavLink to={`/inbox/${id}`}>
                 <Button text="Message" />
@@ -93,7 +93,7 @@ const ProfileHeader = () => {
             </NavLink>
           )}
         </div>
-        <div className="flex justify-between">
+        <div className="flex flex-col sm:gap-10 sm:flex-row items-center justify-between">
           <p>
             <span className="font-bold">{userPostsQuery.data.length}</span> posts
           </p>
@@ -116,7 +116,7 @@ const ProfileHeader = () => {
             }}
           </NavLink>
         </div>
-        <div className="flex gap-3 md:flex-col md:gap-0">
+        <div className="flex flex-col gap-3  md:gap-0">
           <p className="font-bold">
             {firstName} {lastName} {job_role && `(${job_role})`}
           </p>
@@ -140,7 +140,7 @@ const ProfileHeader = () => {
         </div>
         {bio && (
           <div className="max-w-[300px]">
-            <p className="w-full break-words">{bio}</p>
+            <p className="w-full break-words">Bio: {bio}</p>
           </div>
         )}
       </div>

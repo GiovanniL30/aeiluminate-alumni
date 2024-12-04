@@ -10,6 +10,7 @@ import { usePostInformation, useLikePost, useUnlikePost } from "../../_api/@reac
 import AelineCardLoading from "./loaders/AelineCardLoading.jsx";
 import PostCommentPopUp from "./PostCommentPopUp.jsx";
 import UserProfilePic from "../UserProfilePic.jsx";
+import { ReadMore } from "../ReadMore.jsx";
 
 const AelineCard = ({ postID, caption, userID, createdAt }) => {
   const [isShowComment, setIsShowComment] = useState(false);
@@ -30,7 +31,7 @@ const AelineCard = ({ postID, caption, userID, createdAt }) => {
   };
 
   return (
-    <div className="flex gap-7 w-full">
+    <div className="flex flex-col  md:gap-8 p-3 rounded-xl my-shadow  w-full">
       {isShowComment && (
         <PostCommentPopUp
           postId={postID}
@@ -46,11 +47,33 @@ const AelineCard = ({ postID, caption, userID, createdAt }) => {
         />
       )}
       <div className="flex items-start justify-start ">
-        <UserProfilePic profile_link={data.profile_link} userID={userID} otherImageStyle="w-14 h-14" />
+        <div className="flex items-center gap-3">
+          <UserProfilePic profile_link={data.profile_link} userID={userID} otherImageStyle="w-10 h-10 md:w-14 md:h-14" />
+          <p className="font-bold text-lg -mb-2">{data.posted_by}</p>
+        </div>
+        <div className="hidden md:flex items-start justify-center gap-2 ml-auto mt-2">
+          <div className="flex gap-2">
+            <p className="text-sm text-light_text">{timeAgo(createdAt)}</p>
+            <button className="flex items-center justify-center">
+              <img src={more_hor} alt="dots" />
+            </button>
+          </div>
+        </div>
       </div>
-      <div className="flex flex-col gap-2 mt-2">
-        <p className="font-bold text-lg -mb-2">{data.posted_by}</p>
-        <p>{caption}</p>
+      <div className="flex flex-col gap-2 mt-0">
+        <div className="w-full">
+          <ReadMore text={caption} />
+        </div>
+
+        <div className="flex md:hidden gap-2">
+          <div className="flex gap-2 justify-between w-full">
+            <p className="text-sm text-light_text">{timeAgo(createdAt)}</p>
+            <button className="flex items-center justify-center">
+              <img src={more_hor} alt="dots" />
+            </button>
+          </div>
+        </div>
+
         <div className="flex mt-4 gap-2 items-center">
           <button className="w-5 h-5" onClick={handleLike}>
             <img src={data.is_liked == 1 ? liked : unliked} alt="unliked" />
@@ -62,14 +85,6 @@ const AelineCard = ({ postID, caption, userID, createdAt }) => {
         <button className="w-fit text-sm text-light_text">
           <p>{data ? data.total_replies : "0"} comments</p>
         </button>
-      </div>
-      <div className="flex items-start justify-center gap-2 ml-auto mt-2">
-        <div className="flex gap-2">
-          <p className="text-sm text-light_text">{timeAgo(createdAt)}</p>
-          <button className="flex items-center justify-center">
-            <img src={more_hor} alt="dots" />
-          </button>
-        </div>
       </div>
     </div>
   );

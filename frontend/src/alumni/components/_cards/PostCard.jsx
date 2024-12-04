@@ -43,7 +43,7 @@ const PostCard = ({ postID, caption, images, userID, createdAt }) => {
   };
 
   return (
-    <div className={`w-full flex flex-col gap-5 border-[1px] rounded-lg ${isShowComment && "pointer-events-none"}`}>
+    <div className={`w-full flex flex-col gap-5 p-3 rounded-xl my-shadow ${isShowComment && "pointer-events-none"}`}>
       {isShowComment && (
         <PostCommentPopUp
           postId={postID}
@@ -59,13 +59,13 @@ const PostCard = ({ postID, caption, images, userID, createdAt }) => {
         />
       )}
 
-      <div className="flex justify-between pt-4 px-4">
-        <div className="relative flex items-center gap-6">
+      <div className="flex flex-col sm:flex-row justify-between pt-4 px-4">
+        <div className="relative flex items-center gap-2 sm:gap-6">
           <UserProfilePic userID={userID} profile_link={data.profile_link} />
           <p className="font-bold pointer-events-none">{data.posted_by}</p>
         </div>
 
-        <div className="flex gap-3 items-center justify-center">
+        <div className="flex gap-3 items-center justify-between sm:justify-center mt-2 sm:mt-0">
           <p className="text-sm text-light_text">{timeAgo(createdAt)}</p>
           <button>
             <img className="w-1 h-4" src={more_vert} alt="dots" />

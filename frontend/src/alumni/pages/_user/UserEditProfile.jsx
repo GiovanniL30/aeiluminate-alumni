@@ -5,6 +5,8 @@ import Button from "../../components/Button";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useUpdateUserDetails, useUpdateUserProfile } from "../../_api/@react-client-query/query";
 
+import default_img from "../../../assets/default-img.png";
+
 const UserEditProfile = () => {
   const { user } = useAuthContext();
   const { id } = useParams();
@@ -110,7 +112,7 @@ const UserEditProfile = () => {
         <h1 className="font-semibold text-light_text">Profile Picture</h1>
         <div className="relative group overflow-hidden w-[300px] mx-auto">
           <img
-            src={newProfile ? URL.createObjectURL(newProfile) : profile_picture}
+            src={newProfile ? URL.createObjectURL(newProfile) : profile_picture ? profile_picture : default_img}
             alt="Profile"
             className="w-full h-[300px] object-cover rounded-full "
           />

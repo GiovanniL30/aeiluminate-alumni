@@ -115,7 +115,7 @@ export const getPostController = async (req, res, next) => {
 
     res.status(200).json({
       posts: updatedPosts,
-      totatPosts: total,
+      totalPosts: total,
       totalPage,
     });
   } catch (error) {

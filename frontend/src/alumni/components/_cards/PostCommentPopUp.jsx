@@ -9,6 +9,7 @@ import PostCommentLoading from "./loaders/PostCommentLoading";
 import CommentBlock from "./CommentBlock";
 import { useParams } from "react-router-dom";
 import UserProfilePic from "../UserProfilePic";
+import { ReadMore } from "../ReadMore";
 
 const PostCommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, images, userID, userName, setIsShowComment, caption }) => {
   const { id } = useParams();
@@ -70,13 +71,13 @@ const PostCommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, imag
               )}
             </div>
             <div className="mt-8">
-              <p>{caption}</p>
+              <ReadMore text={caption} />
             </div>
           </div>
 
           {commentsQuery.data.length > 0 && <p className="font-bold mt-4">Comments</p>}
 
-          <div className="flex-grow flex  min-h-[100px] overflow-y-auto">
+          <div className="flex-grow flex mb-2  min-h-[100px] overflow-y-auto">
             {commentsQuery.data.length > 0 ? (
               <div className="flex flex-col gap-5 p-7">
                 {commentsQuery.data.map((comment) => (
@@ -98,7 +99,7 @@ const PostCommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, imag
 
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2 mb-4">
-              <button className="w-6 h-6" onClick={handleLike}>
+              <button className="w-5 h-5 md:w-6 md:h-6" onClick={handleLike}>
                 <img src={isLiked ? liked : unliked} alt="like" />
               </button>
               <p>{likes} likes</p>

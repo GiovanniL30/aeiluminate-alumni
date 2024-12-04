@@ -29,8 +29,8 @@ const Navbar = () => {
   };
 
   return (
-    <div className="bg-white py-4 w-full">
-      <div className="flex justify-between items-center">
+    <div className="flex justify-between bg-white py-4 w-full max-w-full overflow-x-hidden">
+      <div className="flex justify-between items-center w-full">
         <div className="w-12">
           <img src={logo} alt="logo" />
         </div>
@@ -66,7 +66,7 @@ const Navbar = () => {
           <NavLink to={`/user/${user.userID}`} className="flex items-center gap-2 hover-opacity">
             <img className="w-12 h-12 rounded-full object-cover" src={user.profile_picture ? user.profile_picture : default_img} alt="profile" />
           </NavLink>
-          <Hamburger otherStyle="md:hidden " onClick={toggleNav} isOpen={openNav} />
+          <Hamburger otherStyle="md:hidden" onClick={toggleNav} />
         </div>
       </div>
     </div>
