@@ -8,6 +8,8 @@ import create_line from "../../assets/create_line.png";
 import { useUploadLine, useUploadPost } from "../_api/@react-client-query/query";
 import TopPopUp from "../components/TopPopUp";
 
+import default_img from "../../assets/default-img.png";
+
 const CreatePost = ({ maxCaption = 225 }) => {
   const uploadQuery = useUploadPost();
   const uploadLine = useUploadLine();
@@ -90,7 +92,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
 
         <div className="flex flex-col gap-5 w-full">
           <div className="flex items-center gap-2">
-            <img className="w-12 h-12 rounded-full object-cover" src={user.profile_picture} alt="profile" />
+            <img className="w-12 h-12 rounded-full object-cover" src={user.profile_picture ? user.profile_picture : default_img} alt="profile" />
             <p>{user.username}</p>
           </div>
 

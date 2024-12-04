@@ -7,6 +7,8 @@ import { useAuthContext } from "../../context/AuthContext";
 import { timeAgo } from "../../../utils";
 import io from "socket.io-client";
 
+import default_img from "../../../assets/default-img.png";
+
 const ChatMessage = () => {
   const [message, setMessage] = useState("");
   const messagesEndRef = useRef(null);
@@ -17,7 +19,6 @@ const ChatMessage = () => {
 
   const convesationQuery = useConversationMessages(receiverId);
   const receiverUser = useGetUser(receiverId);
-
   const socket = useRef(null);
 
   useEffect(() => {
@@ -48,12 +49,6 @@ const ChatMessage = () => {
   }, [convesationQuery.data?.messages]);
 
   const handleSubmit = () => {
-    if (!convesationQuery.data?.messages) {
-      convesationQuery.refetch();
-      setMessage("");
-      return;
-    }
-
     addMessageQuery.mutate(
       { receiverId, conversationID: convesationQuery.data.conversationId, content: message },
       {
@@ -75,18 +70,22 @@ const ChatMessage = () => {
     <div className="border-[2px] rounded-md w-full p-4 h-full flex flex-col justify-between">
       <div className="flex items-center gap-3 bg-white z-40 pb-2">
         <img
-          className={`w-14 h-14 rounded-full object-cover ${isOnline && "border-[4px] border-green-500"}`}
-          src={receiverUser.data.user.profile_picture}
+          className={`w-12 h-12 md:w-14 md:h-14 rounded-full object-cover ${isOnline && "border-[4px] border-green-500"}`}
+          src={receiverUser.data.user.profile_picture ? receiverUser.data.user.profile_picture : default_img}
           alt=""
         />
-        <p className="text-xl mb-2">{receiverUser.data.user.username}</p>
+        <p className="text-lg md:text-xl mb-2">{receiverUser.data.user.username}</p>
       </div>
 
       <div>
         <div className="max-h-[600px] overflow-y-auto p-4">
           <div className="flex flex-col items-center mt-[100px]">
-            <img className={`w-32 h-32 rounded-full object-cover`} src={receiverUser.data.user.profile_picture} alt="" />
-            <p className="text-2xl">{receiverUser.data.user.username}</p>
+            <img
+              className={`w-20  h-20 md:w-32 md:h-32 rounded-full object-cover`}
+              src={receiverUser.data.user.profile_picture ? receiverUser.data.user.profile_picture : default_img}
+              alt=""
+            />
+            <p className="text-xl md:text-2xl">{receiverUser.data.user.username}</p>
             <p className="text-light_text">
               {receiverUser.data.user.firstName} {receiverUser.data.user.lastName}
             </p>
@@ -96,7 +95,7 @@ const ChatMessage = () => {
           </div>
 
           <div className="flex flex-col pt-[100px] gap-2">
-            {convesationQuery.data?.messages?.map((message, index) => {
+            {convesationQuery.data.messages.map((message, index) => {
               const fromMe = message.senderID === user.userID;
 
               return (
@@ -115,7 +114,7 @@ const ChatMessage = () => {
         </div>
       </div>
 
-      <div className="w-full flex gap-2 pt-5">
+      <div className="w-full flex flex-col md:flex-row gap-2 pt-5">
         <textarea
           value={message}
           onChange={(e) => {
@@ -134,7 +133,7 @@ const ChatMessage = () => {
         <Button
           disabled={message.length === 0 || addMessageQuery.isPending}
           text={addMessageQuery.isPending ? "Sending Message..." : "Send"}
-          otherStyle="px-11 w-[10%]"
+          otherStyle="w-full md:w-[20%] md:max-[200px]"
           onClick={handleSubmit}
         />
       </div>

@@ -301,13 +301,10 @@ export const getPostComments = async (postId) => {
  */
 export const checkIfConversationAvailable = async (senderID, receiverID) => {
   const query = `
-    SELECT c.*
-    FROM conversation c
-    JOIN private_messages pm
-      ON c.conversationID = pm.conversationID
-    WHERE (pm.senderID = ? AND pm.receiverID = ?)
-       OR (pm.senderID = ? AND pm.receiverID = ?)
-    GROUP BY c.conversationID
+    SELECT * 
+    FROM conversation 
+    WHERE (memberOne = ? AND memberTwo = ?)
+       OR (memberOne = ? AND memberTwo = ?)
     LIMIT 1;
   `;
 
@@ -331,20 +328,20 @@ export const getConversationMessages = async (conversationID) => {
       pm.receiverID,
       pm.content,
       pm.createdAt AS messageTimestamp,
-      u1.firstName AS senderFirstName,
-      u1.lastName AS senderLastName,
-      u1.username AS senderUsername,
-      u1.profile_picture AS senderProfilePicture,
-      u2.firstName AS receiverFirstName,
-      u2.lastName AS receiverLastName,
-      u2.username AS receiverUsername,
-      u2.profile_picture AS receiverProfilePicture
+      sender.firstName AS senderFirstName,
+      sender.lastName AS senderLastName,
+      sender.username AS senderUsername,
+      sender.profile_picture AS senderProfilePicture,
+      receiver.firstName AS receiverFirstName,
+      receiver.lastName AS receiverLastName,
+      receiver.username AS receiverUsername,
+      receiver.profile_picture AS receiverProfilePicture
     FROM 
       private_messages pm
     LEFT JOIN 
-      users u1 ON pm.senderID = u1.userID
+      users sender ON pm.senderID = sender.userID
     LEFT JOIN 
-      users u2 ON pm.receiverID = u2.userID
+      users receiver ON pm.receiverID = receiver.userID
     WHERE 
       pm.conversationID = ?
     ORDER BY 
@@ -353,7 +350,7 @@ export const getConversationMessages = async (conversationID) => {
 
   try {
     const [messages] = await connection.query(query, [conversationID]);
-    return messages || null;
+    return messages || [];
   } catch (error) {
     console.error("Failed to retrieve conversation messages:", error);
     throw new Error("Failed to retrieve conversation messages");
@@ -361,42 +358,38 @@ export const getConversationMessages = async (conversationID) => {
 };
 
 /**
- * Get all conversations for a certain user, relying on private_messages
+ * Get all conversations for a certain user
  */
 export const getAllUserConversations = async (userID) => {
   const query = `
-    SELECT DISTINCT 
+    SELECT 
       c.conversationID,
-      u1.userID AS memberOneID,
-      u2.userID AS memberTwoID,
-      u1.firstName AS memberOneFirstName,
-      u1.lastName AS memberOneLastName,
-      u1.username AS memberOneUsername,
-      u1.profile_picture AS memberOneProfilePicture,
-      u2.firstName AS memberTwoFirstName,
-      u2.lastName AS memberTwoLastName,
-      u2.username AS memberTwoUsername,
-      u2.profile_picture AS memberTwoProfilePicture
+      memberOne.userID AS memberOneID,
+      memberOne.firstName AS memberOneFirstName,
+      memberOne.lastName AS memberOneLastName,
+      memberOne.username AS memberOneUsername,
+      memberOne.profile_picture AS memberOneProfilePicture,
+      memberTwo.userID AS memberTwoID,
+      memberTwo.firstName AS memberTwoFirstName,
+      memberTwo.lastName AS memberTwoLastName,
+      memberTwo.username AS memberTwoUsername,
+      memberTwo.profile_picture AS memberTwoProfilePicture,
+      c.createdAt AS conversationCreatedAt
     FROM 
       conversation c
     LEFT JOIN 
-      private_messages pm ON pm.conversationID = c.conversationID
+      users memberOne ON c.memberOne = memberOne.userID
     LEFT JOIN 
-      users u1 ON pm.senderID = u1.userID
-    LEFT JOIN 
-      users u2 ON pm.receiverID = u2.userID
+      users memberTwo ON c.memberTwo = memberTwo.userID
     WHERE 
-      pm.senderID = ? OR pm.receiverID = ?
-    GROUP BY
-      c.conversationID
+      c.memberOne = ? OR c.memberTwo = ?
     ORDER BY 
       c.createdAt DESC;
-
   `;
 
   try {
     const [conversations] = await connection.query(query, [userID, userID]);
-    return conversations || null;
+    return conversations || [];
   } catch (error) {
     console.error("Failed to retrieve conversations:", error);
     throw new Error("Failed to retrieve conversations");

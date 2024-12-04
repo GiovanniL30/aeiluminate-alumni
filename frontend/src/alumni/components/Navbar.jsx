@@ -7,6 +7,8 @@ import { useAuthContext } from "../context/AuthContext";
 import Button from "./Button";
 import { useLogoutUser } from "../_api/@react-client-query/query";
 
+import default_img from "../../assets/default-img.png";
+
 const Navbar = () => {
   const [openNav, setOpenNav] = useState(false);
   const navigate = useNavigate();
@@ -20,7 +22,6 @@ const Navbar = () => {
   const handleLogout = () => {
     logoutQuery.mutate(null, {
       onSuccess: () => {
-        console.log("asc");
         setUser({});
         navigate("/login");
       },
@@ -63,7 +64,7 @@ const Navbar = () => {
         <div className="flex gap-4 items-center">
           <Button text="Sign out" otherStyle="bg-red-500" onClick={handleLogout} />
           <NavLink to={`/user/${user.userID}`} className="flex items-center gap-2 hover-opacity">
-            <img className="w-12 h-12 rounded-full object-cover" src={user.profile_picture} alt="profile" />
+            <img className="w-12 h-12 rounded-full object-cover" src={user.profile_picture ? user.profile_picture : default_img} alt="profile" />
           </NavLink>
           <Hamburger otherStyle="md:hidden " onClick={toggleNav} isOpen={openNav} />
         </div>

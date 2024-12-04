@@ -176,52 +176,58 @@ const Signup = () => {
             <div className="flex flex-col gap-2">
               <h1>Primary Information</h1>
               <Input
+                label="First Name"
                 disabled={applyQuery.isPending}
                 name="firstName"
-                placeholder="First Name"
+                placeholder="eg. Juan"
                 value={formData.firstName}
                 handleChange={handleChange}
                 otherStyle="border-[1px] border-white bg-transparent"
               />
               <Input
+                label="Middle Name"
                 disabled={applyQuery.isPending}
                 name="middleName"
-                placeholder="Middle Name"
+                placeholder="eg. Pedro"
                 value={formData.middleName}
                 handleChange={handleChange}
                 otherStyle="border-[1px] border-white bg-transparent"
               />
               <Input
+                label="Last Name"
                 disabled={applyQuery.isPending}
                 name="lastName"
-                placeholder="Last Name"
+                placeholder="eg. DeLa Cruz"
                 value={formData.lastName}
                 handleChange={handleChange}
                 otherStyle="border-[1px] border-white bg-transparent"
               />
               <Input
+                label="Username"
                 disabled={applyQuery.isPending}
                 name="userName"
-                placeholder="User Name"
+                placeholder="eg. juan123"
                 value={formData.userName}
                 handleChange={handleChange}
                 otherStyle="border-[1px] border-white bg-transparent"
               />
-              <div className="flex gap-3">
+              <div className="flex flex-col md:flex-row gap-3">
                 <Input
+                  label="Password"
                   disabled={applyQuery.isPending}
                   type="password"
                   name="password"
-                  placeholder="Password"
+                  placeholder="eg. 12345"
                   value={formData.password}
                   handleChange={handleChange}
                   otherStyle="border-[1px] border-white bg-transparent"
                 />
                 <Input
+                  label="Confirm Password"
                   disabled={applyQuery.isPending}
                   type="password"
                   name="confirmPassword"
-                  placeholder="Confirm Password"
+                  placeholder="eg. 12345"
                   value={formData.confirmPassword}
                   handleChange={handleChange}
                   otherStyle="border-[1px] border-white bg-transparent"
@@ -232,26 +238,28 @@ const Signup = () => {
             <div className="flex flex-col gap-3">
               <h1>Secondary Information</h1>
               <Input
+                label="Email"
                 disabled={applyQuery.isPending}
                 type="email"
                 name="email"
-                placeholder="Email"
+                placeholder="eg. sample@gmail.com"
                 value={formData.email}
                 handleChange={handleChange}
                 otherStyle="border-[1px] border-white bg-transparent"
               />
 
               <Input
+                label="Graduation Year"
                 disabled={applyQuery.isPending}
                 name="graduationYear"
-                placeholder="Graduation Year"
+                placeholder="eg. 2007"
                 type="number"
                 value={formData.graduationYear}
                 handleChange={handleChange}
                 otherStyle="border-[1px] border-white bg-transparent"
               />
 
-              <div className="flex gap-2">
+              <div className="flex flex-col md:flex-row gap-2">
                 <div className="w-full">
                   <select
                     value={selectedSchool}
@@ -290,7 +298,7 @@ const Signup = () => {
 
             <div className="flex flex-col gap-3 w-full">
               <h1>Documents</h1>
-              <div className="flex gap-10 justify-between w-full h-full">
+              <div className="flex flex-col md:flex-row  gap-10 justify-between w-full h-full">
                 <ImageUpload disabled={applyQuery.isPending} name="diploma" handleChange={handleChange} value={formData.diploma} />
                 <ImageUpload disabled={applyQuery.isPending} name="schoolId" handleChange={handleChange} value={formData.schoolId} />
               </div>

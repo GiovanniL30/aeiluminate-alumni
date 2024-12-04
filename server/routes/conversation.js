@@ -19,7 +19,7 @@ conversationRoute.get("/messages", authenticateUserToken, async (req, res) => {
       const convoId = crypto.randomUUID();
       const newConversation = await createConverstaion(convoId, userId, receiverId);
       if (!newConversation) throw new Error("Failed to create new conversation");
-      return res.status(200).json({ conversationID: convoId });
+      return res.status(200).json({ messages: [], conversationID: convoId });
     }
 
     const conversationMessages = await getConversationMessages(conversation.conversationID);

@@ -140,27 +140,14 @@ export const addApplication = async (appID, diplomaURL, schoolIdURL, userID) => 
  * @affectedDatabase = conversation, private_messages
  */
 export const createConverstaion = async (conversationID, senderID, receiverID) => {
-  const query = "INSERT INTO conversation (conversationID, createdAt) VALUES (?, ?);";
+  const query = "INSERT INTO conversation (conversationID, memberOne, memberTwo, createdAt) VALUES (?, ?, ?, ?)";
 
   try {
-    const [result] = await connection.query(query, [conversationID, new Date()]);
-    if (result.affectedRows > 0) {
-      const messageID = crypto.randomUUID();
-      const content = "Conversation started";
-
-      const messageSent = await addNewMessage(messageID, conversationID, senderID, receiverID, content);
-
-      if (!messageSent) {
-        throw new Error("Failed to send the first message in the conversation");
-      }
-
-      return { conversationID, messageSent: true };
-    } else {
-      throw new Error("Failed to create conversation");
-    }
+    const [result] = await connection.query(query, [conversationID, senderID, receiverID, new Date()]);
+    return result.affectedRows > 0;
   } catch (err) {
     console.error("Error in createConverstaion:", err);
-    throw new Error("Failed to create new conversation and send the first message");
+    throw new Error("Failed to create new conversation");
   }
 };
 

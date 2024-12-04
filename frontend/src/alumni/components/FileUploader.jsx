@@ -34,7 +34,7 @@ const FileUploader = ({ images, setImages, uploading = false }) => {
         />
       ) : (
         <div className="flex flex-col gap-5 items-center justify-center">
-          <img src={no_post} alt="No Post" />
+          <img className="w-20 h-20 md:w-auto md:h-auto" src={no_post} alt="No Post" />
           <div className="flex flex-col items-center text-sm text-light_text">
             <p>No images selected</p>
             <p>

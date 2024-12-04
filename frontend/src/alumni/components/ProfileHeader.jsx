@@ -12,6 +12,7 @@ import {
 import Button from "../components/Button";
 import { NavLink, useParams } from "react-router-dom";
 
+import default_img from "../../assets/default-img.png";
 import companyIcon from "../../assets/enterprise.png";
 import phoneIcon from "../../assets/phone-call.png";
 import emailIcon from "../../assets/mail.png";
@@ -67,7 +68,7 @@ const ProfileHeader = () => {
   return (
     <div className="mt-11 flex flex-col items-center max-w-[800px] mx-auto gap-14  md:flex-row">
       <div>
-        <img className="w-56 h-56 rounded-full object-cover" src={profile_picture} alt="profile" />
+        <img className="w-56 h-56 rounded-full object-cover" src={profile_picture ? profile_picture : default_img} alt="profile" />
       </div>
       <div className="flex flex-col gap-2 md:gap-5">
         <div className="flex items-center gap-10 md:gap-16">
