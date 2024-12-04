@@ -10,11 +10,10 @@ const PrivateProtected = () => {
 
   const following = useIsFollowing(id);
   const followingUser = useGetUser(id);
+
   if (following.isLoading || followingUser.isLoading) return <h1>Loading...</h1>;
 
-  console.log(followingUser.data.user);
-
-  if (user.userID !== id && followingUser.data.isPrivate !== 1) {
+  if (user.userID !== id && followingUser.data.user.isPrivate === 1) {
     if (!following.data.isFollowing) {
       return <Private />;
     }

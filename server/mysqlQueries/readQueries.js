@@ -159,12 +159,20 @@ export const getUsers = async (page, pageSize) => {
  * Fetch paginated posts and total count from the database
  */
 export const getPosts = async (page, pageSize, userId) => {
-  const query = "SELECT * FROM posts WHERE userID != ? LIMIT ? OFFSET ?";
+  const query = `
+    SELECT posts.*, users.isPrivate
+    FROM posts
+    JOIN users ON posts.userID = users.userID
+    WHERE posts.userID != ? AND users.isPrivate = 0
+    LIMIT ? OFFSET ?
+  `;
   const offset = (page - 1) * pageSize;
 
   try {
     const [results] = await connection.query(query, [userId, parseInt(pageSize), parseInt(offset)]);
-    const [[countResult]] = await connection.query("SELECT COUNT(*) AS total FROM posts");
+    const [[countResult]] = await connection.query(
+      "SELECT COUNT(*) AS total FROM posts JOIN users ON posts.userID = users.userID WHERE users.isPrivate = 0"
+    );
     return { posts: results, total: countResult.total };
   } catch (error) {
     console.error("Error fetching paginated posts:", error);
