@@ -16,7 +16,13 @@ const CreatePost = ({ maxCaption = 225 }) => {
   const uploadLine = useUploadLine();
 
   const navigate = useNavigate();
-  const [isPost, setIsPost] = useState(true);
+
+  const [postType, setPostType] = useState({
+    isPost: true,
+    isLine: false,
+    isEvent: false,
+    isJob: false,
+  });
   const [images, setImages] = useState([]);
   const { user } = useAuthContext();
   const [caption, setCaption] = useState("");
@@ -35,12 +41,12 @@ const CreatePost = ({ maxCaption = 225 }) => {
       return;
     }
 
-    if (isPost && images.length === 0) {
+    if (postType.isPost && images.length === 0) {
       alert("Please upload at least one image.");
       return;
     }
 
-    if (isPost) {
+    if (postType.isPost) {
       uploadQuery.mutate(
         { caption, images },
         {
@@ -52,7 +58,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
           },
         }
       );
-    } else {
+    } else if (postType.isLine) {
       uploadLine.mutate(
         { caption },
         {
@@ -66,34 +72,72 @@ const CreatePost = ({ maxCaption = 225 }) => {
     }
   };
 
+  const switchPostType = (type) => {
+    setPostType({
+      isPost: type === "post",
+      isLine: type === "line",
+      isEvent: type === "event",
+      isJob: type === "job",
+    });
+  };
+
   return (
     <div className={`w-full flex flex-col gap-10 mt-5 max-container ${uploadQuery.isPending && "pointer-events-none"}`}>
       {uploadQuery.isError && <TopPopUp text={uploadQuery.error.message} />}
 
       <div className="flex items-center justify-between">
-        <h1 className="font-bold text-2xl">Create new {isPost ? "Post" : "aeline"} </h1>
+        <h1 className="font-bold text-2xl">
+          Create new {postType.isPost ? "Post" : postType.isLine ? "Aeline" : postType.isEvent ? "Event" : "Joblisting"}
+        </h1>
         <Button text={uploadQuery.isPending ? "Uploading..." : "Share"} otherStyle="px-10" disabled={uploadQuery.isPending} onClick={handleSubmit} />
       </div>
 
       <div className="flex flex-col items-start gap-5 sm:items-center text-md sm:text-xl sm:flex-row">
         <button
-          onClick={() => setIsPost(true)}
-          className={`flex items-center justify-center gap-2 hover-opacity ${isPost ? "text-primary_blue underline font-bold" : "text-black"}`}
+          onClick={() => switchPostType("post")}
+          className={`flex items-center justify-center gap-2 hover-opacity ${
+            postType.isPost ? "text-primary_blue underline font-bold" : "text-black"
+          }`}
         >
           <img src={create_post} alt="post" />
           <p>Create Post</p>
         </button>
         <button
-          onClick={() => setIsPost(false)}
-          className={`flex items-center justify-center gap-2 hover-opacity ${!isPost ? "text-primary_blue underline font-bold" : "text-black"}`}
+          onClick={() => switchPostType("line")}
+          className={`flex items-center justify-center gap-2 hover-opacity ${
+            postType.isLine ? "text-primary_blue underline font-bold" : "text-black"
+          }`}
         >
           <img src={create_line} alt="line" />
           <p>Create aeline</p>
         </button>
+
+        {user.role === "Admin" || user.role === "Manager" ? (
+          <>
+            <button
+              onClick={() => switchPostType("job")}
+              className={`flex items-center justify-center gap-2 hover-opacity ${
+                postType.isJob ? "text-primary_blue underline font-bold" : "text-black"
+              }`}
+            >
+              <img src={create_post} alt="post" />
+              <p>Create Joblisting</p>
+            </button>
+            <button
+              onClick={() => switchPostType("event")}
+              className={`flex items-center justify-center gap-2 hover-opacity ${
+                postType.isEvent ? "text-primary_blue underline font-bold" : "text-black"
+              }`}
+            >
+              <img src={create_line} alt="line" />
+              <p>Create Event</p>
+            </button>
+          </>
+        ) : null}
       </div>
 
       <div className="flex flex-col gap-20 md:flex-row w-full">
-        {isPost && <FileUploader uploading={uploadQuery.isPending} images={images} setImages={setImages} />}
+        {(postType.isPost || postType.isEvent) && <FileUploader uploading={uploadQuery.isPending} images={images} setImages={setImages} />}
 
         <div className="flex flex-col gap-5 w-full">
           <div className="flex items-center gap-2">
@@ -107,7 +151,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
               autoFocus={true}
               value={caption}
               onChange={handleCaptionChange}
-              className="p-2 text-light_text  text-sm focus:outline-none resize-none border-b-[1px] w-full h-36"
+              className="p-2 text-light_text text-sm focus:outline-none resize-none border-b-[1px] w-full h-36"
             ></textarea>
             <p className="absolute text-sm text-light_text bottom-3 right-3">
               {caption.length}/{maxCaption}
