@@ -5,6 +5,8 @@ import { useAuthContext } from "../context/AuthContext";
 
 import default_img from "../../assets/default-img.png";
 
+const SkeletonLoader = () => <div className="w-10 h-10 bg-gray-300 animate-pulse rounded-full"></div>;
+
 const UserProfilePic = ({ userID, profile_link, otherContainerStyle, otherImageStyle }) => {
   const followingQuery = useUserFollowing(userID);
   const followerQuery = useUserFollower(userID);
@@ -13,7 +15,7 @@ const UserProfilePic = ({ userID, profile_link, otherContainerStyle, otherImageS
   const { user } = useAuthContext();
 
   if (followerQuery.isLoading || followerQuery.isLoading || userPostsQuery.isLoading || userQuery.isLoading) {
-    return <h1>Loading...</h1>;
+    return <SkeletonLoader />;
   }
 
   return (

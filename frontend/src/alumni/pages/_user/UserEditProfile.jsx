@@ -50,7 +50,6 @@ const UserEditProfile = () => {
     }
   };
 
-  // Handle private/public status change
   const handlePrivacyChange = (e) => {
     const { value } = e.target;
     setUserData((prev) => ({ ...prev, isPrivate: parseInt(value) }));
@@ -116,6 +115,16 @@ const UserEditProfile = () => {
   return (
     <div className="max-w-[1000px] mx-auto mt-10">
       <form className="flex flex-col gap-7 mt-6" onSubmit={handleSubmit}>
+        <div className="flex gap-5 self-end">
+          <NavLink to="..">
+            <Button text="Cancel" otherStyle="bg-red-500" />
+          </NavLink>
+          <Button
+            text={updateUserDetailsQuery.isPending || updateUserProfileQuery.isPending ? "Updating" : "Save"}
+            disabled={updateUserDetailsQuery.isPending || updateUserProfileQuery.isPending}
+            type="submit"
+          />
+        </div>
         <h1 className="font-semibold text-light_text">Profile Picture</h1>
         <div className="relative group overflow-hidden w-[300px] mx-auto">
           <img
@@ -132,6 +141,19 @@ const UserEditProfile = () => {
           <input type="file" id="upload" className="hidden" onChange={handleImageChange} accept="image/*" />
         </div>
 
+        <div className="flex gap-5">
+          <h1 className="text-light_text font-semibold">Post Visibility:</h1>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <label htmlFor="public">Public</label>
+              <input type="radio" name="isPrivate" value={0} id="public" checked={userData.isPrivate === 0} onChange={handlePrivacyChange} />
+            </div>
+            <div className="flex items-center gap-2">
+              <label htmlFor="private">Private</label>
+              <input type="radio" name="isPrivate" value={1} id="private" checked={userData.isPrivate === 1} onChange={handlePrivacyChange} />
+            </div>
+          </div>
+        </div>
         <Input value={userData.firstName} name="firstName" handleChange={handleChange} label="First Name" />
         <Input value={userData.middleName} name="middleName" handleChange={handleChange} label="Middle Name" required={false} />
         <Input value={userData.lastName} name="lastName" handleChange={handleChange} label="Last Name" />
@@ -140,29 +162,6 @@ const UserEditProfile = () => {
         <Input value={userData.company} name="company" handleChange={handleChange} label="Company" required={false} />
         <Input value={userData.job_role} name="job_role" handleChange={handleChange} label="Job Role" required={false} />
         <Input value={userData.bio} name="bio" handleChange={handleChange} label="Bio" type="textarea" otherStyle="h-20" required={false} />
-
-        <h1 className="text-light_text font-semibold">Post Visibility</h1>
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <label htmlFor="public">Public</label>
-            <input type="radio" name="isPrivate" value={0} id="public" checked={userData.isPrivate === 0} onChange={handlePrivacyChange} />
-          </div>
-          <div className="flex items-center gap-2">
-            <label htmlFor="private">Private</label>
-            <input type="radio" name="isPrivate" value={1} id="private" checked={userData.isPrivate === 1} onChange={handlePrivacyChange} />
-          </div>
-        </div>
-
-        <div className="flex gap-5 self-end">
-          <NavLink to="..">
-            <Button text="Cancel" otherStyle="bg-red-500" />
-          </NavLink>
-          <Button
-            text={updateUserDetailsQuery.isPending || updateUserProfileQuery.isPending ? "Updating" : "Save"}
-            disabled={updateUserDetailsQuery.isPending || updateUserProfileQuery.isPending}
-            type="submit"
-          />
-        </div>
       </form>
     </div>
   );

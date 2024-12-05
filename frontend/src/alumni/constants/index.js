@@ -1,7 +1,6 @@
 import explore from "../../assets/explore.png";
 import feed from "../../assets/feed.png";
 import inbox from "../../assets/inbox.png";
-import notifications from "../../assets/likes.png";
 import post from "../../assets/post.png";
 
 export const navLinks = [
@@ -20,11 +19,6 @@ export const navLinks = [
   {
     path: "inbox",
     icon: inbox,
-    otherStye: "w-[22.5px] h-[22.5px]",
-  },
-  {
-    path: "notifications",
-    icon: notifications,
     otherStye: "w-[22.5px] h-[22.5px]",
   },
 ];

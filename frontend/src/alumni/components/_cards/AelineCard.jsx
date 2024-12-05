@@ -11,8 +11,10 @@ import AelineCardLoading from "./loaders/AelineCardLoading.jsx";
 import PostCommentPopUp from "./PostCommentPopUp.jsx";
 import UserProfilePic from "../UserProfilePic.jsx";
 import { ReadMore } from "../ReadMore.jsx";
+import { useAuthContext } from "../../context/AuthContext.jsx";
 
 const AelineCard = ({ postID, caption, userID, createdAt }) => {
+  const { user } = useAuthContext();
   const [isShowComment, setIsShowComment] = useState(false);
   const likePostQuery = useLikePost();
   const unlikePostQuery = useUnlikePost();
@@ -31,7 +33,7 @@ const AelineCard = ({ postID, caption, userID, createdAt }) => {
   };
 
   return (
-    <div className="flex flex-col  md:gap-8 p-3 rounded-xl my-shadow  w-full">
+    <div className="flex flex-col md:gap-8 p-3 rounded-xl my-shadow w-full">
       {isShowComment && (
         <PostCommentPopUp
           postId={postID}
@@ -46,10 +48,12 @@ const AelineCard = ({ postID, caption, userID, createdAt }) => {
           likes={data.total_likes}
         />
       )}
-      <div className="flex items-start justify-start ">
+      <div className="flex items-start justify-start">
         <div className="flex items-center gap-3">
           <UserProfilePic profile_link={data.profile_link} userID={userID} otherImageStyle="w-10 h-10 md:w-14 md:h-14" />
-          <p className="font-bold text-lg -mb-2">{data.posted_by}</p>
+          <p className="font-bold text-lg -mb-2">
+            {data.posted_by} {user.userID === userID && <span className="text-primary_blue ml-1">(YOU)</span>}
+          </p>
         </div>
         <div className="hidden md:flex items-start justify-center gap-2 ml-auto mt-2">
           <div className="flex gap-2">
@@ -82,9 +86,11 @@ const AelineCard = ({ postID, caption, userID, createdAt }) => {
             <img src={comment} alt="comment" />
           </button>
         </div>
-        <button className="w-fit text-sm text-light_text">
+
+        <div className="flex gap-2 mt-2 text-sm text-light_text">
+          <p>{data ? data.total_likes : "0"} likes</p>
           <p>{data ? data.total_replies : "0"} comments</p>
-        </button>
+        </div>
       </div>
     </div>
   );

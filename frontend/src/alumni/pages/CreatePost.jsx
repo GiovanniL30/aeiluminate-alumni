@@ -9,11 +9,13 @@ import { useUploadLine, useUploadPost } from "../_api/@react-client-query/query"
 import TopPopUp from "../components/TopPopUp";
 
 import default_img from "../../assets/default-img.png";
+import { useNavigate } from "react-router-dom";
 
 const CreatePost = ({ maxCaption = 225 }) => {
   const uploadQuery = useUploadPost();
   const uploadLine = useUploadLine();
 
+  const navigate = useNavigate();
   const [isPost, setIsPost] = useState(true);
   const [images, setImages] = useState([]);
   const { user } = useAuthContext();
@@ -46,6 +48,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
             setImages([]);
             setCaption("");
             alert("Post Uploaded successfully");
+            navigate("/");
           },
         }
       );
@@ -56,6 +59,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
           onSuccess: () => {
             setCaption("");
             alert("Line Uploaded successfully");
+            navigate("/");
           },
         }
       );
@@ -65,7 +69,13 @@ const CreatePost = ({ maxCaption = 225 }) => {
   return (
     <div className={`w-full flex flex-col gap-10 mt-5 max-container ${uploadQuery.isPending && "pointer-events-none"}`}>
       {uploadQuery.isError && <TopPopUp text={uploadQuery.error.message} />}
-      <div className="flex gap-5 items-center">
+
+      <div className="flex items-center justify-between">
+        <h1 className="font-bold text-2xl">Create new {isPost ? "Post" : "aeline"} </h1>
+        <Button text={uploadQuery.isPending ? "Uploading..." : "Share"} otherStyle="px-10" disabled={uploadQuery.isPending} onClick={handleSubmit} />
+      </div>
+
+      <div className="flex flex-col items-start gap-5 sm:items-center text-md sm:text-xl sm:flex-row">
         <button
           onClick={() => setIsPost(true)}
           className={`flex items-center justify-center gap-2 hover-opacity ${isPost ? "text-primary_blue underline font-bold" : "text-black"}`}
@@ -80,11 +90,6 @@ const CreatePost = ({ maxCaption = 225 }) => {
           <img src={create_line} alt="line" />
           <p>Create aeline</p>
         </button>
-      </div>
-
-      <div className="flex items-center justify-between">
-        <h1 className="font-bold text-lg">Create new {isPost ? "Post" : "aeline"} </h1>
-        <Button text={uploadQuery.isPending ? "Uploading..." : "Share"} otherStyle="px-10" disabled={uploadQuery.isPending} onClick={handleSubmit} />
       </div>
 
       <div className="flex flex-col gap-20 md:flex-row w-full">

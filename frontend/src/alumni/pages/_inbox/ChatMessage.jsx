@@ -8,6 +8,7 @@ import { timeAgo } from "../../../utils";
 import io from "socket.io-client";
 
 import default_img from "../../../assets/default-img.png";
+import UserProfilePic from "../../components/UserProfilePic";
 
 const ChatMessage = () => {
   const [message, setMessage] = useState("");
@@ -49,6 +50,10 @@ const ChatMessage = () => {
   }, [convesationQuery.data?.messages]);
 
   const handleSubmit = () => {
+    if (!convesationQuery.data?.conversationId) {
+      convesationQuery.refetch();
+    }
+
     addMessageQuery.mutate(
       { receiverId, conversationID: convesationQuery.data.conversationId, content: message },
       {
@@ -69,11 +74,12 @@ const ChatMessage = () => {
   return (
     <div className="border-[2px] rounded-md w-full p-4 h-full flex flex-col justify-between">
       <div className="flex items-center gap-3 bg-white z-40 pb-2">
-        <img
-          className={`w-12 h-12 md:w-14 md:h-14 rounded-full object-cover ${isOnline && "border-[4px] border-green-500"}`}
-          src={receiverUser.data.user.profile_picture ? receiverUser.data.user.profile_picture : default_img}
-          alt=""
+        <UserProfilePic
+          userID={receiverId}
+          profile_link={receiverUser.data.user.profile_picture}
+          otherImageStyle={`w-12 h-12 md:w-14 md:h-14 rounded-full object-cover ${isOnline && "border-[4px] border-green-500"}`}
         />
+
         <p className="text-lg md:text-xl mb-2">{receiverUser.data.user.username}</p>
       </div>
 

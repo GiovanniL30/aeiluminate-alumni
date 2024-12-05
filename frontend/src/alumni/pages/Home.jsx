@@ -9,9 +9,11 @@ import PostCard from "../components/_cards/PostCard";
 import AelineCard from "../components/_cards/AelineCard";
 import PostCardLoading from "../components/_cards/loaders/PostCardLoading";
 import { NavLink, useNavigate } from "react-router-dom";
+import Spinner from "../components/Spinner";
+import { BounceLoader } from "react-spinners";
 
 const Home = () => {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetPosts(2);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } = useGetPosts(2);
   const observerRef = useRef(null);
 
   useEffect(() => {
@@ -37,6 +39,7 @@ const Home = () => {
 
   return (
     <div className="max-container flex flex-col md:flex-row justify-between gap-5 w-full p-2">
+      <Spinner isLoading={isFetching} />
       <div className="hidden md:flex w-[200px] xl:w-[250px] bg-red-50 fixed left-0 top-[100px] bottom-0">Left</div>
 
       <div className="flex flex-col w-full md:pl-[150px] md:w-[calc(100%)] xl:w-[650px] xl:pl-0 mx-auto gap-10  =">

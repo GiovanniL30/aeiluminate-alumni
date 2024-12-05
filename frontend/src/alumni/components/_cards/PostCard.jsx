@@ -23,12 +23,14 @@ import PostCardLoading from "./loaders/PostCardLoading.jsx";
 import PostCommentPopUp from "./PostCommentPopUp.jsx";
 import { NavLink } from "react-router-dom";
 import UserProfilePic from "../UserProfilePic.jsx";
+import { useAuthContext } from "../../context/AuthContext.jsx";
 
 const PostCard = ({ postID, caption, images, userID, createdAt }) => {
   const [isShowComment, setIsShowComment] = useState(false);
   const likePostQuery = useLikePost();
   const unlikePostQuery = useUnlikePost();
   const { isLoading, isError, data } = usePostInformation(postID);
+  const { user } = useAuthContext();
 
   if (isLoading) {
     return <PostCardLoading />;
@@ -62,7 +64,10 @@ const PostCard = ({ postID, caption, images, userID, createdAt }) => {
       <div className="flex flex-col sm:flex-row justify-between pt-4 px-4">
         <div className="relative flex items-center gap-2 sm:gap-6">
           <UserProfilePic userID={userID} profile_link={data.profile_link} />
-          <p className="font-bold pointer-events-none">{data.posted_by}</p>
+          <p className="font-semibold">
+            {data.posted_by}
+            {user.userID === userID && <span className="text-primary_blue ml-1">(YOU)</span>}
+          </p>
         </div>
 
         <div className="flex gap-3 items-center justify-between sm:justify-center mt-2 sm:mt-0">
@@ -84,7 +89,10 @@ const PostCard = ({ postID, caption, images, userID, createdAt }) => {
         </button>
       </div>
       <div className="flex flex-col gap-2 px-4 pb-4">
-        <p className="font-bold text-sm">{data ? data.total_likes : "0"} likes</p>
+        <div className="flex gap-2">
+          <p className="font-bold text-sm">{data ? data.total_likes : "0"} likes</p>
+          <p className="font-bold text-sm">{data ? data.total_replies : "0"} comments</p>
+        </div>
         <ReadMore text={caption} id={postID} />
       </div>
     </div>

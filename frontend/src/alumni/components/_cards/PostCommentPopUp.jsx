@@ -10,9 +10,9 @@ import CommentBlock from "./CommentBlock";
 import { useParams } from "react-router-dom";
 import UserProfilePic from "../UserProfilePic";
 import { ReadMore } from "../ReadMore";
+import { useAuthContext } from "../../context/AuthContext";
 
 const PostCommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, images, userID, userName, setIsShowComment, caption }) => {
-  const { id } = useParams();
   const [commentData, setCommentData] = useState("");
   const followerQuery = useUserFollower(userID);
   const followUserQuery = useFollowUser();
@@ -20,6 +20,7 @@ const PostCommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, imag
   const isFollowingQuery = useIsFollowing(userID);
   const addCommentQuery = useAddComment();
   const commentsQuery = useComments(postId);
+  const { user } = useAuthContext();
 
   const followHandler = () => {
     if (isFollowingQuery.data.isFollowing) {
@@ -31,7 +32,7 @@ const PostCommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, imag
 
   const submitComment = () => {
     if (commentData.length < 10) {
-      alert("Comment should be atleast 10 characters");
+      alert("Comment should be at least 10 characters");
       return;
     }
 
@@ -43,25 +44,32 @@ const PostCommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, imag
 
   return (
     <div className="py-20 px-10 fixed left-0 right-0 top-0 bottom-0 min-h-screen bg-black bg-opacity-30 z-50 pointer-events-auto">
-      <button className="fixed right-4 top-12 text-white font-bold text-xl" onClick={() => setIsShowComment(false)}>
-        &#10005;
-      </button>
-      <div className="w-full h-full bg-white rounded-md flex flex-col lg:flex-row">
+      <div
+        className={`w-full h-full bg-white rounded-md overflow-hidden ${
+          images ? "flex flex-col lg:flex-row" : "flex flex-row max-w-[600px] mx-auto"
+        }`}
+      >
         {images && (
-          <div className="w-full lg:w-1/2 h-full max-h-[300px] lg:max-h-full bg-gray-300 bg-opacity-20">
-            <ImageCarousel images={images} otherImageStyle="max-h-[300px] lg:max-h-full" />
+          <div className="w-full lg:w-1/2 h-[300px] lg:h-full bg-gray-300 bg-opacity-20">
+            <ImageCarousel images={images} otherImageStyle="h-full" />
           </div>
         )}
 
-        <div className={`px-4 w-full ${images && "lg:w-1/2"} h-full p-5 overflow-y-auto flex flex-col justify-between`}>
-          <div>
+        <div className={`flex flex-col ${images ? "lg:w-1/2" : "w-full"} h-full`}>
+          <div className="relative flex-grow overflow-y-auto p-5">
+            <button
+              className="absolute right-4 top-4 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover-opacity"
+              onClick={() => setIsShowComment(false)}
+            >
+              &#10005;
+            </button>
             <div className="flex items-center gap-5">
               <UserProfilePic userID={userID} profile_link={profilePic} />
               <div className="flex flex-col">
                 <p className="font-semibold text-lg">{userName}</p>
                 <p className="text-sm">{followerQuery.data ? followerQuery.data.length : "0"} followers</p>
               </div>
-              {!id && (
+              {user.userID != userID && (
                 <Button
                   onClick={followHandler}
                   text={isFollowingQuery.data.isFollowing || followerQuery.isFetching ? "Unfollow" : "Follow"}
@@ -73,14 +81,12 @@ const PostCommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, imag
             <div className="mt-8">
               <ReadMore text={caption} />
             </div>
-          </div>
 
-          {commentsQuery.data.length > 0 && <p className="font-bold mt-4">Comments</p>}
+            {commentsQuery.data.length > 0 && <p className="font-bold mt-4">Comments</p>}
 
-          <div className="flex-grow flex mb-2  min-h-[100px] overflow-y-auto">
-            {commentsQuery.data.length > 0 ? (
-              <div className="flex flex-col gap-5 p-7">
-                {commentsQuery.data.map((comment) => (
+            <div className="flex flex-col gap-5 mt-5 pb-[320px]">
+              {commentsQuery.data.length > 0 ? (
+                commentsQuery.data.map((comment) => (
                   <CommentBlock
                     key={comment.commentID}
                     userProfilePic={comment.userProfilePic}
@@ -90,31 +96,33 @@ const PostCommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, imag
                     commentCreatedAt={comment.commentCreatedAt}
                     commentContent={comment.commentContent}
                   />
-                ))}
-              </div>
-            ) : (
-              <p className="italic text-gray-500 flex justify-center items-center w-full h-full">No comments yet. Be the first to comment!</p>
-            )}
+                ))
+              ) : (
+                <p className="italic text-gray-500 text-center mt-20">No comments yet. Be the first to comment!</p>
+              )}
+            </div>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-2 mb-4">
+          <div className="p-4 bg-white sticky bottom-0">
+            <div className="flex items-center gap-2 mb-2">
               <button className="w-5 h-5 md:w-6 md:h-6" onClick={handleLike}>
                 <img src={isLiked ? liked : unliked} alt="like" />
               </button>
               <p>{likes} likes</p>
             </div>
-            <textarea
-              value={commentData}
-              onChange={(e) => setCommentData(e.target.value)}
-              className="h-16 resize-none w-full focus:outline-none p-2 text-sm border-none rounded-md"
-              placeholder="Add a comment..."
-            ></textarea>
-            <Button
-              onClick={submitComment}
-              disabled={addCommentQuery.isPending}
-              text={addCommentQuery.isPending ? "Adding Comment ..." : "Add Comment"}
-            />
+            <div className="flex flex-col gap-2">
+              <textarea
+                value={commentData}
+                onChange={(e) => setCommentData(e.target.value)}
+                className="h-16 resize-none w-full focus:outline-none p-2 text-sm border border-gray-300 rounded-md"
+                placeholder="Add a comment..."
+              ></textarea>
+              <Button
+                onClick={submitComment}
+                disabled={addCommentQuery.isPending}
+                text={addCommentQuery.isPending ? "Adding Comment ..." : "Add Comment"}
+              />
+            </div>
           </div>
         </div>
       </div>

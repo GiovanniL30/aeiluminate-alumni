@@ -17,8 +17,10 @@ import UserAeilines from "./_user/UserAeilines";
 import UserEditProfile from "./_user/UserEditProfile";
 
 import NotFound from "./NotFound";
+import NoOpenedMessage from "./_inbox/NoOpenedMessage";
 
 export {
+  NoOpenedMessage,
   ChatMessage,
   Home,
   MainLayout,

@@ -163,13 +163,14 @@ export const getPosts = async (page, pageSize, userId) => {
     SELECT posts.*, users.isPrivate
     FROM posts
     JOIN users ON posts.userID = users.userID
-    WHERE posts.userID != ? AND users.isPrivate = 0
+    WHERE users.isPrivate = 0
+    ORDER BY posts.createdAt DESC  -- Sorting by createdAt, newest first
     LIMIT ? OFFSET ?
   `;
   const offset = (page - 1) * pageSize;
 
   try {
-    const [results] = await connection.query(query, [userId, parseInt(pageSize), parseInt(offset)]);
+    const [results] = await connection.query(query, [parseInt(pageSize), parseInt(offset)]);
     const [[countResult]] = await connection.query(
       "SELECT COUNT(*) AS total FROM posts JOIN users ON posts.userID = users.userID WHERE users.isPrivate = 0"
     );

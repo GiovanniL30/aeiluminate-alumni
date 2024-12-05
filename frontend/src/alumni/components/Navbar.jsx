@@ -66,7 +66,7 @@ const Navbar = () => {
           <NavLink to={`/user/${user.userID}`} className="flex items-center gap-2 hover-opacity">
             <img className="w-12 h-12 rounded-full object-cover" src={user.profile_picture ? user.profile_picture : default_img} alt="profile" />
           </NavLink>
-          <Hamburger otherStyle="md:hidden" onClick={toggleNav} />
+          <Hamburger otherStyle="md:hidden" onClick={toggleNav} isOpen={openNav} />
         </div>
       </div>
     </div>

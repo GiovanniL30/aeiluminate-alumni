@@ -12,8 +12,7 @@ const Auth = () => {
   }
 
   if (Object.keys(user).length === 0) {
-    const errorMessage = encodeURIComponent("Please Login First");
-    return <Navigate to={`/login?error=${errorMessage}`} />;
+    return <Navigate to={`/login`} />;
   }
 
   return <Outlet />;

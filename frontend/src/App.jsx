@@ -19,6 +19,7 @@ import {
   UserAeilines,
   UserEditProfile,
   NotFound,
+  NoOpenedMessage,
 } from "./alumni/pages/index.js";
 import Auth from "./alumni/_auth/Auth.jsx";
 import AuthContext from "./alumni/context/AuthContext.jsx";
@@ -35,6 +36,7 @@ const App = () => {
               <Route path="search" element={<Search />} />
               <Route path="post" element={<CreatePost />} />
               <Route path="inbox" element={<InboxLayout />}>
+                <Route index element={<NoOpenedMessage />} />
                 <Route path=":receiverId" element={<ChatMessage />} />
               </Route>
               <Route path="notifications" element={<Notifications />} />

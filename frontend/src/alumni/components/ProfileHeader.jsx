@@ -16,6 +16,7 @@ import default_img from "../../assets/default-img.png";
 import companyIcon from "../../assets/enterprise.png";
 import phoneIcon from "../../assets/phone-call.png";
 import emailIcon from "../../assets/mail.png";
+import privacyIcon from "../../assets/privacy.png";
 
 const SkeletonLoader = () => (
   <div className="mt-11 flex flex-col items-center max-w-[800px] mx-auto gap-14 md:flex-row animate-pulse">
@@ -62,13 +63,14 @@ const ProfileHeader = () => {
     return <SkeletonLoader />;
   }
 
-  const { bio, company, email, firstName, job_role, lastName, middleName, phoneNumber, profile_picture, role, userID, username } =
+  const { bio, company, email, firstName, job_role, lastName, middleName, phoneNumber, profile_picture, role, userID, username, isPrivate } =
     userQuery.data.user;
 
   return (
     <div className="w-full mt-11 flex flex-col  items-center max-w-[800px] mx-auto gap-14  md:flex-row">
-      <div>
+      <div className="relative">
         <img className="w-56 h-56 rounded-full object-cover" src={profile_picture ? profile_picture : default_img} alt="profile" />
+        <img className={`${isPrivate ? "flex" : "hidden"} absolute bottom-0 w-10 h-10 right-[10px]`} src={privacyIcon} alt="private" />
       </div>
       <div className="flex flex-col  gap-2 md:gap-5">
         <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
@@ -93,7 +95,7 @@ const ProfileHeader = () => {
             </NavLink>
           )}
         </div>
-        <div className="flex flex-col sm:gap-10 sm:flex-row items-center justify-between">
+        <div className="flex flex-col   sm:gap-10 sm:flex-row items-center justify-between">
           <p>
             <span className="font-bold">{userPostsQuery.data.length}</span> posts
           </p>

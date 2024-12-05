@@ -12,7 +12,7 @@ export const ReadMore = ({ id, text, charLimit = 100 }) => {
   };
 
   return (
-    <p id={id} className="whitespace-normal break-words">
+    <p id={id} className="whitespace-normal break-words overflow-hidden text-ellipsis" style={{ wordBreak: "break-word", maxWidth: "100%" }}>
       {isExpanded ? text : truncatedText}
       {itCanOverflow && (
         <>

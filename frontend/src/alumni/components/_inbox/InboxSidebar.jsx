@@ -24,7 +24,12 @@ const InboxSidebar = () => {
           const otherUserName = isCurrentUserMemberOne ? conversation.memberTwoUsername : conversation.memberOneUsername;
           const otherUserProfilePicture = isCurrentUserMemberOne ? conversation.memberTwoProfilePicture : conversation.memberOneProfilePicture;
           return (
-            <ChatProfile key={index} userName={otherUserName} img={otherUserProfilePicture ? otherUserID : default_img} receiverId={otherUserID} />
+            <ChatProfile
+              key={index}
+              userName={otherUserName}
+              img={otherUserProfilePicture ? otherUserProfilePicture : default_img}
+              receiverId={otherUserID}
+            />
           );
         })}
       </div>
