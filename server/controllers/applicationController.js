@@ -16,7 +16,7 @@ export const createApplicationController = async (req, res) => {
   const { userId } = req;
 
   if (!userId) {
-    return res.status(400).json({ message: "User ID is missing. Ensure the user creation step is successful." });
+    return res.status(400).json({ message: "UserPosts ID is missing. Ensure the user creation step is successful." });
   }
 
   const applicationId = crypto.randomUUID();
@@ -47,7 +47,7 @@ export const createApplicationController = async (req, res) => {
 
     if (!newApplication) {
       await removeUserAccount(userId);
-      return res.status(500).json({ message: "Failed to create application. User account removed." });
+      return res.status(500).json({ message: "Failed to create application. UserPosts account removed." });
     }
 
     transporter.sendMail(

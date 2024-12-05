@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ImageCarousel from "../ImageCarousel";
+import ImageCarousel from "../posts/ImageCarousel.jsx";
 import Button from "../Button";
 
 import liked from "../../../assets/post-liked.png";
@@ -12,7 +12,7 @@ import UserProfilePic from "../UserProfilePic";
 import { ReadMore } from "../ReadMore";
 import { useAuthContext } from "../../context/AuthContext";
 
-const PostCommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, images, userID, userName, setIsShowComment, caption }) => {
+const CommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, images, userID, userName, setIsShowComment, caption }) => {
   const [commentData, setCommentData] = useState("");
   const followerQuery = useUserFollower(userID);
   const followUserQuery = useFollowUser();
@@ -130,4 +130,4 @@ const PostCommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, imag
   );
 };
 
-export default PostCommentPopUp;
+export default CommentPopUp;

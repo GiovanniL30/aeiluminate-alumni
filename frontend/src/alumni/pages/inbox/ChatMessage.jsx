@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import Message from "../../components/_inbox/Message";
+import Message from "../../components/inbox/Message";
 import Button from "../../components/Button";
 import { NavLink, useParams } from "react-router-dom";
 import { useAddMessage, useConversationMessages, useGetUser } from "../../_api/@react-client-query/query";

@@ -1,6 +1,6 @@
 import React from "react";
-import { useAuthContext } from "../context/AuthContext";
-import UserProfilePic from "./UserProfilePic";
+import { useAuthContext } from "../../context/AuthContext.jsx";
+import UserProfilePic from "../UserProfilePic.jsx";
 
 const FollowList = ({ data }) => {
   const { user } = useAuthContext();

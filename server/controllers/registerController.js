@@ -44,7 +44,7 @@ export const createUserAccountController = async (req, res, next) => {
       const alumni = await addNewAlumni(id, yearGraduated, program);
       if (!alumni) {
         await removeUserAccount(id);
-        return res.status(500).json({ message: "Failed to add alumni details. User account removed." });
+        return res.status(500).json({ message: "Failed to add alumni details. UserPosts account removed." });
       }
     }
 
@@ -52,7 +52,7 @@ export const createUserAccountController = async (req, res, next) => {
       req.userId = id;
       next();
     } else {
-      res.status(201).json({ message: "User created successfully.", userId: id });
+      res.status(201).json({ message: "UserPosts created successfully.", userId: id });
     }
   } catch (error) {
     console.error("Error creating user:", error);

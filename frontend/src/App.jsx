@@ -11,7 +11,7 @@ import {
   Search,
   Signin,
   Signup,
-  User,
+  UserPosts,
   UserEvents,
   UserFollowers,
   UsersFollowing,
@@ -23,7 +23,7 @@ import {
 } from "./alumni/pages/index.js";
 import Auth from "./alumni/_auth/Auth.jsx";
 import AuthContext from "./alumni/context/AuthContext.jsx";
-import PrivateProtected from "./alumni/pages/_user/PrivateProtected.jsx";
+import PrivateProtected from "./alumni/pages/user/PrivateProtected.jsx";
 
 const App = () => {
   return (
@@ -43,7 +43,7 @@ const App = () => {
 
               <Route path="user/:id" element={<UserLayout />}>
                 <Route element={<PrivateProtected />}>
-                  <Route index element={<User />} />
+                  <Route index element={<UserPosts />} />
                   <Route path="events" element={<UserEvents />} />
                   <Route path="line" element={<UserAeilines />} />
                 </Route>

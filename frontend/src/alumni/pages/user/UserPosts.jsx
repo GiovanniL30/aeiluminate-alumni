@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useGetUserPosts } from "../../_api/@react-client-query/query";
 import { useParams } from "react-router-dom";
-import PostCard from "../../components/_cards/PostCard";
-import SimpleCardLoader from "../../components/_cards/loaders/SimpleCardLoader";
+import PostCard from "../../components/cards/PostCard";
+import SimpleCardLoader from "../../components/cards/loaders/SimpleCardLoader";
 
-const User = () => {
+const UserPosts = () => {
   const [openPost, setOpenPost] = useState(false);
   const [postData, setPostData] = useState({});
   const { id } = useParams();
@@ -69,4 +69,4 @@ const User = () => {
   );
 };
 
-export default User;
+export default UserPosts;

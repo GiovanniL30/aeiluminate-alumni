@@ -8,7 +8,7 @@ import unliked from "../../../assets/post-unliked.png";
 import more_hor from "../../../assets/more_hor.png";
 import { usePostInformation, useLikePost, useUnlikePost } from "../../_api/@react-client-query/query.js";
 import AelineCardLoading from "./loaders/AelineCardLoading.jsx";
-import PostCommentPopUp from "./PostCommentPopUp.jsx";
+import CommentPopUp from "./CommentPopUp.jsx";
 import UserProfilePic from "../UserProfilePic.jsx";
 import { ReadMore } from "../ReadMore.jsx";
 import { useAuthContext } from "../../context/AuthContext.jsx";
@@ -35,7 +35,7 @@ const AelineCard = ({ postID, caption, userID, createdAt }) => {
   return (
     <div className="flex flex-col md:gap-8 p-3 rounded-xl my-shadow w-full">
       {isShowComment && (
-        <PostCommentPopUp
+        <CommentPopUp
           postId={postID}
           profilePic={data.profile_link}
           handleLike={handleLike}

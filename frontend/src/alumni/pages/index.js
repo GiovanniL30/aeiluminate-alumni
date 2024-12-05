@@ -2,22 +2,22 @@ import Home from "./Home";
 import MainLayout from "./MainLayout";
 import Notifications from "./Notifications";
 import CreatePost from "./CreatePost";
-import InboxLayout from "./_inbox/InboxLayout";
-import ChatMessage from "./_inbox/ChatMessage";
+import InboxLayout from "./inbox/InboxLayout";
+import ChatMessage from "./inbox/ChatMessage";
 
 import Search from "./Search";
 import Signin from "./Signin";
 import Signup from "./Signup";
-import User from "./_user/User";
-import UserEvents from "./_user/UserEvents";
-import UserFollowers from "./_user/UserFollowers";
-import UsersFollowing from "./_user/UsersFollowing";
-import UserLayout from "./_user/UserLayout";
-import UserAeilines from "./_user/UserAeilines";
-import UserEditProfile from "./_user/UserEditProfile";
+import UserPosts from "./user/UserPosts.jsx";
+import UserEvents from "./user/UserEvents";
+import UserFollowers from "./user/UserFollowers";
+import UsersFollowing from "./user/UsersFollowing";
+import UserLayout from "./user/UserLayout";
+import UserAeilines from "./user/UserAeilines";
+import UserEditProfile from "./user/UserEditProfile";
 
 import NotFound from "./NotFound";
-import NoOpenedMessage from "./_inbox/NoOpenedMessage";
+import NoOpenedMessage from "./inbox/NoOpenedMessage";
 
 export {
   NoOpenedMessage,
@@ -29,7 +29,7 @@ export {
   Search,
   Signin,
   Signup,
-  User,
+  UserPosts,
   UserEvents,
   UserFollowers,
   UsersFollowing,

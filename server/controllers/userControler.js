@@ -32,7 +32,7 @@ const generateToken = (userId, role) => {
 
 /**
  *
- * login User
+ * login UserPosts
  *
  * @method POST
  * @route /api/login
@@ -70,7 +70,7 @@ export const loginController = async (req, res) => {
 
 /**
  *
- * Logout User
+ * Logout UserPosts
  *
  * @method DELETE
  * @route /api/logout
@@ -123,7 +123,7 @@ export const getUserController = async (req, res) => {
     const user = await getUser(userId);
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "UserPosts not found" });
     }
 
     const { password, ...userData } = user;
@@ -147,7 +147,7 @@ export const getUserWithIdController = async (req, res) => {
     const user = await getUser(id);
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "UserPosts not found" });
     }
 
     const { password, ...userData } = user;
@@ -172,7 +172,7 @@ export const deleteUserController = async (req, res) => {
     if (!removed) {
       return res.status(500).json({ message: "Failed to delete user from database" });
     }
-    res.status(200).json({ message: "User deleted successfully" });
+    res.status(200).json({ message: "UserPosts deleted successfully" });
   } catch (error) {
     console.error("Error deleting user:", error);
     res.status(500).json({ message: "Internal Server error (Failed to delete user)" });
@@ -277,7 +277,7 @@ export const checkIsFollowingController = async (req, res) => {
 };
 
 /**
- *  Update User Details
+ *  Update UserPosts Details
  *  @method PATCH
  *  @route /api/user/update/details
  */
@@ -296,7 +296,7 @@ export const updateUserDetailsController = async (req, res) => {
 };
 
 /**
- *  Update User Profile Pic
+ *  Update UserPosts Profile Pic
  *  @method PATCH
  *  @route /api/user/update/profile
  */

@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import InboxSidebar from "../../components/_inbox/InboxSidebar";
+import InboxSidebar from "../../components/inbox/InboxSidebar";
 
 const InboxLayout = () => {
   return (

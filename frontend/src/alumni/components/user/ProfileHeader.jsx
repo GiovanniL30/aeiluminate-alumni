@@ -1,5 +1,5 @@
 import React from "react";
-import { useAuthContext } from "../context/AuthContext";
+import { useAuthContext } from "../../context/AuthContext.jsx";
 import {
   useIsFollowing,
   useUserFollower,
@@ -8,15 +8,15 @@ import {
   useUnFollowUser,
   useGetUser,
   useGetUserPosts,
-} from "../_api/@react-client-query/query";
-import Button from "../components/Button";
+} from "../../_api/@react-client-query/query.js";
+import Button from "../Button.jsx";
 import { NavLink, useParams } from "react-router-dom";
 
-import default_img from "../../assets/default-img.png";
-import companyIcon from "../../assets/enterprise.png";
-import phoneIcon from "../../assets/phone-call.png";
-import emailIcon from "../../assets/mail.png";
-import privacyIcon from "../../assets/privacy.png";
+import default_img from "../../../assets/default-img.png";
+import companyIcon from "../../../assets/enterprise.png";
+import phoneIcon from "../../../assets/phone-call.png";
+import emailIcon from "../../../assets/mail.png";
+import privacyIcon from "../../../assets/privacy.png";
 
 const SkeletonLoader = () => (
   <div className="mt-11 flex flex-col items-center max-w-[800px] mx-auto gap-14 md:flex-row animate-pulse">

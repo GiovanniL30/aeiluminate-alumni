@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import PostCardCarousel from "./PostCardCarousel";
-import no_post from "../../assets/no_post.png";
+import PostCardCarousel from "./PostCardCarousel.jsx";
+import no_post from "../../../assets/no_post.png";
 
 const FileUploader = ({ images, setImages, uploading = false }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

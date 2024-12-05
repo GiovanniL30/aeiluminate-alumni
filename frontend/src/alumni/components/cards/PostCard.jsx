@@ -8,7 +8,7 @@ import liked from "../../../assets/post-liked.png";
 import unliked from "../../../assets/post-unliked.png";
 import more_vert from "../../../assets/more_vert.png";
 
-import ImageCarousel from "../ImageCarousel";
+import ImageCarousel from "../posts/ImageCarousel.jsx";
 import { ReadMore } from "../ReadMore";
 import {
   useGetUser,
@@ -20,7 +20,7 @@ import {
   useUserFollowing,
 } from "../../_api/@react-client-query/query.js";
 import PostCardLoading from "./loaders/PostCardLoading.jsx";
-import PostCommentPopUp from "./PostCommentPopUp.jsx";
+import CommentPopUp from "./CommentPopUp.jsx";
 import { NavLink } from "react-router-dom";
 import UserProfilePic from "../UserProfilePic.jsx";
 import { useAuthContext } from "../../context/AuthContext.jsx";
@@ -47,7 +47,7 @@ const PostCard = ({ postID, caption, images, userID, createdAt }) => {
   return (
     <div className={`w-full flex flex-col gap-5 p-3 rounded-xl my-shadow ${isShowComment && "pointer-events-none"}`}>
       {isShowComment && (
-        <PostCommentPopUp
+        <CommentPopUp
           postId={postID}
           profilePic={data.profile_link}
           handleLike={handleLike}

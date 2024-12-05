@@ -1,9 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-import event from "../../assets/event.png";
-import line from "../../assets/line@.png";
-import news_feed from "../../assets/news feed.png";
+import event from "../../../assets/event.png";
+import line from "../../../assets/line@.png";
+import news_feed from "../../../assets/news feed.png";
 
 const routes = [
   {

@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useUserFollowing } from "../../_api/@react-client-query/query";
-import FollowList from "../../components/FollowList";
+import FollowList from "../../components/user/FollowList.jsx";
 
 const UsersFollowing = () => {
   const { id } = useParams();

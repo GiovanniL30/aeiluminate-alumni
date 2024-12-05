@@ -92,7 +92,7 @@ const UserEditProfile = () => {
         },
         {
           onSuccess: () => {
-            alert("User details updated successfully");
+            alert("UserPosts details updated successfully");
             navigate(`/user/${id}`);
           },
         }

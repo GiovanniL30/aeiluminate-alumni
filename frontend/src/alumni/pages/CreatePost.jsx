@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import FileUploader from "../components/FileUploader";
+import FileUploader from "../components/createPost/FileUploader.jsx";
 import Button from "../components/Button";
 import { useAuthContext } from "../context/AuthContext";
 import create_post from "../../assets/create_post.png";

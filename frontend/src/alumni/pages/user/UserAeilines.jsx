@@ -1,8 +1,8 @@
 import React from "react";
 import { useGetUserPosts } from "../../_api/@react-client-query/query";
 import { useParams } from "react-router-dom";
-import SimpleCardLoader from "../../components/_cards/loaders/SimpleCardLoader";
-import AelineCard from "../../components/_cards/AelineCard";
+import SimpleCardLoader from "../../components/cards/loaders/SimpleCardLoader";
+import AelineCard from "../../components/cards/AelineCard";
 
 const UserAeilines = () => {
   const { id } = useParams();

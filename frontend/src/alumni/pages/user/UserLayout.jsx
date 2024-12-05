@@ -1,6 +1,6 @@
 import React from "react";
-import ProfileHeader from "../../components/ProfileHeader";
-import ProfileNavbar from "../../components/ProfileNavbar";
+import ProfileHeader from "../../components/user/ProfileHeader.jsx";
+import ProfileNavbar from "../../components/user/ProfileNavbar.jsx";
 import { Outlet } from "react-router-dom";
 
 const UserLayout = () => {
