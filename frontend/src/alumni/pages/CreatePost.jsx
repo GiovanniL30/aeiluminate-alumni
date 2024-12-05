@@ -10,6 +10,8 @@ import TopPopUp from "../components/TopPopUp";
 
 import default_img from "../../assets/default-img.png";
 import { useNavigate } from "react-router-dom";
+import Joblisting from "../components/createPost/Joblisting.jsx";
+import EventInformation from "../components/createPost/EventInformation.jsx";
 
 const CreatePost = ({ maxCaption = 225 }) => {
   const uploadQuery = useUploadPost();
@@ -23,9 +25,16 @@ const CreatePost = ({ maxCaption = 225 }) => {
     isEvent: false,
     isJob: false,
   });
+
   const [images, setImages] = useState([]);
   const { user } = useAuthContext();
   const [caption, setCaption] = useState("");
+
+  const [eventInformation, setEventInformation] = useState({
+    title: "",
+    eventDateTime: "",
+    location: "",
+  });
 
   const handleCaptionChange = (e) => {
     const { value } = e.target;
@@ -79,6 +88,9 @@ const CreatePost = ({ maxCaption = 225 }) => {
       isEvent: type === "event",
       isJob: type === "job",
     });
+
+    setCaption("");
+    setImages([]);
   };
 
   return (
@@ -92,7 +104,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
         <Button text={uploadQuery.isPending ? "Uploading..." : "Share"} otherStyle="px-10" disabled={uploadQuery.isPending} onClick={handleSubmit} />
       </div>
 
-      <div className="flex flex-col items-start gap-5 sm:items-center text-md sm:text-xl sm:flex-row">
+      <div className="flex flex-col items-start gap-5 md:items-center text-md md:text-xl md:flex-row">
         <button
           onClick={() => switchPostType("post")}
           className={`flex items-center justify-center gap-2 hover-opacity ${
@@ -137,7 +149,9 @@ const CreatePost = ({ maxCaption = 225 }) => {
       </div>
 
       <div className="flex flex-col gap-20 md:flex-row w-full">
-        {(postType.isPost || postType.isEvent) && <FileUploader uploading={uploadQuery.isPending} images={images} setImages={setImages} />}
+        {(postType.isPost || postType.isEvent) && (
+          <FileUploader maxImage={postType.isEvent ? 1 : 10} uploading={uploadQuery.isPending} images={images} setImages={setImages} />
+        )}
 
         <div className="flex flex-col gap-5 w-full">
           <div className="flex items-center gap-2">
@@ -157,6 +171,11 @@ const CreatePost = ({ maxCaption = 225 }) => {
               {caption.length}/{maxCaption}
             </p>
           </div>
+
+          <>
+            {postType.isEvent && <EventInformation />}
+            {postType.isJob && <Joblisting />}
+          </>
         </div>
       </div>
     </div>

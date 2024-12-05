@@ -2,21 +2,26 @@ import React, { useState } from "react";
 import PostCardCarousel from "./PostCardCarousel.jsx";
 import no_post from "../../../assets/no_post.png";
 
-const FileUploader = ({ images, setImages, uploading = false }) => {
+const FileUploader = ({ maxImage = 10, images, setImages, uploading = false }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [uploadError, setUploadError] = useState("");
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
 
-    if (!file) return;
+    if (!file) {
+      setUploadError("Image was not added, please try again");
+      return;
+    }
 
     const filePreview = URL.createObjectURL(file);
 
     if (file.size > 5 * 1024 * 1024) {
-      alert(`${file.name} exceeds the 5MB size limit and was not added.`);
+      setUploadError(`${file.name} exceeds the 5MB size limit and was not added.`);
       return;
     }
 
+    setUploadError("");
     setImages((prev) => [...prev, { file, filePreview }]);
     setCurrentIndex(images.length);
   };
@@ -47,12 +52,20 @@ const FileUploader = ({ images, setImages, uploading = false }) => {
       <label
         htmlFor="file-upload"
         className={`text-sm hover-opacity cursor-pointer bg-primary_blue text-white py-2 px-10 rounded-md mt-4 ${
-          uploading && "pointer-events-none opacity-50"
+          uploading || (maxImage == images.length && "pointer-events-none opacity-50 bg-red-600")
         }`}
       >
-        Select from computer
+        {maxImage == images.length ? `You can only upload maximum of ${maxImage} photos` : "Select from computer"}
       </label>
-      <input disabled={uploading} id="file-upload" type="file" accept=".jpg, .jpeg, .png" className="hidden" onChange={handleFileChange} />
+      <input
+        disabled={uploading || maxImage == images.length}
+        id="file-upload"
+        type="file"
+        accept=".jpg, .jpeg, .png"
+        className="hidden"
+        onChange={handleFileChange}
+      />
+      {uploadError && <p className="mt-4 text-red-600">{uploadError}</p>}
     </div>
   );
 };
