@@ -12,6 +12,7 @@ import {
 } from "../controllers/postsController.js";
 import { upload } from "../multer.js";
 import { authenticateUserToken } from "../middleware/authenticateToken.js";
+import { uploadMediaMiddleware } from "../middleware/uploadMedia.js";
 
 export const postRouter = express.Router();
 
@@ -22,7 +23,7 @@ export const postRouter = express.Router();
  */
 
 /** Upload Post Route */
-postRouter.post("/post", authenticateUserToken, upload.array("images"), uploadPostController);
+postRouter.post("/post", authenticateUserToken, upload.array("images"), uploadMediaMiddleware, uploadPostController);
 
 /** Upload Line Route */
 postRouter.post("/line", authenticateUserToken, uploadLineController);

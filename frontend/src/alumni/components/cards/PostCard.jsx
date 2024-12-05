@@ -25,7 +25,7 @@ import { NavLink } from "react-router-dom";
 import UserProfilePic from "../UserProfilePic.jsx";
 import { useAuthContext } from "../../context/AuthContext.jsx";
 
-const PostCard = ({ postID, caption, images, userID, createdAt }) => {
+const PostCard = ({ postID, caption, images, userID, createdAt, otherStyle }) => {
   const [isShowComment, setIsShowComment] = useState(false);
   const likePostQuery = useLikePost();
   const unlikePostQuery = useUnlikePost();
@@ -45,7 +45,7 @@ const PostCard = ({ postID, caption, images, userID, createdAt }) => {
   };
 
   return (
-    <div className={`w-full flex flex-col gap-5 p-3 rounded-xl my-shadow ${isShowComment && "pointer-events-none"}`}>
+    <div className={`w-full flex flex-col gap-5 p-3 rounded-xl my-shadow ${isShowComment && "pointer-events-none"} ${otherStyle}`}>
       {isShowComment && (
         <CommentPopUp
           postId={postID}
@@ -77,9 +77,11 @@ const PostCard = ({ postID, caption, images, userID, createdAt }) => {
           </button>
         </div>
       </div>
+
       <div className="bg-gray-50 h-fit max-h-[500px] min-h-[250px]">
         <ImageCarousel images={images} />
       </div>
+
       <div className="flex items-center px-4 gap-6">
         <button className="w-6 h-6" onClick={handleLike}>
           <img src={data.is_liked == 1 ? liked : unliked} alt="like/unlike" />
@@ -88,7 +90,8 @@ const PostCard = ({ postID, caption, images, userID, createdAt }) => {
           <img src={comment} alt="comment" />
         </button>
       </div>
-      <div className="flex flex-col gap-2 px-4 pb-4">
+
+      <div className="flex flex-col gap-2 px-4 pb-4 flex-grow">
         <div className="flex gap-2">
           <p className="font-bold text-sm">{data ? data.total_likes : "0"} likes</p>
           <p className="font-bold text-sm">{data ? data.total_replies : "0"} comments</p>

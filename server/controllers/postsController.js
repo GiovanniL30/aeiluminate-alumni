@@ -1,56 +1,26 @@
 import { ID, InputFile } from "node-appwrite";
 import crypto from "crypto";
 import { storage } from "../appwriteconfig.js";
-import { addNewPost, addNewMedia, addLike, addComment } from "../mysqlQueries/addQueries.js";
+import { addNewPost, addNewMedia, addLike, addComment, createAlbum } from "../mysqlQueries/addQueries.js";
 import { getPosts, getMedia, getPostStats, getPostComments, getUserPosts } from "../mysqlQueries/readQueries.js";
 import { unlikePost } from "../mysqlQueries/deleteQueries.js";
 
 /**
- *
  * Inserts a new Post on the Database
- *
- * @method POST
- * @route /api/post
  */
 export const uploadPostController = async (req, res) => {
   try {
-    const { userId } = req;
-    const { caption } = req.body;
+    const { userId, mediaInfo } = req;
+
+    const { caption, albumTitle, albumId } = req.body;
     const postId = crypto.randomUUID();
 
-    if (!req.files || req.files.length === 0) {
-      return res.status(400).json({ message: "No files uploaded." });
+    if (albumId && albumTitle) {
+      const albumResult = await createAlbum(albumId, albumTitle, userId);
+      if (!albumResult) throw new Error("Failed to create album");
     }
 
-    const allowedTypes = ["image/jpeg", "image/png"];
-    const maxFileSize = 5 * 1024 * 1024; // 5 MB
-    const mediaInfo = [];
-
-    for (const file of req.files) {
-      const isValidType = allowedTypes.includes(file.mimetype);
-      if (!isValidType) {
-        return res.status(422).json({
-          message: `Invalid file type: ${file.originalname}. Allowed types: ${allowedTypes.join(", ")}`,
-        });
-      }
-
-      if (file.size > maxFileSize) {
-        return res.status(422).json({
-          message: `File size too large: ${file.originalname}. Max size is ${maxFileSize / 1024 / 1024} MB.`,
-        });
-      }
-
-      const result = await storage.createFile(process.env.APP_WRITE_IMAGES_BUCKET, ID.unique(), InputFile.fromBuffer(file.buffer, file.originalname));
-      const mediaURL = `https://cloud.appwrite.io/v1/storage/buckets/${process.env.APP_WRITE_IMAGES_BUCKET}/files/${result.$id}/view?project=${process.env.APP_WRITE_PROJECT_ID}&mode=admin`;
-
-      mediaInfo.push({
-        mediaID: result.$id,
-        mediaType: file.mimetype,
-        mediaURL,
-      });
-    }
-
-    const postResult = await addNewPost(postId, userId, caption, new Date());
+    const postResult = await addNewPost(postId, userId, caption, new Date(), albumId);
     if (!postResult) throw new Error("Failed to add new post");
 
     for (const media of mediaInfo) {

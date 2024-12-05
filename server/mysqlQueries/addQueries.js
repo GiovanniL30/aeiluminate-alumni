@@ -43,11 +43,22 @@ export const addNewAlumni = async (userID, yeaGraduated, programID) => {
  * Adds a new post
  * @affectedDatabase = posts
  */
-export const addNewPost = async (postId, userID, caption, time) => {
-  const query = "INSERT INTO posts (postId, userID, caption, createdAt) VALUES (?, ?, ?, ?)";
+export const addNewPost = async (postId, userID, caption, time, albumId = null) => {
+  let query = "INSERT INTO posts (postId, userID, caption, createdAt";
+  let values = [postId, userID, caption, time];
+
+  if (albumId) {
+    query += ", albumId";
+    values.push(albumId);
+  }
+
+  query += ") VALUES (? ,? ,? ,?";
+  if (albumId) query += ", ?";
+
+  query += ")";
 
   try {
-    const [result] = await connection.query(query, [postId, userID, caption, time]);
+    const [result] = await connection.query(query, values);
     return result.affectedRows > 0;
   } catch (err) {
     console.error("Error inserting new post", err);
@@ -166,5 +177,23 @@ export const addNewMessage = async (messageID, conversationID, senderID, receive
   } catch (error) {
     console.error("Failed to add new message:", error);
     throw new Error("Failed to add new message");
+  }
+};
+
+/**
+ * Creates a new album on the database
+ */
+export const createAlbum = async (albumId, albumTitle, albumIdOwner) => {
+  const query = `
+    INSERT INTO albums (albumId, albumTitle, albumIdOwner)
+    VALUES (?, ?,  ?);
+  `;
+
+  try {
+    const [result] = await connection.query(query, [albumId, albumTitle, albumIdOwner]);
+    return result.affectedRows > 0;
+  } catch (error) {
+    console.error("Failed to add new album:", error);
+    throw new Error("Failed to add new album");
   }
 };

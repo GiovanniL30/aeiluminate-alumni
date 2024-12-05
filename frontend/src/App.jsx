@@ -20,6 +20,8 @@ import {
   UserEditProfile,
   NotFound,
   NoOpenedMessage,
+  AlbumContribute,
+  Album,
 } from "./alumni/pages/index.js";
 import Auth from "./alumni/_auth/Auth.jsx";
 import AuthContext from "./alumni/context/AuthContext.jsx";
@@ -39,8 +41,9 @@ const App = () => {
                 <Route index element={<NoOpenedMessage />} />
                 <Route path=":receiverId" element={<ChatMessage />} />
               </Route>
+              <Route path="album/contribute/:albumId" element={<AlbumContribute />} />
+              <Route path="album/:albumId" element={<Album />} />
               <Route path="notifications" element={<Notifications />} />
-
               <Route path="user/:id" element={<UserLayout />}>
                 <Route element={<PrivateProtected />}>
                   <Route index element={<UserPosts />} />

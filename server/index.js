@@ -11,6 +11,7 @@ import { postRouter } from "./routes/post.js";
 import { programRouter } from "./routes/programs.js";
 import { applicationRoute } from "./routes/application.js";
 import { conversationRoute } from "./routes/conversation.js";
+import { albumRouter } from "./routes/album.js";
 
 const app = express();
 const httpServer = createServer(app);
@@ -40,6 +41,7 @@ app.use("/api/conversation", conversationRoute);
 app.use("/api", postRouter);
 app.use("/api", programRouter);
 app.use("/api", applicationRoute);
+app.use("/api/album", albumRouter);
 
 /**
  * ======================

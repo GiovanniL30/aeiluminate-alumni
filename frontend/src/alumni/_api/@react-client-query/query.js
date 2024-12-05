@@ -24,6 +24,10 @@ import {
   getConversationMessagesRequest,
   getConversationListRequest,
   addNewMessageRequest,
+  createNewAlbum,
+  getAlbumPosts,
+  getAlbumInformation,
+  addImageOnAlbum,
 } from "../index.js";
 
 /**
@@ -297,5 +301,53 @@ export const useAddMessage = () => {
       client.invalidateQueries(["conversation", "messages", receiverId]);
       client.invalidateQueries(["conversation", "list"]);
     },
+  });
+};
+
+/**
+ * React query to create a new album
+ */
+export const useNewAlbum = () => {
+  const client = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ albumTitle, images }) => createNewAlbum({ albumTitle, images }),
+    onSuccess: () => {
+      client.invalidateQueries(["posts"]);
+    },
+  });
+};
+
+/**
+ * React query to add image on the album
+ */
+export const useAddImageAlbum = () => {
+  const client = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ albumTitle, images, albumId }) => addImageOnAlbum({ albumTitle, images, albumId }),
+    onSuccess: (_, albumId) => {
+      client.invalidateQueries(["album", albumId]);
+    },
+  });
+};
+
+/**
+ * React query to get album posts
+ */
+export const useAlbumPosts = (albumId) => {
+  return useQuery({
+    queryFn: () => getAlbumPosts(albumId),
+    queryKey: ["album", "post", albumId],
+  });
+};
+
+/**
+ * React query to get album informations
+ */
+export const useAlbumInformation = (albumId) => {
+  return useQuery({
+    queryFn: () => getAlbumInformation(albumId),
+    queryKey: ["album", "information", albumId],
   });
 };

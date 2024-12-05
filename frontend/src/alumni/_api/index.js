@@ -450,3 +450,90 @@ export const addNewMessageRequest = async ({ receiverId, conversationID, content
     throw new Error(error.response?.data.message || error.message);
   }
 };
+
+// Request to create a new album
+export const createNewAlbum = async ({ albumTitle, images }) => {
+  try {
+    const token = getAuthToken();
+
+    const formData = new FormData();
+    formData.append("albumTitle", albumTitle);
+
+    images.forEach((image) => {
+      formData.append("images", image.file);
+    });
+
+    const response = await axios.post(`${baseURL}/api/album/new`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error creating new album:", error);
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
+
+// Request to add new image on album
+export const addImageOnAlbum = async ({ albumTitle, images, albumId }) => {
+  try {
+    const token = getAuthToken();
+
+    const formData = new FormData();
+    formData.append("albumTitle", albumTitle);
+    formData.append("albumId", albumId);
+
+    images.forEach((image) => {
+      formData.append("images", image);
+    });
+
+    const response = await axios.post(`${baseURL}/api/album/add`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error creating new album:", error);
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
+
+export const getAlbumPosts = async (albumId) => {
+  try {
+    const token = getAuthToken();
+
+    const response = await axios.get(`${baseURL}/api/album/${albumId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching album posts:", error);
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
+
+export const getAlbumInformation = async (albumId) => {
+  try {
+    const token = getAuthToken();
+
+    const response = await axios.get(`${baseURL}/api/album/information/${albumId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching album posts:", error);
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};

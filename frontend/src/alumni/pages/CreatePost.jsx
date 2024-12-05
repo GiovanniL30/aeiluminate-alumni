@@ -5,7 +5,7 @@ import Button from "../components/Button";
 import { useAuthContext } from "../context/AuthContext";
 import create_post from "../../assets/create_post.png";
 import create_line from "../../assets/create_line.png";
-import { useUploadLine, useUploadPost } from "../_api/@react-client-query/query";
+import { useNewAlbum, useUploadLine, useUploadPost } from "../_api/@react-client-query/query";
 import TopPopUp from "../components/TopPopUp";
 
 import default_img from "../../assets/default-img.png";
@@ -16,6 +16,7 @@ import EventInformation from "../components/createPost/EventInformation.jsx";
 const CreatePost = ({ maxCaption = 225 }) => {
   const uploadQuery = useUploadPost();
   const uploadLine = useUploadLine();
+  const createAlbum = useNewAlbum();
 
   const navigate = useNavigate();
 
@@ -24,6 +25,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
     isLine: false,
     isEvent: false,
     isJob: false,
+    isAlbum: false,
   });
 
   const [images, setImages] = useState([]);
@@ -50,34 +52,67 @@ const CreatePost = ({ maxCaption = 225 }) => {
       return;
     }
 
-    if (postType.isPost && images.length === 0) {
-      alert("Please upload at least one image.");
-      return;
-    }
+    const submitActions = {
+      isPost: () => {
+        if (images.length === 0) {
+          alert("Please upload at least one image.");
+          return;
+        }
+        uploadQuery.mutate(
+          { caption, images },
+          {
+            onSuccess: () => {
+              setImages([]);
+              setCaption("");
+              alert("Post Uploaded successfully");
+              navigate("/");
+            },
+          }
+        );
+      },
+      isLine: () => {
+        uploadLine.mutate(
+          { caption },
+          {
+            onSuccess: () => {
+              setCaption("");
+              alert("Line Uploaded successfully");
+              navigate("/");
+            },
+          }
+        );
+      },
+      isEvent: () => {
+        alert("posting event");
+      },
+      isJob: () => {
+        alert("posting job list");
+      },
+      isAlbum: () => {
+        if (images.length === 0) {
+          alert("Please upload at least one image for the album.");
+          return;
+        }
+        createAlbum.mutate(
+          { albumTitle: caption, images },
+          {
+            onSuccess: () => {
+              setImages([]);
+              setCaption("");
+              alert("Album Uploaded successfully");
+              navigate("/");
+            },
+          }
+        );
+      },
+    };
 
-    if (postType.isPost) {
-      uploadQuery.mutate(
-        { caption, images },
-        {
-          onSuccess: () => {
-            setImages([]);
-            setCaption("");
-            alert("Post Uploaded successfully");
-            navigate("/");
-          },
-        }
-      );
-    } else if (postType.isLine) {
-      uploadLine.mutate(
-        { caption },
-        {
-          onSuccess: () => {
-            setCaption("");
-            alert("Line Uploaded successfully");
-            navigate("/");
-          },
-        }
-      );
+    const selectedPostType = Object.keys(submitActions).find((key) => postType[key]);
+
+    if (selectedPostType) {
+      submitActions[selectedPostType]();
+    } else {
+      alert("Invalid post type");
     }
   };
 
@@ -87,6 +122,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
       isLine: type === "line",
       isEvent: type === "event",
       isJob: type === "job",
+      isAlbum: type === "album",
     });
 
     setCaption("");
@@ -99,9 +135,25 @@ const CreatePost = ({ maxCaption = 225 }) => {
 
       <div className="flex items-center justify-between">
         <h1 className="font-bold text-2xl">
-          Create new {postType.isPost ? "Post" : postType.isLine ? "Aeline" : postType.isEvent ? "Event" : "Joblisting"}
+          {postType.isPost
+            ? " Post"
+            : postType.isLine
+            ? " Aeline"
+            : postType.isEvent
+            ? " Event"
+            : postType.isJob
+            ? " Joblisting"
+            : postType.isAlbum
+            ? " Album"
+            : " Unknown"}
         </h1>
-        <Button text={uploadQuery.isPending ? "Uploading..." : "Share"} otherStyle="px-10" disabled={uploadQuery.isPending} onClick={handleSubmit} />
+
+        <Button
+          text={uploadQuery.isPending || uploadLine.isPending || createAlbum.isPending ? "Uploading..." : "Share"}
+          otherStyle="px-10"
+          disabled={uploadQuery.isPending || uploadLine.isPending || createAlbum.isPending}
+          onClick={handleSubmit}
+        />
       </div>
 
       <div className="flex flex-col items-start gap-5 md:items-center text-md md:text-xl md:flex-row">
@@ -122,6 +174,16 @@ const CreatePost = ({ maxCaption = 225 }) => {
         >
           <img src={create_line} alt="line" />
           <p>Create aeline</p>
+        </button>
+
+        <button
+          onClick={() => switchPostType("album")}
+          className={`flex items-center justify-center gap-2 hover-opacity ${
+            postType.isAlbum ? "text-primary_blue underline font-bold" : "text-black"
+          }`}
+        >
+          <img src={create_line} alt="line" />
+          <p>Create album</p>
         </button>
 
         {user.role === "Admin" || user.role === "Manager" ? (
@@ -148,9 +210,28 @@ const CreatePost = ({ maxCaption = 225 }) => {
         ) : null}
       </div>
 
+      <h1 className="text-xl  mt-5">
+        You are creating a new{" "}
+        {postType.isPost
+          ? "Post"
+          : postType.isLine
+          ? "Aeline"
+          : postType.isEvent
+          ? "Event"
+          : postType.isJob
+          ? "Joblisting"
+          : postType.isAlbum
+          ? "Album"
+          : "Unknown"}
+      </h1>
       <div className="flex flex-col gap-20 md:flex-row w-full">
-        {(postType.isPost || postType.isEvent) && (
-          <FileUploader maxImage={postType.isEvent ? 1 : 10} uploading={uploadQuery.isPending} images={images} setImages={setImages} />
+        {(postType.isPost || postType.isEvent || postType.isAlbum) && (
+          <FileUploader
+            maxImage={postType.isEvent ? 1 : 10}
+            uploading={uploadQuery.isPending || uploadLine.isPending || createAlbum.isPending}
+            images={images}
+            setImages={setImages}
+          />
         )}
 
         <div className="flex flex-col gap-5 w-full">
@@ -160,8 +241,21 @@ const CreatePost = ({ maxCaption = 225 }) => {
           </div>
 
           <div className="relative">
+            <h1 className="">
+              {postType.isPost
+                ? "Post caption"
+                : postType.isLine
+                ? "Aeline content"
+                : postType.isEvent
+                ? "Event title"
+                : postType.isJob
+                ? "Joblisting title"
+                : postType.isAlbum
+                ? " Album title"
+                : " Unknown"}
+            </h1>
             <textarea
-              disabled={uploadQuery.isPending}
+              disabled={uploadQuery.isPending || uploadLine.isPending || createAlbum.isPending}
               autoFocus={true}
               value={caption}
               onChange={handleCaptionChange}

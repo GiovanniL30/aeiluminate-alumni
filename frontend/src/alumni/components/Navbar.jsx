@@ -29,7 +29,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex justify-between bg-white py-4 w-full max-w-full overflow-x-hidden">
+    <div className="padding-x flex justify-between bg-white py-4 w-full max-w-full overflow-x-hidden">
       <div className="flex justify-between items-center w-full">
         <div className="w-12">
           <img src={logo} alt="logo" />

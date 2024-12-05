@@ -155,24 +155,29 @@ export const getUsers = async (page, pageSize) => {
   }
 };
 
-/**
- * Fetch paginated posts and total count from the database
- */
 export const getPosts = async (page, pageSize, userId) => {
   const query = `
-    SELECT posts.*, users.isPrivate
+    SELECT posts.*, 
+           users.isPrivate, 
+           albums.albumId, 
+           albums.albumTitle, 
+           CONCAT(albumOwners.firstName, ' ', albumOwners.middleName, ' ', albumOwners.lastName) AS albumOwnerName,
+           albumOwners.userID AS albumIdOwner 
     FROM posts
-    JOIN users ON posts.userID = users.userID
-    WHERE users.isPrivate = 0
-    ORDER BY posts.createdAt DESC  -- Sorting by createdAt, newest first
+    LEFT JOIN users ON posts.userID = users.userID  
+    LEFT JOIN albums ON posts.albumId = albums.albumId 
+    LEFT JOIN users AS albumOwners ON albums.albumIdOwner = albumOwners.userID  
+    WHERE (albums.albumId IS NOT NULL OR users.isPrivate = 0) 
+    ORDER BY posts.createdAt DESC 
     LIMIT ? OFFSET ?
   `;
+
   const offset = (page - 1) * pageSize;
 
   try {
     const [results] = await connection.query(query, [parseInt(pageSize), parseInt(offset)]);
     const [[countResult]] = await connection.query(
-      "SELECT COUNT(*) AS total FROM posts JOIN users ON posts.userID = users.userID WHERE users.isPrivate = 0"
+      "SELECT COUNT(*) AS total FROM posts LEFT JOIN albums ON posts.albumId = albums.albumId WHERE albums.albumId IS NOT NULL OR posts.userID IN (SELECT userID FROM users WHERE isPrivate = 0)" // Updated the join condition
     );
     return { posts: results, total: countResult.total };
   } catch (error) {
@@ -402,5 +407,74 @@ export const getAllUserConversations = async (userID) => {
   } catch (error) {
     console.error("Failed to retrieve conversations:", error);
     throw new Error("Failed to retrieve conversations");
+  }
+};
+
+/**
+ * Get all posts and their media for a specific album
+ */
+export const getPostsByAlbumId = async (albumId) => {
+  const query = `
+    SELECT 
+      p.postID,
+      p.userID,
+      p.caption,
+      p.createdAt,
+      m.mediaID,
+      m.mediaType,
+      m.mediaURL
+    FROM 
+      posts p
+    LEFT JOIN 
+      media m ON p.postID = m.postID
+    LEFT JOIN 
+      albums a ON p.albumId = a.albumId  -- Corrected join condition
+    WHERE 
+      a.albumId = ?  
+    ORDER BY 
+      p.createdAt DESC;
+  `;
+
+  try {
+    const [posts] = await connection.query(query, [albumId]);
+    return posts || [];
+  } catch (error) {
+    console.error("Error fetching posts for album:", error);
+    throw new Error("Error fetching posts for album");
+  }
+};
+
+/**
+ * Get album information along with user details (user ID, profile picture, username)
+ */
+export const getAlbumInformation = async (albumId) => {
+  const query = `
+    SELECT 
+      a.albumId,
+      a.albumTitle,
+      u.userID AS userId,
+      u.username,
+      u.firstName,
+      u.lastName,
+      u.profile_picture AS profilePic
+    FROM 
+      albums a
+    LEFT JOIN 
+      users u ON a.albumIdOwner = u.userID
+    WHERE 
+      a.albumId = ?;
+  `;
+
+  try {
+    const [result] = await connection.query(query, [albumId]);
+
+    if (result.length === 0) {
+      throw new Error("Album not found");
+    }
+
+    return result[0];
+  } catch (error) {
+    console.error("Error fetching album information:", error);
+    throw new Error("Failed to retrieve album information");
   }
 };
