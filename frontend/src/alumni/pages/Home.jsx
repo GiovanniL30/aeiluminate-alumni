@@ -41,9 +41,9 @@ const Home = () => {
   return (
     <div className="max-container flex flex-col md:flex-row justify-between gap-5 w-full p-2">
       <Spinner isLoading={isFetching} />
-      <div className="hidden md:flex w-[200px] xl:w-[250px] bg-red-50 fixed left-0 top-[100px] bottom-0">Left</div>
+      <div className="hidden md:flex w-[200px] xl:w-[300px] bg-red-50 fixed left-0 top-[100px] bottom-0">Left</div>
 
-      <div className="flex flex-col w-full md:pl-[150px] md:w-[calc(100%)] xl:w-[650px] xl:pl-0 mx-auto gap-10">
+      <div className="flex flex-col w-full max-w-[600px] md:pl-[150px]  xl:pl-0 mx-auto gap-2">
         {data?.pages[0].posts.length === 0 && <h1>No posts available.</h1>}
 
         {data?.pages.map((page) => {
@@ -83,7 +83,7 @@ const Home = () => {
         </h1>
       </div>
 
-      <div className="hidden xl:flex w-[250px] bg-red-200 fixed right-0 top-[100px] bottom-0">Right</div>
+      <div className="hidden xl:flex w-[300px] bg-red-200 fixed right-0 top-[100px] bottom-0">Right</div>
     </div>
   );
 };

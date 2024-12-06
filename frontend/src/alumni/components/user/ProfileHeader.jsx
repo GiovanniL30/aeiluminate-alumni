@@ -59,7 +59,7 @@ const ProfileHeader = () => {
     }
   };
 
-  if (isFollowStatus.isLoading || followingQuery.isLoading || followerQuery.isLoading || userPostsQuery.isLoading) {
+  if (isFollowStatus.isLoading || followingQuery.isLoading || followerQuery.isLoading || userPostsQuery.isLoading || userQuery.isLoading) {
     return <SkeletonLoader />;
   }
 

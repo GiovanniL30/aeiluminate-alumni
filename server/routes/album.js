@@ -34,7 +34,6 @@ albumRouter.get("/:id", async (req, res) => {
   }
 });
 
-// Route to get album information along with posts for a given album ID
 albumRouter.get("/information/:id", async (req, res) => {
   const albumId = req.params.id;
 

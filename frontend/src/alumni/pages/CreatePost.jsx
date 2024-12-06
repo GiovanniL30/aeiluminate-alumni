@@ -47,11 +47,6 @@ const CreatePost = ({ maxCaption = 225 }) => {
   };
 
   const handleSubmit = () => {
-    if (caption.length < 20) {
-      alert("Caption length should be greater than 20");
-      return;
-    }
-
     const submitActions = {
       isPost: () => {
         if (images.length === 0) {

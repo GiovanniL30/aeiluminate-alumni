@@ -50,6 +50,14 @@ const CommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, images, 
         }`}
       >
         {images && (
+          <button
+            className="absolute right-4 top-10 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover-opacity"
+            onClick={() => setIsShowComment(false)}
+          >
+            &#10005;
+          </button>
+        )}
+        {images && (
           <div className="w-full lg:w-1/2 h-[300px] lg:h-full bg-gray-300 bg-opacity-20">
             <ImageCarousel images={images} otherImageStyle="h-full" />
           </div>
@@ -57,12 +65,14 @@ const CommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, images, 
 
         <div className={`flex flex-col ${images ? "lg:w-1/2" : "w-full"} h-full`}>
           <div className="relative flex-grow overflow-y-auto p-5">
-            <button
-              className="absolute right-4 top-4 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover-opacity"
-              onClick={() => setIsShowComment(false)}
-            >
-              &#10005;
-            </button>
+            {!images && (
+              <button
+                className="absolute right-4 top-4 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover-opacity"
+                onClick={() => setIsShowComment(false)}
+              >
+                &#10005;
+              </button>
+            )}
             <div className="flex items-center gap-5">
               <UserProfilePic userID={userID} profile_link={profilePic} />
               <div className="flex flex-col">

@@ -12,7 +12,7 @@ const Signin = () => {
   const [data, setData] = useState({ email: "", password: "" });
   const [errorMessage, setErrorMessage] = useState("");
   const { mutate, isPending } = useLoginUser();
-  const { user, setUser } = useAuthContext();
+  const { user, token, setToken, setUser } = useAuthContext();
   const [searchParams] = useSearchParams();
   const error = searchParams.get("error");
 
@@ -20,24 +20,33 @@ const Signin = () => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value.trim() }));
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!data) {
+      setErrorMessage("No data provided. Please fill out the form.");
+      return;
+    }
+
     mutate(data, {
       onSuccess: (response) => {
-        const { user, token } = response;
-        setErrorMessage("");
-        setUser(user);
-        localStorage.setItem("token", token);
+        const { user, token } = response || {};
+        if (user && token) {
+          setErrorMessage("");
+          setUser(user);
+          setToken(token);
+        } else {
+          setErrorMessage("Unexpected response format. Please try again.");
+        }
       },
       onError: (error) => {
-        console.error(error);
-        setErrorMessage(error.response?.data?.message || "An error occurred. Please try again.");
+        const errorMessage = error?.response?.data?.message || error?.message || "An error occurred. Please try again.";
+        setErrorMessage(errorMessage);
       },
     });
   };
 
-  if (Object.keys(user).length > 0) {
+  if (user && token) {
     return <Navigate to="/" />;
   }
 

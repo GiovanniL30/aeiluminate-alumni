@@ -50,8 +50,8 @@ const AelineCard = ({ postID, caption, userID, createdAt }) => {
       )}
       <div className="flex items-start justify-start">
         <div className="flex items-center gap-3">
-          <UserProfilePic profile_link={data.profile_link} userID={userID} otherImageStyle="w-10 h-10 md:w-14 md:h-14" />
-          <p className="font-bold text-lg -mb-2">
+          <UserProfilePic profile_link={data.profile_link} userID={userID} otherImageStyle="w-10 h-10 md:w-12 md:h-12" />
+          <p className="font-bold text-lg">
             {data.posted_by} {user.userID === userID && <span className="text-primary_blue ml-1">(YOU)</span>}
           </p>
         </div>

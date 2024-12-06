@@ -43,7 +43,7 @@ export const addNewAlumni = async (userID, yeaGraduated, programID) => {
  * Adds a new post
  * @affectedDatabase = posts
  */
-export const addNewPost = async (postId, userID, caption, time, albumId = null) => {
+export const addNewPost = async (postId, userID, caption = " ", time, albumId = null) => {
   let query = "INSERT INTO posts (postId, userID, caption, createdAt";
   let values = [postId, userID, caption, time];
 

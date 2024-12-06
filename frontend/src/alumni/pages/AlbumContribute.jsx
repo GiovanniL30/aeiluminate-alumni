@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAddImageAlbum, useAlbumInformation } from "../_api/@react-client-query/query";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 
 import { useAuthContext } from "../context/AuthContext";
 import Button from "../components/Button";
@@ -13,6 +13,7 @@ const AlbumContribute = () => {
   const albumInfo = useAlbumInformation(albumId);
   const addImage = useAddImageAlbum();
   const maxImage = 4;
+  const navigate = useNavigate();
 
   if (albumInfo.isLoading) return <h1>Loading...</h1>;
 
@@ -40,6 +41,7 @@ const AlbumContribute = () => {
       {
         onSuccess: () => {
           setImages([]);
+          navigate(`/album/${albumId}`);
           alert("Added Images");
         },
       }
@@ -50,7 +52,7 @@ const AlbumContribute = () => {
     <div className=" flex flex-col gap-10 w-full">
       <div className="flex justify-center flex-col items-center gap-2">
         <h1 className="text-3xl font-bold">
-          {albumInfo.data.firstName} {albumInfo.data.lastName}'s Album
+          {albumInfo.data.userId === user.userID ? "Your album" : `${albumInfo.data.firstName} ${albumInfo.data.lastName}`}
         </h1>
         <h1 className="text-xl font-bold text-light_text">{albumInfo.data.albumTitle}</h1>
       </div>
@@ -61,7 +63,7 @@ const AlbumContribute = () => {
         </div>
         <div className="flex gap-2">
           <NavLink to={`/album/${albumId}`}>
-            <Button text="Cancel" otherStyle="bg-red-500" />
+            <Button disabled={addImage.isPending} text="Cancel" otherStyle="bg-red-500" />
           </NavLink>
           <Button
             onClick={handleUpload}

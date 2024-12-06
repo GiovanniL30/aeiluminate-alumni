@@ -3,7 +3,8 @@ import axios from "axios";
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const getAuthToken = () => {
-  return localStorage.getItem("token");
+  const auth = JSON.parse(localStorage.getItem("auth"));
+  return auth?.token || null;
 };
 
 // Get specific user info
