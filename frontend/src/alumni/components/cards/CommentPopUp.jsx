@@ -43,7 +43,7 @@ const CommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, images, 
   if (isFollowingQuery.isLoading || commentsQuery.isLoading) return <PostCommentLoading />;
 
   return (
-    <div className="py-20 px-10 fixed left-0 right-0 top-0 bottom-0 min-h-screen bg-black bg-opacity-30 z-50 pointer-events-auto">
+    <div className="py-20 px-2 md:px-10 lg:px-20 fixed left-0 right-0 top-0 bottom-0 min-h-screen bg-black bg-opacity-30 z-50 pointer-events-auto">
       <div
         className={`w-full h-full bg-white rounded-md overflow-hidden ${
           images ? "flex flex-col lg:flex-row" : "flex flex-row max-w-[600px] mx-auto"

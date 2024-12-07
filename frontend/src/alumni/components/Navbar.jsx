@@ -11,13 +11,14 @@ import default_img from "../../assets/default-img.png";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { user, setUser } = useAuthContext();
+  const { user, setToken, setUser } = useAuthContext();
   const logoutQuery = useLogoutUser();
 
   const handleLogout = () => {
     logoutQuery.mutate(null, {
       onSuccess: () => {
-        setUser({});
+        setUser(null);
+        setToken(null);
         navigate("/login");
       },
     });
