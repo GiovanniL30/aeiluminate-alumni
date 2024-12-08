@@ -30,7 +30,7 @@ const ImageCarousel = ({ images, otherImageStyle }) => {
             target="_blank"
           >
             <img
-              className={`max-w-full max-h-full object-contain ${otherImageStyle}`}
+              className={`max-w-full max-h-[450px] object-contain ${otherImageStyle}`}
               src={images[currentIndex].mediaURL || images[currentIndex]}
               alt={`Post ${currentIndex}`}
             />

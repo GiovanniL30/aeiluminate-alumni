@@ -8,7 +8,7 @@ import { useUpdateUserDetails } from "../../_api/@react-client-query/query";
 const UserEditProfile = () => {
   const { user } = useAuthContext();
   const { id } = useParams();
-  const { bio, company, firstName, job_role, lastName, middleName, phoneNumber, profile_picture, username, isPrivate } = user;
+  const { bio, company, firstName, job_role, lastName, middleName, phoneNumber, username, isPrivate } = user;
   const [userData, setUserData] = useState({
     firstName,
     lastName,

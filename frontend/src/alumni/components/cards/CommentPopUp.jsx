@@ -52,7 +52,7 @@ const CommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, images, 
       >
         {images && (
           <button
-            className="absolute right-4 top-10 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover-opacity"
+            className="absolute right-4 lg:right-18 2xl:right-40  top-10 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover-opacity"
             onClick={() => setIsShowComment(false)}
           >
             &#10005;
@@ -60,7 +60,7 @@ const CommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, images, 
         )}
         {images && (
           <div className="w-full lg:w-1/2 h-[300px] lg:h-full bg-gray-300 bg-opacity-20">
-            <ImageCarousel images={images} otherImageStyle="h-full" />
+            <ImageCarousel images={images} otherImageStyle="!max-h-full" />
           </div>
         )}
 

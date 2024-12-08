@@ -48,11 +48,11 @@ const ProfilePopUp = ({ profile_picture, setOpenProfile, canEdit, id }) => {
             <img
               src={newProfile ? URL.createObjectURL(newProfile) : profile_picture || default_img}
               alt="Profile"
-              className="w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[600px] md:h-[600px] object-cover rounded-full bg-white"
+              className="w-full h-full max-w-[500px] object-cover  bg-white"
             />
             <button
               onClick={() => setOpenProfile(false)}
-              className="absolute top-0 text-white bg-red-600 rounded-full w-10 h-10 hover-opacity right-0"
+              className="absolute -top-16 -right-10 text-white bg-red-600 rounded-full w-10 h-10 hover-opacity right-0"
             >
               &#10005;
             </button>

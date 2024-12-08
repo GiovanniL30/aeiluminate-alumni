@@ -5,6 +5,7 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
 import Button from "../components/Button";
 import no_post from "../../assets/no_post.png";
+import back from "../../assets/back-arrow.png";
 
 const AlbumContribute = () => {
   const { user } = useAuthContext();
@@ -49,7 +50,7 @@ const AlbumContribute = () => {
   };
 
   return (
-    <div className=" flex flex-col gap-10 w-full">
+    <div className="p-2 flex flex-col gap-10 w-full">
       <div className="flex justify-center flex-col items-center gap-2">
         <h1 className="text-3xl font-bold">
           {albumInfo.data.userId === user.userID ? "Your album" : `${albumInfo.data.firstName} ${albumInfo.data.lastName}`}
@@ -57,14 +58,18 @@ const AlbumContribute = () => {
         <h1 className="text-xl font-bold text-light_text">{albumInfo.data.albumTitle}</h1>
       </div>
 
+      <NavLink to={`/album/${albumId}`}>
+        <div className="flex items-cnter gap-2 hover-opacity">
+          <img className="w-5" src={back} alt="" />
+          <p>Return</p>
+        </div>
+      </NavLink>
+
       <div className="flex justify-between w-full">
         <div className="flex items-center gap-2">
           <h1 className="text-2xl font-semibold ">Album Contribute</h1>
         </div>
         <div className="flex gap-2">
-          <NavLink to={`/album/${albumId}`}>
-            <Button disabled={addImage.isPending} text="Cancel" otherStyle="bg-red-500" />
-          </NavLink>
           <Button
             onClick={handleUpload}
             text={addImage.isPending ? "Adding Images" : "Contribute"}

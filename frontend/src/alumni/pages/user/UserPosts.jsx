@@ -3,6 +3,7 @@ import { useGetUserPosts } from "../../_api/@react-client-query/query";
 import { useParams } from "react-router-dom";
 import PostCard from "../../components/cards/PostCard";
 import SimpleCardLoader from "../../components/cards/loaders/SimpleCardLoader";
+import back from "../../../assets/back-arrow.png";
 
 const UserPosts = () => {
   const [openPost, setOpenPost] = useState(false);
@@ -29,16 +30,16 @@ const UserPosts = () => {
   return (
     <div className="max-w-[1200px] mx-auto mt-20">
       {openPost ? (
-        <div className=" flex max-w-[600px] mx-auto relative">
-          <div className="absolute -top-14 -left-[5%] flex items-center gap-2">
+        <div className=" flex max-w-[600px] flex-col mx-auto gap-3">
+          <div className="flex items-center gap-2">
             <button
               onClick={() => {
                 setOpenPost(false);
                 setPostData({});
               }}
-              className="hover-opacity flex items-center justify-center w-7 h-7  rounded-md  text-white bg-black font-bold text-sm"
+              className="hover-opacity flex items-center justify-center w-7 h-7"
             >
-              &#60;
+              <img src={back} alt="back" />
             </button>
             <p>Back to all post</p>
           </div>

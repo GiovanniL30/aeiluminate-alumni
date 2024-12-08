@@ -28,7 +28,9 @@ const Navbar = () => {
     <div className="p-2 md:px-5 flex justify-between bg-white py-4 w-full max-w-full overflow-x-hidden">
       <div className="flex justify-between items-center w-full">
         <div className="w-12">
-          <img src={logo} alt="logo" />
+          <NavLink to="/">
+            <img src={logo} alt="logo" />
+          </NavLink>
         </div>
 
         <ul className="fixed bottom-0 left-0 right-0 h-fit py-5 w-full bg-white border-t-[1px] shadow-xl items-center gap-12 flex justify-evenly  transition-transform duration-300  md:relative md:border-0 md:shadow-none md:flex-row md:h-full md:p-0 md:w-fit md:items-center md:justify-center md:gap-16">

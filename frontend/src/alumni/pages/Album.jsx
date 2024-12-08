@@ -4,6 +4,7 @@ import { useAlbumInformation, useAlbumPosts } from "../_api/@react-client-query/
 import PostCard from "../components/cards/PostCard";
 import Button from "../components/Button";
 import { useAuthContext } from "../context/AuthContext";
+import back from "../../assets/back-arrow.png";
 
 const Album = () => {
   const { albumId } = useParams();
@@ -41,7 +42,7 @@ const Album = () => {
   const posts = albumPosts.data ? groupPostsById(albumPosts.data) : [];
 
   return (
-    <div className="w-full flex flex-col gap-10 mt-10">
+    <div className="p-2 w-full flex flex-col gap-10 mt-10">
       <div className="flex justify-center flex-col items-center gap-2">
         <h1 className="text-3xl font-bold">
           {albumInfo.data.userId === user.userID ? "Your album" : `${albumInfo.data.firstName} ${albumInfo.data.lastName}`}
@@ -54,7 +55,10 @@ const Album = () => {
 
       <div>
         <NavLink to="/">
-          <Button text="back" otherStyle="bg-red-600" />
+          <div className="flex items-center gap-3 hover-opacity">
+            <img className="w-6" src={back} alt="" />
+            <p>Return</p>
+          </div>
         </NavLink>
         <h1 className="font-bold text-light_text mt-8">Posts:</h1>
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
