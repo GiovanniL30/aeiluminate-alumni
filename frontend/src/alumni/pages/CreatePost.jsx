@@ -5,6 +5,9 @@ import Button from "../components/Button";
 import { useAuthContext } from "../context/AuthContext";
 import create_post from "../../assets/create_post.png";
 import create_line from "../../assets/create_line.png";
+import create_album from "../../assets/create_album.png";
+import create_event from "../../assets/create_event.png";
+import create_joblisting from "../../assets/joblisting.png";
 import { useNewAlbum, useUploadLine, useUploadPost } from "../_api/@react-client-query/query";
 import TopPopUp from "../components/TopPopUp";
 
@@ -180,7 +183,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
             postType.isAlbum ? "text-primary_blue underline font-bold" : "text-black"
           }`}
         >
-          <img src={create_line} alt="line" />
+          <img src={create_album} alt="Album" />
           <p>Create album</p>
         </button>
 
@@ -192,7 +195,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
                 postType.isJob ? "text-primary_blue underline font-bold" : "text-black"
               }`}
             >
-              <img src={create_post} alt="post" />
+              <img src={create_joblisting} alt="post" />
               <p>Create Joblisting</p>
             </button>
             <button
@@ -201,7 +204,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
                 postType.isEvent ? "text-primary_blue underline font-bold" : "text-black"
               }`}
             >
-              <img src={create_line} alt="line" />
+              <img src={create_event} alt="line" />
               <p>Create Event</p>
             </button>
           </>
