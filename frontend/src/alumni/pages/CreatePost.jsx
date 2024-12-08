@@ -81,7 +81,10 @@ const CreatePost = ({ maxCaption = 225 }) => {
         alert("posting event");
       },
       isJob: () => {
-        alert("posting job list");
+        if (!caption) {
+          alert("Joblisting title cannot be empty.");
+          return;
+        }
       },
       isAlbum: () => {
         if (images.length === 0) {
@@ -220,7 +223,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
           : "Unknown"}
       </h1>
       <div className="flex flex-col gap-20 md:flex-row w-full">
-        {(postType.isPost || postType.isEvent || postType.isAlbum) && (
+        {(postType.isPost || postType.isEvent || postType.isAlbum || postType.isJob) && (
           <FileUploader
             maxImage={postType.isEvent ? 1 : 10}
             uploading={uploadQuery.isPending || uploadLine.isPending || createAlbum.isPending}
