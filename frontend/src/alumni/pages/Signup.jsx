@@ -153,7 +153,7 @@ const Signup = () => {
   const uniqueValues = [...new Set(schoolNames)];
 
   return (
-    <div className="padding bg-black min-h-screen flex w-full items-center">
+    <div className="p-5 py-16 bg-black min-h-screen flex w-full items-center">
       <div className="fixed top-0 z-30 bg-black w-full h-20 flex items-center">
         <img className="w-12" src={logo} alt="logo" />
       </div>
@@ -176,6 +176,7 @@ const Signup = () => {
             <div className="flex flex-col gap-2">
               <h1>Primary Information</h1>
               <Input
+                labelColor="text-white"
                 label="First Name"
                 disabled={applyQuery.isPending}
                 name="firstName"
@@ -185,6 +186,7 @@ const Signup = () => {
                 otherStyle="border-[1px] border-white bg-transparent"
               />
               <Input
+                labelColor="text-white"
                 label="Middle Name"
                 disabled={applyQuery.isPending}
                 name="middleName"
@@ -194,6 +196,7 @@ const Signup = () => {
                 otherStyle="border-[1px] border-white bg-transparent"
               />
               <Input
+                labelColor="text-white"
                 label="Last Name"
                 disabled={applyQuery.isPending}
                 name="lastName"
@@ -203,6 +206,7 @@ const Signup = () => {
                 otherStyle="border-[1px] border-white bg-transparent"
               />
               <Input
+                labelColor="text-white"
                 label="Username"
                 disabled={applyQuery.isPending}
                 name="userName"
@@ -213,6 +217,7 @@ const Signup = () => {
               />
               <div className="flex flex-col md:flex-row gap-3">
                 <Input
+                  labelColor="text-white"
                   label="Password"
                   disabled={applyQuery.isPending}
                   type="password"
@@ -223,6 +228,7 @@ const Signup = () => {
                   otherStyle="border-[1px] border-white bg-transparent"
                 />
                 <Input
+                  labelColor="text-white"
                   label="Confirm Password"
                   disabled={applyQuery.isPending}
                   type="password"
@@ -238,6 +244,7 @@ const Signup = () => {
             <div className="flex flex-col gap-3">
               <h1>Secondary Information</h1>
               <Input
+                labelColor="text-white"
                 label="Email"
                 disabled={applyQuery.isPending}
                 type="email"
@@ -249,6 +256,7 @@ const Signup = () => {
               />
 
               <Input
+                labelColor="text-white"
                 label="Graduation Year"
                 disabled={applyQuery.isPending}
                 name="graduationYear"

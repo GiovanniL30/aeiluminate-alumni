@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Input = ({ label, placeholder, name, value, type = "text", handleChange, min = 1, otherStyle, disabled, required = true }) => {
+const Input = ({ label, placeholder, name, value, type = "text", handleChange, min = 1, otherStyle, disabled, required = true, labelColor }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -11,7 +11,7 @@ const Input = ({ label, placeholder, name, value, type = "text", handleChange, m
 
   return (
     <div className="w-full flex flex-col gap-2">
-      <label className="text-light_text font-semibold">{label}</label>
+      <label className={`text-light_text font-semibold ${labelColor}`}>{label}</label>
 
       <div className="relative w-full">
         {type === "textarea" ? (

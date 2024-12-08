@@ -51,7 +51,7 @@ const Signin = () => {
   }
 
   return (
-    <div className="padding bg-black min-h-screen flex w-full items-center">
+    <div className="p-5 bg-black min-h-screen flex w-full items-center">
       {error && <TopPopUp text={error} />}
       <div className="fixed top-5 z-30">
         <img className="w-12" src={logo} alt="logo" />
@@ -63,7 +63,8 @@ const Signin = () => {
           </h1>
           <form className="z-20 w-full flex flex-col gap-5 items-center" onSubmit={handleSubmit}>
             <Input
-              otherStyle="border-[1px] border-white bg-black"
+              labelColor="text-white"
+              otherStyle="border-[1px] border-white bg-black "
               label="Email"
               type="email"
               name="email"
@@ -72,6 +73,7 @@ const Signin = () => {
               handleChange={handleChange}
             />
             <Input
+              labelColor="text-white"
               otherStyle="border-[1px] border-white bg-black"
               type="password"
               label="Password"
