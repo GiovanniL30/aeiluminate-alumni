@@ -4,7 +4,7 @@ import InboxSidebar from "../../components/inbox/InboxSidebar";
 
 const InboxLayout = () => {
   return (
-    <div className="flex flex-col md:flex-row gap-3 min-h-full w-full">
+    <div className="px-3 flex flex-col md:flex-row gap-3 min-h-full w-full">
       <div className="max-h-[300px] md:w-[250px]">
         <InboxSidebar />
       </div>

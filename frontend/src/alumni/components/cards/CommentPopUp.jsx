@@ -33,6 +33,7 @@ const CommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, images, 
   const submitComment = () => {
     if (commentData.length < 10) {
       alert("Comment should be at least 10 characters");
+      s;
       return;
     }
 
@@ -46,7 +47,7 @@ const CommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, images, 
     <div className="py-20 px-2 md:px-10 lg:px-20 fixed left-0 right-0 top-0 bottom-0 min-h-screen bg-black bg-opacity-30 z-50 pointer-events-auto">
       <div
         className={`w-full h-full bg-white rounded-md overflow-hidden ${
-          images ? "flex flex-col lg:flex-row" : "flex flex-row max-w-[600px] mx-auto"
+          images ? "flex flex-col max-w-[1200px] mx-auto lg:flex-row" : "flex flex-row max-w-[600px] mx-auto"
         }`}
       >
         {images && (

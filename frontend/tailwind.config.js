@@ -15,6 +15,9 @@ export default {
       fontFamily: {
         jost: ["Jost", "serif"],
       },
+      screens: {
+        sm: "320px",
+      },
     },
   },
   plugins: [],

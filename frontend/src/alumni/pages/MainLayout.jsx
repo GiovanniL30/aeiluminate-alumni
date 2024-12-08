@@ -8,7 +8,7 @@ const MainLayout = () => {
       <header className="fixed top-0 w-full left-0 right-0 z-50">
         <Navbar />
       </header>
-      <section className="flex-1 px-5 pt-[120px] flex pb-36 md:pb-10">
+      <section className="flex-1 p-0 md:px-5 pt-[120px] flex pb-36 md:pb-10">
         <Outlet />
       </section>
     </main>

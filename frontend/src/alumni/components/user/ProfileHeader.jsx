@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAuthContext } from "../../context/AuthContext.jsx";
 import {
   useIsFollowing,
@@ -17,9 +17,10 @@ import companyIcon from "../../../assets/enterprise.png";
 import phoneIcon from "../../../assets/phone-call.png";
 import emailIcon from "../../../assets/mail.png";
 import privacyIcon from "../../../assets/privacy.png";
+import ProfilePopUp from "./ProfilePopUp.jsx";
 
 const SkeletonLoader = () => (
-  <div className="mt-11 flex flex-col items-center max-w-[800px] mx-auto gap-14 md:flex-row animate-pulse">
+  <div className="mt-11 flex flex-col items-center max-w-[800px] mx-auto gap-5 md:flex-row animate-pulse">
     <div className="w-56 h-56 rounded-full bg-slate-50"></div>
     <div className="flex flex-col gap-2 md:gap-5 w-full">
       <div className="flex items-center gap-10 md:gap-16">
@@ -42,6 +43,7 @@ const SkeletonLoader = () => (
 const ProfileHeader = () => {
   const { id } = useParams();
   const { user } = useAuthContext();
+  const [openProfile, setOpenProfile] = useState(false);
 
   const followUserQuery = useFollowUser();
   const unFollowUserQuery = useUnFollowUser();
@@ -67,13 +69,17 @@ const ProfileHeader = () => {
     userQuery.data.user;
 
   return (
-    <div className="w-full mt-11 flex flex-col  items-center max-w-[800px] mx-auto gap-14  md:flex-row">
-      <div className="relative">
-        <img className="w-56 h-56 rounded-full object-cover" src={profile_picture ? profile_picture : default_img} alt="profile" />
-        <img className={`${isPrivate ? "flex" : "hidden"} absolute bottom-0 w-10 h-10 right-[10px]`} src={privacyIcon} alt="private" />
-      </div>
+    <div className="w-full mt-11 flex flex-col  items-center max-w-[800px] mx-auto gap-5 md:gap-14  md:flex-row">
+      {openProfile && <ProfilePopUp id={id} canEdit={id == user.userID} profile_picture={profile_picture} setOpenProfile={setOpenProfile} />}
+
+      <button className="hover-opacity" onClick={() => setOpenProfile(true)}>
+        <div className="relative">
+          <img className="w-56 h-56 rounded-full object-cover" src={profile_picture ? profile_picture : default_img} alt="profile" />
+          <img className={`${isPrivate ? "flex" : "hidden"} absolute bottom-0 w-10 h-10 right-[10px]`} src={privacyIcon} alt="private" />
+        </div>
+      </button>
       <div className="flex flex-col  gap-2 md:gap-5">
-        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
+        <div className="flex flex-col md:flex-row items-center gap-2 md:gap-16">
           <p className="flex font-bold text-4xl">{username}</p>
           {id != user.userID ? (
             <div className="flex gap-2">

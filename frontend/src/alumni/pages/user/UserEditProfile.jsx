@@ -3,8 +3,7 @@ import Input from "../../components/Input";
 import { useAuthContext } from "../../context/AuthContext";
 import Button from "../../components/Button";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
-import { useUpdateUserDetails, useUpdateUserProfile } from "../../_api/@react-client-query/query";
-import default_img from "../../../assets/default-img.png";
+import { useUpdateUserDetails } from "../../_api/@react-client-query/query";
 
 const UserEditProfile = () => {
   const { user } = useAuthContext();
@@ -21,33 +20,14 @@ const UserEditProfile = () => {
     job_role: job_role || "",
     isPrivate: isPrivate || 0,
   });
-  const [newProfile, setNewProfile] = useState();
+
   const updateUserDetailsQuery = useUpdateUserDetails();
-  const updateUserProfileQuery = useUpdateUserProfile();
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-
-    if (file) {
-      const isImage = file.type.startsWith("image/");
-      if (!isImage) {
-        alert("Please upload an image file.");
-        return;
-      }
-
-      const maxSize = 5 * 1024 * 1024;
-      if (file.size > maxSize) {
-        alert("File size must be less than 5MB.");
-        return;
-      }
-      setNewProfile(file);
-    }
   };
 
   const handlePrivacyChange = (e) => {
@@ -71,7 +51,7 @@ const UserEditProfile = () => {
         job_role: job_role || "",
       });
 
-    if (!hasChanges && !newProfile) {
+    if (!hasChanges) {
       alert("No changes detected.");
       return;
     }
@@ -98,18 +78,6 @@ const UserEditProfile = () => {
         }
       );
     }
-
-    if (newProfile) {
-      updateUserProfileQuery.mutate(
-        { oldProfileURL: profile_picture, newImage: newProfile, userId: id },
-        {
-          onSuccess: () => {
-            alert("Profile updated successfully");
-            navigate(`/user/${id}`);
-          },
-        }
-      );
-    }
   };
 
   return (
@@ -119,26 +87,7 @@ const UserEditProfile = () => {
           <NavLink to="..">
             <Button text="Cancel" otherStyle="bg-red-500" />
           </NavLink>
-          <Button
-            text={updateUserDetailsQuery.isPending || updateUserProfileQuery.isPending ? "Updating" : "Save"}
-            disabled={updateUserDetailsQuery.isPending || updateUserProfileQuery.isPending}
-            type="submit"
-          />
-        </div>
-        <h1 className="font-semibold text-light_text">Profile Picture</h1>
-        <div className="relative group overflow-hidden w-[300px] mx-auto">
-          <img
-            src={newProfile ? URL.createObjectURL(newProfile) : profile_picture || default_img}
-            alt="Profile"
-            className="w-full h-[300px] object-cover rounded-full"
-          />
-          <label
-            htmlFor="upload"
-            className="rounded-full top-0 bottom-0 left-0 right-0 bg-black bg-opacity-50 absolute cursor-pointer flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          >
-            <span className="text-white">Change Profile Pic</span>
-          </label>
-          <input type="file" id="upload" className="hidden" onChange={handleImageChange} accept="image/*" />
+          <Button text={updateUserDetailsQuery.isPending ? "Updating" : "Save"} disabled={updateUserDetailsQuery.isPending} type="submit" />
         </div>
 
         <div className="flex gap-5">

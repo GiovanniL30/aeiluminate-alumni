@@ -125,7 +125,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
   };
 
   return (
-    <div className={`w-full flex flex-col gap-10 mt-5 max-container ${uploadQuery.isPending && "pointer-events-none"}`}>
+    <div className={`px-3 w-full flex flex-col gap-10 mt-5 max-container ${uploadQuery.isPending && "pointer-events-none"}`}>
       {uploadQuery.isError && <TopPopUp text={uploadQuery.error.message} />}
 
       <div className="flex items-center justify-between">

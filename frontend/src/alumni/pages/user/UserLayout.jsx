@@ -5,7 +5,7 @@ import { Outlet } from "react-router-dom";
 
 const UserLayout = () => {
   return (
-    <div className="w-full">
+    <div className="px-3 w-full">
       <ProfileHeader />
       <ProfileNavbar />
       <Outlet />
