@@ -22,6 +22,7 @@ import {
   NoOpenedMessage,
   AlbumContribute,
   Album,
+  BrowseUsers,
 } from "./alumni/pages/index.js";
 import Auth from "./alumni/_auth/Auth.jsx";
 import AuthContext from "./alumni/context/AuthContext.jsx";
@@ -35,6 +36,7 @@ const App = () => {
           <Route element={<Auth />}>
             <Route path="/" element={<MainLayout />}>
               <Route index element={<Home />} />
+              <Route path="users" element={<BrowseUsers />} />
               <Route path="search" element={<Search />} />
               <Route path="post" element={<CreatePost />} />
               <Route path="inbox" element={<InboxLayout />}>

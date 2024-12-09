@@ -2,6 +2,7 @@ import explore from "../../assets/explore.png";
 import feed from "../../assets/feed.png";
 import inbox from "../../assets/inbox.png";
 import post from "../../assets/post.png";
+import friends from "../../assets/friends.png";
 
 export const navLinks = [
   {
@@ -9,9 +10,10 @@ export const navLinks = [
     icon: feed,
   },
   {
-    path: "search",
-    icon: explore,
+    path: "users",
+    icon: friends,
   },
+
   {
     path: "post",
     icon: post,
@@ -20,5 +22,9 @@ export const navLinks = [
     path: "inbox",
     icon: inbox,
     otherStye: "w-[22.5px] h-[22.5px]",
+  },
+  {
+    path: "search",
+    icon: explore,
   },
 ];

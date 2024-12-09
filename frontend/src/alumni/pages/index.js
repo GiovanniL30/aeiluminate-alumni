@@ -5,6 +5,7 @@ import CreatePost from "./CreatePost";
 import InboxLayout from "./inbox/InboxLayout";
 import ChatMessage from "./inbox/ChatMessage";
 import AlbumContribute from "./AlbumContribute.jsx";
+import BrowseUsers from "./BrowseUsers.jsx";
 
 import Search from "./Search";
 import Signin from "./Signin";
@@ -23,6 +24,7 @@ import NoOpenedMessage from "./inbox/NoOpenedMessage";
 
 export {
   Album,
+  BrowseUsers,
   AlbumContribute,
   NoOpenedMessage,
   ChatMessage,

@@ -1,10 +1,11 @@
 import React from "react";
 import { NavLink, useParams } from "react-router-dom";
-import { useAlbumInformation, useAlbumPosts } from "../_api/@react-client-query/query";
+import { useAlbumInformation, useAlbumPosts, useGetUser } from "../_api/@react-client-query/query";
 import PostCard from "../components/cards/PostCard";
 import Button from "../components/Button";
 import { useAuthContext } from "../context/AuthContext";
 import back from "../../assets/back-arrow.png";
+import UserProfilePic from "../components/UserProfilePic";
 
 const Album = () => {
   const { albumId } = useParams();
@@ -44,10 +45,11 @@ const Album = () => {
   return (
     <div className="p-2 w-full flex flex-col gap-10 mt-10">
       <div className="flex justify-center flex-col items-center gap-2">
+        <UserProfilePic userID={albumInfo.data.userId} profile_link={albumInfo.data.profilePic} otherImageStyle="w-[150px] h-[150px]" />
         <h1 className="text-3xl font-bold">
-          {albumInfo.data.userId === user.userID ? "Your album" : `${albumInfo.data.firstName} ${albumInfo.data.lastName}`}
+          {albumInfo.data.userId === user.userID ? "Your album" : `${albumInfo.data.firstName} ${albumInfo.data.lastName}'s Album`}
         </h1>
-        <h1 className="text-center text-xl font-bold text-light_text">{albumInfo.data.albumTitle}</h1>
+        <p className="w-3/4 text-xl text-center font-bold text-light_text break-words">{albumInfo.data.albumTitle}aaaaaaaaaaaaaaaaa</p>
         <NavLink to={`/album/contribute/${albumId}`}>
           <Button text="Contribute" />
         </NavLink>
