@@ -1,19 +1,19 @@
 import React from "react";
 
-const EventInformation = () => {
+const EventInformation = ( location, eventType, createdOn ) => {
   return (
   <div>
     <div>
       <img src="" alt="" />
-      Add Location
+      <p>Add Location</p>
     </div>
     <div>
       <img src="" alt="" />
-      Category
+      <p>Category </p>
     </div>
     <div>
       <img src="" alt="" />
-      Date and Time
+      <p>Date and Time</p> 
     </div>
   </div>
   );
