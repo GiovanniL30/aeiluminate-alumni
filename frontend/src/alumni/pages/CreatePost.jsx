@@ -64,7 +64,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
               setImages([]);
               setCaption("");
               ToastNotification.success("Post Uploaded successfully");
-              navigate("/");
+              navigate("/home");
             },
           }
         );
@@ -76,7 +76,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
             onSuccess: () => {
               setCaption("");
               ToastNotification.success("Line Uploaded successfully");
-              navigate("/");
+              navigate("/home");
             },
           }
         );
@@ -102,7 +102,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
               setImages([]);
               setCaption("");
               ToastNotification.success("Album Uploaded successfully");
-              navigate("/");
+              navigate("/home");
             },
           }
         );

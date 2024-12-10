@@ -7,6 +7,10 @@ import ChatMessage from "./inbox/ChatMessage";
 import AlbumContribute from "./AlbumContribute.jsx";
 import BrowseUsers from "./BrowseUsers.jsx";
 
+import BrowseEvents from "./home/BrowseEvents.jsx";
+import BrowseJobs from "./home/BrowseJobs.jsx";
+import BrowseAlbums from "./home/BrowseAlbums.jsx";
+
 import Search from "./Search";
 import Signin from "./Signin";
 import Signup from "./Signup";
@@ -21,8 +25,13 @@ import Album from "./Album.jsx";
 
 import NotFound from "./NotFound";
 import NoOpenedMessage from "./inbox/NoOpenedMessage";
+import HomeLayout from "./home/HomeLayout.jsx";
 
 export {
+  HomeLayout,
+  BrowseAlbums,
+  BrowseEvents,
+  BrowseJobs,
   Album,
   BrowseUsers,
   AlbumContribute,

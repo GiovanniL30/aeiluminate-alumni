@@ -165,16 +165,10 @@ export const getUsers = async (page, pageSize) => {
 export const getPosts = async (page, pageSize, userId) => {
   const query = `
     SELECT posts.*, 
-           users.isPrivate, 
-           albums.albumId, 
-           albums.albumTitle, 
-           CONCAT(albumOwners.firstName, ' ', albumOwners.middleName, ' ', albumOwners.lastName) AS albumOwnerName,
-           albumOwners.userID AS albumIdOwner 
+           users.isPrivate 
     FROM posts
     LEFT JOIN users ON posts.userID = users.userID  
-    LEFT JOIN albums ON posts.albumId = albums.albumId 
-    LEFT JOIN users AS albumOwners ON albums.albumIdOwner = albumOwners.userID  
-    WHERE (albums.albumId IS NOT NULL OR users.isPrivate = 0) 
+    WHERE (posts.albumId IS NULL AND users.isPrivate = 0)
     ORDER BY posts.createdAt DESC 
     LIMIT ? OFFSET ?
   `;
@@ -184,7 +178,8 @@ export const getPosts = async (page, pageSize, userId) => {
   try {
     const [results] = await connection.query(query, [parseInt(pageSize), parseInt(offset)]);
     const [[countResult]] = await connection.query(
-      "SELECT COUNT(*) AS total FROM posts LEFT JOIN albums ON posts.albumId = albums.albumId WHERE albums.albumId IS NOT NULL OR posts.userID IN (SELECT userID FROM users WHERE isPrivate = 0)" // Updated the join condition
+      "SELECT COUNT(*) AS total FROM posts LEFT JOIN users ON posts.userID = users.userID WHERE posts.albumId IS NOT NULL AND (users.isPrivate = 0 OR posts.userID = ?)",
+      [userId]
     );
     return { posts: results, total: countResult.total };
   } catch (error) {
