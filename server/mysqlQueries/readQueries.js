@@ -116,6 +116,7 @@ export const checkUsername = async (username) => {
 
   try {
     const [results] = await connection.query(query, [username]);
+
     return results[0].users > 0;
   } catch (error) {
     console.error("Failed to check username:", error);

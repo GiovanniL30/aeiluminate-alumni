@@ -5,6 +5,7 @@ import Input from "../components/Input";
 import Button from "../components/Button";
 import { useApplication, usePrograms } from "../_api/@react-client-query/query";
 import { NavLink } from "react-router-dom";
+import ToastNotification from "../constants/toastNotification";
 
 const Signup = () => {
   const programsQuery = usePrograms();
@@ -34,7 +35,7 @@ const Signup = () => {
       const file = files[0];
 
       if (file.size > 5242880) {
-        alert("File size must be less than 5MB.");
+        ToastNotification.error("File size must be less than 5MB.");
         return;
       }
 
@@ -72,37 +73,37 @@ const Signup = () => {
       !formData.programID
     ) {
       setErrorMessage("Please fill in all the fields.");
-      alert("Please fill in all the fields.");
+      ToastNotification.error("Please fill in all the fields.");
       return;
     }
 
     if (!formData.termsAccepted) {
       setErrorMessage("Please Agree to Terms and Conditions");
-      alert("Please Agree to Terms and Conditions");
+      ToastNotification.error("Please Agree to Terms and Conditions");
       return;
     }
 
     if (!formData.diploma || !formData.schoolId) {
       setErrorMessage("Please upload diploma and school id image");
-      alert("Please upload diploma and school id image");
+      ToastNotification.error("Please upload diploma and school id image");
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
       setErrorMessage("Passwords do not match.");
-      alert("Passwords do not match.");
+      ToastNotification.error("Passwords do not match.");
       return;
     }
 
     if (formData.diploma && formData.diploma.size > 5242880) {
       setErrorMessage("Diploma file size must be less than 5MB.");
-      alert("Diploma file size must be less than 5MB.");
+      ToastNotification.error("Diploma file size must be less than 5MB.");
       return;
     }
 
     if (formData.schoolId && formData.schoolId.size > 5242880) {
       setErrorMessage("School ID file size must be less than 5MB.");
-      alert("School ID file size must be less than 5MB.");
+      ToastNotification.error("School ID file size must be less than 5MB.");
       return;
     }
 
@@ -124,7 +125,7 @@ const Signup = () => {
       {
         onSuccess: () => {
           setErrorMessage("");
-          alert("Application is Successfull, please check your email");
+          ToastNotification.success("Application is Successfull, please check your email");
           setFormData({
             firstName: "",
             middleName: "",
@@ -142,7 +143,7 @@ const Signup = () => {
         },
         onError: (error) => {
           setErrorMessage(error.message);
-          alert(error.message);
+          ToastNotification.error(error.message);
         },
       }
     );

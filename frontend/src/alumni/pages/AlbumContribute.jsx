@@ -6,6 +6,7 @@ import { useAuthContext } from "../context/AuthContext";
 import Button from "../components/Button";
 import no_post from "../../assets/no_post.png";
 import back from "../../assets/back-arrow.png";
+import ToastNotification from "../constants/toastNotification";
 
 const AlbumContribute = () => {
   const { user } = useAuthContext();
@@ -25,7 +26,7 @@ const AlbumContribute = () => {
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      alert(`${file.name} exceeds the 5MB size limit and was not added.`);
+      ToastNotification.error(`${file.name} exceeds the 5MB size limit and was not added.`);
       return;
     }
 
@@ -43,7 +44,7 @@ const AlbumContribute = () => {
         onSuccess: () => {
           setImages([]);
           navigate(`/album/${albumId}`);
-          alert("Added Images");
+          ToastNotification.success("Added Images");
         },
       }
     );

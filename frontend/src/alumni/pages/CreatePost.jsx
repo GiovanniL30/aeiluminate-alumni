@@ -15,6 +15,7 @@ import default_img from "../../assets/default-img.png";
 import { useNavigate } from "react-router-dom";
 import Joblisting from "../components/createPost/Joblisting.jsx";
 import EventInformation from "../components/createPost/EventInformation.jsx";
+import ToastNotification from "../constants/toastNotification.js";
 
 const CreatePost = ({ maxCaption = 225 }) => {
   const uploadQuery = useUploadPost();
@@ -53,7 +54,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
     const submitActions = {
       isPost: () => {
         if (images.length === 0) {
-          alert("Please upload at least one image.");
+          ToastNotification.warning("Please upload at least one image.");
           return;
         }
         uploadQuery.mutate(
@@ -62,7 +63,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
             onSuccess: () => {
               setImages([]);
               setCaption("");
-              alert("Post Uploaded successfully");
+              ToastNotification.success("Post Uploaded successfully");
               navigate("/");
             },
           }
@@ -74,7 +75,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
           {
             onSuccess: () => {
               setCaption("");
-              alert("Line Uploaded successfully");
+              ToastNotification.success("Line Uploaded successfully");
               navigate("/");
             },
           }
@@ -91,7 +92,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
       },
       isAlbum: () => {
         if (images.length === 0) {
-          alert("Please upload at least one image for the album.");
+          ToastNotification.warning("Please upload at least one image for the album.");
           return;
         }
         createAlbum.mutate(
@@ -100,7 +101,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
             onSuccess: () => {
               setImages([]);
               setCaption("");
-              alert("Album Uploaded successfully");
+              ToastNotification.success("Album Uploaded successfully");
               navigate("/");
             },
           }
@@ -113,7 +114,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
     if (selectedPostType) {
       submitActions[selectedPostType]();
     } else {
-      alert("Invalid post type");
+      ToastNotification.error("Invalid Post Type");
     }
   };
 
