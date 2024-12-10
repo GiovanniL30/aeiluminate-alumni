@@ -361,14 +361,15 @@ export const updateUserDetailsRequest = async ({ isPrivate, firstName, middleNam
   try {
     const token = getAuthToken();
     const data = { firstName, middleName, lastName, username, company, job_role, bio, phoneNumber, isPrivate };
+
+    // Make the PATCH request
     const response = await axios.patch(`${baseURL}/api/user/update/details`, data, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    console.log(response);
     return response.data;
   } catch (error) {
-    throw new Error(error.response?.data.message || error.message);
+    throw new Error(error.response?.data.message || "An unexpected error occurred.");
   }
 };
 

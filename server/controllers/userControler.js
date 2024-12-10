@@ -287,11 +287,11 @@ export const updateUserDetailsController = async (req, res) => {
   const { userId } = req;
 
   try {
-    const usernameExists = await checkUsername(username);
-    if (usernameExists) throw new Error("Username already taken");
+    const usernameExists = await checkUsername(username, userId);
+    if (usernameExists) return res.status(400).json({ message: "Username already taken" });
 
     const update = await updateProfileDetails(userId, firstName, middleName, lastName, username, company, job_role, bio, phoneNumber, isPrivate);
-    if (!update) throw new Error("Failed to update user details");
+    if (!update) return res.status(400).json({ message: "Failed to update user details" });
 
     res.status(200).json({ message: "Update Success" });
   } catch (error) {

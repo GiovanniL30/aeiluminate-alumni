@@ -111,11 +111,17 @@ export const getPostStats = async (postId, userId) => {
 /**
  * Check if the username is already in the database
  */
-export const checkUsername = async (username) => {
-  const query = "SELECT COUNT(*) as users FROM users WHERE username = ?";
+export const checkUsername = async (username, userId = null) => {
+  let query = "SELECT COUNT(*) as users FROM users WHERE username = ?";
+  const params = [username];
+
+  if (userId) {
+    query += " AND userID != ?";
+    params.push(userId);
+  }
 
   try {
-    const [results] = await connection.query(query, [username]);
+    const [results] = await connection.query(query, params);
 
     return results[0].users > 0;
   } catch (error) {

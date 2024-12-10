@@ -27,7 +27,7 @@ const UserEditProfile = () => {
         company: company || "",
         username,
         job_role: job_role || "",
-        isPrivate: isPrivate || 0,
+        isPrivate: isPrivate,
       });
     }
   }, [userQuery.data]);
@@ -83,8 +83,7 @@ const UserEditProfile = () => {
           navigate(`/user/${id}`);
         },
         onError: (error) => {
-          const errorMessage = error.response?.data?.message || "Failed to update user details.";
-          ToastNotification.error(errorMessage);
+          ToastNotification.error(error.message);
         },
       }
     );
