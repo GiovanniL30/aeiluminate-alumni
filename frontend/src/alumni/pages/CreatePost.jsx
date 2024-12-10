@@ -226,7 +226,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
           : "Unknown"}
       </h1>
       <div className="flex flex-col gap-20 md:flex-row w-full">
-        {(postType.isPost || postType.isEvent || postType.isAlbum || postType.isJob) && (
+        {(postType.isPost || postType.isEvent || postType.isAlbum) && (
           <FileUploader
             maxImage={postType.isEvent ? 1 : 10}
             uploading={uploadQuery.isPending || uploadLine.isPending || createAlbum.isPending}
