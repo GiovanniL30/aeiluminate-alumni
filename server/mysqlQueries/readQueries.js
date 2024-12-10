@@ -480,3 +480,32 @@ export const getAlbumInformation = async (albumId) => {
     throw new Error("Failed to retrieve album information");
   }
 };
+
+export const getAlbums = async (offset, limit) => {
+  const query = `
+    SELECT albums.albumId, 
+           albums.albumTitle, 
+           albums.albumIdOwner, 
+           posts.postID AS latestPostID, 
+           posts.caption AS latestPostCaption, 
+           posts.createdAt AS latestPostCreatedAt
+    FROM albums
+    LEFT JOIN posts ON albums.albumId = posts.albumId
+    WHERE posts.createdAt = (
+      SELECT MAX(createdAt) 
+      FROM posts 
+      WHERE albumId = albums.albumId
+    )
+    ORDER BY albums.albumTitle
+    LIMIT ? OFFSET ?
+  `;
+
+  try {
+    const [results] = await connection.query(query, [limit, offset]);
+    const [[countResult]] = await connection.query("SELECT COUNT(*) AS total FROM albums");
+    return { albums: results, total: countResult.total };
+  } catch (error) {
+    console.error("Error fetching paginated albums with latest posts:", error);
+    throw new Error("Error fetching paginated albums with latest posts");
+  }
+};

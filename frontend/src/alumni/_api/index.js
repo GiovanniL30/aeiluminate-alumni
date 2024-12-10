@@ -539,3 +539,30 @@ export const getAlbumInformation = async (albumId) => {
     throw new Error(error.response?.data?.message || error.message);
   }
 };
+
+export const fetchAlbums = async ({ pageParam = 1, length = 5 }) => {
+  try {
+    const token = getAuthToken();
+    const response = await fetch(`${baseURL}/api/album/all?page=${pageParam}&length=${length}`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "An error occurred while fetching lists of albums.");
+    }
+
+    const data = await response.json();
+    const totalAlbums = data.totalAlbums;
+    const totalPages = Math.ceil(totalAlbums / length);
+    const nextPage = pageParam < totalPages ? pageParam + 1 : undefined;
+
+    return {
+      albums: data.albums,
+      nextPage,
+    };
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};

@@ -56,7 +56,7 @@ const Album = () => {
       </div>
 
       <div>
-        <NavLink to="/">
+        <NavLink to="/home/albums">
           <div className="flex items-center gap-3 hover-opacity">
             <img className="w-6" src={back} alt="" />
             <p>Return</p>

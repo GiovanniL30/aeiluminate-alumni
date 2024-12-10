@@ -7,7 +7,7 @@ import Spinner from "../../components/Spinner.jsx";
 import AlbumCard from "../../components/cards/AlbumCard.jsx";
 
 const BrowsePosts = () => {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } = useGetPosts(10);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } = useGetPosts(4);
   const observerRef = useRef(null);
 
   useEffect(() => {
