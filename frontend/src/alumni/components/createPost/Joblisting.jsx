@@ -1,40 +1,63 @@
-import React from "react";
+import React, { useState } from "react";
 
-import company from "../../../assets/company.png";
-import salary from "../../../assets/money.png";
-import worktype from "../../../assets/worktype.png";
-import experience from "../../../assets/experience.png";
+import companyIcon from "../../../assets/company.png";
+import salaryIcon from "../../../assets/money.png";
+import worktypeIcon from "../../../assets/worktype.png";
+import experienceIcon from "../../../assets/experience.png";
 
 const Joblisting = () => {
+  const [company, setCompany] = useState("");
+  const [salary, setSalary] = useState("");
+  const [workType, setWorkType] = useState("");
+  const [experience, setExperience] = useState("");
+
   return (
-    <div className="flex flex-col justify-between h-full border-t mt-10 pt-4">
-      <div className="flex item-center gap-3 mb-4">
-        <img src = {company} alt="Company" className="w-6 h-6"/>
-        <span className="text-gray-500 text-sm">Add Company</span>
-      </div>
-    
-      <div className="flex item-center gap-3 mb-4">
-        <img src={salary} alt="salary" className="w-6 h-6" />
-        <span className="text-gray-500 text sm">Add Pay</span>
+    <div className="flex flex-col justify-between h-full w-full border-t mt-10 pt-4 gap-4">
+      <div className="flex items-center gap-3">
+        <img src={companyIcon} alt="Company Icon" className="w-6 h-6" />
+        <input
+          type="text"
+          value={company}
+          onChange={(e) => setCompany(e.target.value)}
+          placeholder="Enter company name"
+          className="border-[1px] p-2 text-sm border-gray-300 rounded w-full"
+        />
       </div>
 
-      <div className="flex items-center gap-3 mb-4">
-        <img src={worktype} alt="Work Type" className="w-6 h-6" />
-        <span className="text-gray-500 text-sm">Work Type</span>
-        <select className="ml-2 border-[1px] p-2 text-sm border-gray-300 rounded">
-          <option value="">Select</option>
-          <option value="full-time">Full-Time</option>
-          <option value="part-time">Part-Time</option>
-          <option value="freelance">Freelance</option>
+      <div className="flex items-center gap-3">
+        <img src={salaryIcon} alt="Salary Icon" className="w-6 h-6" />
+        <input
+          type="text"
+          value={salary}
+          onChange={(e) => setSalary(e.target.value)}
+          placeholder="Enter salary/pay (e.g., $50,000/year)"
+          className="border-[1px] p-2 text-sm border-gray-300 rounded w-full"
+        />
+      </div>
+
+      <div className="flex items-center gap-3">
+        <img src={worktypeIcon} alt="Work Type Icon" className="w-6 h-6" />
+        <select
+          value={workType}
+          onChange={(e) => setWorkType(e.target.value)}
+          className="border-[1px] p-2 text-sm border-gray-300 rounded w-full"
+        >
+          <option value="">Select Work Type</option>
         </select>
       </div>
 
       <div className="flex items-center gap-3">
-        <img src={experience} alt="Experience Icon" className="w-6 h-6" />
-        <span className="text-gray-500 text-sm">Experience Required</span>
+        <img src={experienceIcon} alt="Experience Icon" className="w-6 h-6" />
+        <input
+          type="text"
+          value={experience}
+          onChange={(e) => setExperience(e.target.value)}
+          placeholder="Enter experience required (e.g., 2+ years)"
+          className="border-[1px] p-2 text-sm border-gray-300 rounded w-full"
+        />
       </div>
     </div>
-  )
+  );
 };
 
 export default Joblisting;
