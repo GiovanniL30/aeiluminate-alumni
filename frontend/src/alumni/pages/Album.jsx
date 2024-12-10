@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useAlbumInformation, useAlbumPosts, useGetUser } from "../_api/@react-client-query/query";
 import PostCard from "../components/cards/PostCard";
 import Button from "../components/Button";
@@ -8,6 +8,7 @@ import back from "../../assets/back-arrow.png";
 import UserProfilePic from "../components/UserProfilePic";
 
 const Album = () => {
+  const navigate = useNavigate();
   const { albumId } = useParams();
 
   const { user } = useAuthContext();
@@ -56,12 +57,13 @@ const Album = () => {
       </div>
 
       <div>
-        <NavLink to="/">
+        <button onClick={() => navigate(-1)}>
           <div className="flex items-center gap-3 hover-opacity">
             <img className="w-6" src={back} alt="" />
             <p>Return</p>
           </div>
-        </NavLink>
+        </button>
+
         <h1 className="font-bold text-light_text mt-8">Posts:</h1>
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
           {posts.length > 0 ? (

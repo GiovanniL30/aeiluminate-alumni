@@ -15,6 +15,7 @@ import default_img from "../../assets/default-img.png";
 import { useNavigate } from "react-router-dom";
 import Joblisting from "../components/createPost/Joblisting.jsx";
 import EventInformation from "../components/createPost/EventInformation.jsx";
+import ToastNotification from "../constants/toastNotification.js";
 
 const CreatePost = ({ maxCaption = 225 }) => {
   const uploadQuery = useUploadPost();
@@ -53,7 +54,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
     const submitActions = {
       isPost: () => {
         if (images.length === 0) {
-          alert("Please upload at least one image.");
+          ToastNotification.warning("Please upload at least one image.");
           return;
         }
         uploadQuery.mutate(
@@ -62,20 +63,25 @@ const CreatePost = ({ maxCaption = 225 }) => {
             onSuccess: () => {
               setImages([]);
               setCaption("");
-              alert("Post Uploaded successfully");
-              navigate("/");
+              ToastNotification.success("Post Uploaded successfully");
+              navigate("/home");
             },
           }
         );
       },
       isLine: () => {
+        if (caption.length === 0) {
+          ToastNotification.warning("Please add content atleast 20 characters long");
+          return;
+        }
+
         uploadLine.mutate(
           { caption },
           {
             onSuccess: () => {
               setCaption("");
-              alert("Line Uploaded successfully");
-              navigate("/");
+              ToastNotification.success("Line Uploaded successfully");
+              navigate("/home");
             },
           }
         );
@@ -91,17 +97,18 @@ const CreatePost = ({ maxCaption = 225 }) => {
       },
       isAlbum: () => {
         if (images.length === 0) {
-          alert("Please upload at least one image for the album.");
+          ToastNotification.warning("Please upload at least one image for the album.");
           return;
         }
+
         createAlbum.mutate(
           { albumTitle: caption, images },
           {
             onSuccess: () => {
               setImages([]);
               setCaption("");
-              alert("Album Uploaded successfully");
-              navigate("/");
+              ToastNotification.success("Album Uploaded successfully");
+              navigate("/home");
             },
           }
         );
@@ -113,7 +120,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
     if (selectedPostType) {
       submitActions[selectedPostType]();
     } else {
-      alert("Invalid post type");
+      ToastNotification.error("Invalid Post Type");
     }
   };
 

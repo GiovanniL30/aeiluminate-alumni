@@ -47,7 +47,7 @@ const Signin = () => {
   };
 
   if (user && token) {
-    return <Navigate to="/" />;
+    return <Navigate to="/home" />;
   }
 
   return (

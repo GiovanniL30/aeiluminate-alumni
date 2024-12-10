@@ -80,7 +80,9 @@ const ProfileHeader = () => {
       </button>
       <div className="flex flex-col  gap-2 md:gap-5">
         <div className="flex flex-col md:flex-row items-center gap-2 md:gap-16">
-          <p className="flex font-bold text-4xl">{username}</p>
+          <p className="flex items-center gap-3 font-bold text-4xl">
+            {username} <span className="font-normal text-sm">({role})</span>
+          </p>
           {id != user.userID ? (
             <div className="flex gap-2">
               <Button

@@ -5,6 +5,8 @@ import PostCard from "../../components/cards/PostCard";
 import SimpleCardLoader from "../../components/cards/loaders/SimpleCardLoader";
 import back from "../../../assets/back-arrow.png";
 
+import album from "../../../assets/album-icon.png";
+
 const UserPosts = () => {
   const [openPost, setOpenPost] = useState(false);
   const [postData, setPostData] = useState({});
@@ -23,7 +25,7 @@ const UserPosts = () => {
       alert("Failed to open post");
       return;
     }
-    setPostData({ caption: post.caption, postID: post.postID, images: post.postMedia, createdAt: post.createdAt });
+    setPostData({ albumId: post.albumId, caption: post.caption, postID: post.postID, images: post.postMedia, createdAt: post.createdAt });
     setOpenPost(true);
   };
 
@@ -43,7 +45,14 @@ const UserPosts = () => {
             </button>
             <p>Back to all post</p>
           </div>
-          <PostCard caption={postData.caption} postID={postData.postID} images={postData.images} userID={id} createdAt={postData.createdAt} />
+          <PostCard
+            albumId={postData.albumId}
+            caption={postData.caption}
+            postID={postData.postID}
+            images={postData.images}
+            userID={id}
+            createdAt={postData.createdAt}
+          />
         </div>
       ) : (
         <>
@@ -54,12 +63,13 @@ const UserPosts = () => {
           ) : (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {posts.map((post, index) => (
-                <div key={index} className="p-3 rounded-xl my-shadow">
+                <div key={index} className="p-3 rounded-xl my-shadow relative">
                   <div>
                     <button className="hover-opacity w-full h-full" onClick={() => handleOpenPost(post.postID)}>
                       <img src={post.postMedia[0].mediaURL} alt="Post media" className="w-full h-[300px] object-cover" />
                     </button>
                   </div>
+                  {post.albumId && <img src={album} className="absolute top-5 right-5" />}
                 </div>
               ))}
             </div>

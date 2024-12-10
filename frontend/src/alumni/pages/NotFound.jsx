@@ -10,7 +10,7 @@ const NotFound = () => {
           <p className="font-bold text-xl mt-20">Are you lost ?</p>
           <p>Unfortunately, we can’t illuminate outer space. Try refreshing the page or going back to the homepage.</p>
 
-          <NavLink to="/">
+          <NavLink to="/home">
             <div className="flex gap-10 justify-center mt-20 font-bold text-2xl hover-opacity items-center">
               <p className="text-4xl">&larr;</p>
               <p>Home</p>
