@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { timeAgo } from "../../../utils.js";
 
-import logo from "../../../assets/logoCircle.png";
+import album_icon from "../../../assets/album-icon.png";
 
 import comment from "../../../assets/comment.png";
 import liked from "../../../assets/post-liked.png";
@@ -10,22 +10,15 @@ import more_vert from "../../../assets/more_vert.png";
 
 import ImageCarousel from "../posts/ImageCarousel.jsx";
 import { ReadMore } from "../ReadMore";
-import {
-  useGetUser,
-  useGetUserPosts,
-  useLikePost,
-  usePostInformation,
-  useUnlikePost,
-  useUserFollower,
-  useUserFollowing,
-} from "../../_api/@react-client-query/query.js";
+import { useLikePost, usePostInformation, useUnlikePost } from "../../_api/@react-client-query/query.js";
 import PostCardLoading from "./loaders/PostCardLoading.jsx";
 import CommentPopUp from "./CommentPopUp.jsx";
-import { NavLink } from "react-router-dom";
 import UserProfilePic from "../UserProfilePic.jsx";
 import { useAuthContext } from "../../context/AuthContext.jsx";
+import Button from "../Button.jsx";
+import { NavLink } from "react-router-dom";
 
-const PostCard = ({ postID, caption, images, userID, createdAt, otherStyle }) => {
+const PostCard = ({ albumId = null, postID, caption, images, userID, createdAt, otherStyle }) => {
   const [isShowComment, setIsShowComment] = useState(false);
   const likePostQuery = useLikePost();
   const unlikePostQuery = useUnlikePost();
@@ -83,6 +76,13 @@ const PostCard = ({ postID, caption, images, userID, createdAt, otherStyle }) =>
       </div>
 
       <div className="flex flex-col gap-3 py-2">
+        {albumId && (
+          <div>
+            <NavLink to={`/album/${albumId}`}>
+              <Button text="Visit album" />
+            </NavLink>
+          </div>
+        )}
         <div className="flex items-center gap-6">
           <button className="w-6 h-6" onClick={handleLike}>
             <img src={data.is_liked == 1 ? liked : unliked} alt="like/unlike" />
