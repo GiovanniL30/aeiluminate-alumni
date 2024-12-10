@@ -1,4 +1,4 @@
-import Home from "./Home";
+import BrowsePosts from "./home/BrowsePosts.jsx";
 import MainLayout from "./MainLayout";
 import Notifications from "./Notifications";
 import CreatePost from "./CreatePost";
@@ -28,7 +28,7 @@ export {
   AlbumContribute,
   NoOpenedMessage,
   ChatMessage,
-  Home,
+  BrowsePosts,
   MainLayout,
   Notifications,
   CreatePost,

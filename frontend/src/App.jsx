@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import {
-  Home,
+  BrowsePosts,
   ChatMessage,
   InboxLayout,
   MainLayout,
@@ -35,7 +35,7 @@ const App = () => {
         <Routes>
           <Route element={<Auth />}>
             <Route path="/" element={<MainLayout />}>
-              <Route index element={<Home />} />
+              <Route index element={<BrowsePosts />} />
               <Route path="users" element={<BrowseUsers />} />
               <Route path="search" element={<Search />} />
               <Route path="post" element={<CreatePost />} />

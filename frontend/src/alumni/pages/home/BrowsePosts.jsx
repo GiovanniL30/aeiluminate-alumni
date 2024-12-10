@@ -1,19 +1,19 @@
 import React, { useRef, useEffect } from "react";
-import Contacts from "../components/home/Contacts";
-import EventsNearYou from "../components/home/EventsNearYou";
-import JobsNearYou from "../components/home/JobsNearYou";
-import SuggestedAlbums from "../components/home/SuggestedAlbums";
-import SuggestedContacts from "../components/home/SuggestedContacts";
-import { useGetPosts } from "../_api/@react-client-query/query";
-import PostCard from "../components/cards/PostCard";
-import AelineCard from "../components/cards/AelineCard";
-import PostCardLoading from "../components/cards/loaders/PostCardLoading";
+import Contacts from "../../components/home/Contacts.jsx";
+import EventsNearYou from "../../components/home/EventsNearYou.jsx";
+import JobsNearYou from "../../components/home/JobsNearYou.jsx";
+import SuggestedAlbums from "../../components/home/SuggestedAlbums.jsx";
+import SuggestedContacts from "../../components/home/SuggestedContacts.jsx";
+import { useGetPosts } from "../../_api/@react-client-query/query.js";
+import PostCard from "../../components/cards/PostCard.jsx";
+import AelineCard from "../../components/cards/AelineCard.jsx";
+import PostCardLoading from "../../components/cards/loaders/PostCardLoading.jsx";
 import { NavLink, useNavigate } from "react-router-dom";
-import Spinner from "../components/Spinner";
+import Spinner from "../../components/Spinner.jsx";
 import { BounceLoader } from "react-spinners";
-import AlbumCard from "../components/cards/AlbumCard";
+import AlbumCard from "../../components/cards/AlbumCard.jsx";
 
-const Home = () => {
+const BrowsePosts = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } = useGetPosts(10);
   const observerRef = useRef(null);
 
@@ -77,7 +77,7 @@ const Home = () => {
 
         <h1 className="text-center font-bold text-light_text flex justify-center gap-2">
           <p>You have reached the end of posts</p>
-          <a className="underline" href=".">
+          <a className="underline" href="..">
             Refresh
           </a>
         </h1>
@@ -88,4 +88,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default BrowsePosts;
