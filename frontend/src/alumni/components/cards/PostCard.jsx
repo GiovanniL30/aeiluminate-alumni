@@ -9,6 +9,7 @@ import unliked from "../../../assets/post-unliked.png";
 import more_vert from "../../../assets/more_vert.png";
 
 import ImageCarousel from "../posts/ImageCarousel.jsx";
+import DeletePost from "../posts/DeletePost.jsx";
 import { ReadMore } from "../ReadMore";
 import {
   useGetUser,
@@ -26,6 +27,7 @@ import UserProfilePic from "../UserProfilePic.jsx";
 import { useAuthContext } from "../../context/AuthContext.jsx";
 
 const PostCard = ({ postID, caption, images, userID, createdAt, otherStyle }) => {
+  const [isDelete, setIsDelete] = useState(false)
   const [isShowComment, setIsShowComment] = useState(false);
   const likePostQuery = useLikePost();
   const unlikePostQuery = useUnlikePost();
@@ -35,6 +37,7 @@ const PostCard = ({ postID, caption, images, userID, createdAt, otherStyle }) =>
   if (isLoading) {
     return <PostCardLoading />;
   }
+
 
   const handleLike = () => {
     if (data.is_liked == 1) {
@@ -72,9 +75,14 @@ const PostCard = ({ postID, caption, images, userID, createdAt, otherStyle }) =>
 
         <div className="flex gap-3 items-center justify-between sm:justify-center mt-2 sm:mt-0">
           <p className="text-sm text-light_text">{timeAgo(createdAt)}</p>
-          <button>
+          <div>
+
+          <button onClick={() => setIsDelete(true)} className="w-5 h-5 flex justify-center">
             <img className="w-1 h-4" src={more_vert} alt="dots" />
+          
           </button>
+          {isDelete && <DeletePost setIsDelete={setIsDelete} />}
+          </div>
         </div>
       </div>
 
