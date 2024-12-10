@@ -70,6 +70,11 @@ const CreatePost = ({ maxCaption = 225 }) => {
         );
       },
       isLine: () => {
+        if (caption.length === 0) {
+          ToastNotification.warning("Please add content atleast 20 characters long");
+          return;
+        }
+
         uploadLine.mutate(
           { caption },
           {
@@ -95,6 +100,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
           ToastNotification.warning("Please upload at least one image for the album.");
           return;
         }
+
         createAlbum.mutate(
           { albumTitle: caption, images },
           {
