@@ -196,7 +196,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
               }`}
             >
               <img src={create_joblisting} alt="post" />
-              <p>Create Joblisting</p>
+              <p>Create Job listing</p>
             </button>
             <button
               onClick={() => switchPostType("event")}
