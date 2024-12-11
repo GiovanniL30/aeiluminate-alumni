@@ -9,6 +9,7 @@ import {
   unlikeController,
   uploadLineController,
   uploadPostController,
+  uploadJobListingController
 } from "../controllers/postsController.js";
 import { upload } from "../multer.js";
 import { authenticateUserToken } from "../middleware/authenticateToken.js";
@@ -27,6 +28,9 @@ postRouter.post("/post", authenticateUserToken, upload.array("images"), uploadMe
 
 /** Upload Line Route */
 postRouter.post("/line", authenticateUserToken, uploadLineController);
+
+/**Upload Job Listing Route */
+postRouter.post("/job-listing", authenticateUserToken, uploadJobListingController);
 
 /** Like a post */
 postRouter.post("/post/like/:id", authenticateUserToken, likeController);
