@@ -39,7 +39,7 @@ export const uploadEventController = async (req, res) => {
  * @method GET
  * @route /api/events
  */
-export const getEventController = async (req, res, next) => {
+export const getEventsController = async (req, res, next) => {
   try {
     const { userId } = req;
     const { page, length } = req.query;
