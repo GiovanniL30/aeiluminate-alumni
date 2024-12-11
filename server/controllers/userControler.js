@@ -7,6 +7,7 @@ import {
   checkEmail,
   validateEmailAndPassword,
   getApplication,
+  checkUsername,
 } from "../mysqlQueries/readQueries.js";
 import { removeUserAccount, unfollowUser } from "../mysqlQueries/deleteQueries.js";
 import { followUser } from "../mysqlQueries/addQueries.js";
@@ -282,16 +283,19 @@ export const checkIsFollowingController = async (req, res) => {
  *  @route /api/user/update/details
  */
 export const updateUserDetailsController = async (req, res) => {
-  const { firstName, middleName, lastName, userName, company, jobRole, bio, phoneNumber, isPrivate } = req.body;
+  const { firstName, middleName, lastName, username, company, job_role, bio, phoneNumber, isPrivate } = req.body;
   const { userId } = req;
 
   try {
-    const update = await updateProfileDetails(userId, firstName, middleName, lastName, userName, company, jobRole, bio, phoneNumber, isPrivate);
-    if (!update) throw new Error("Failed to update user details");
+    const usernameExists = await checkUsername(username, userId);
+    if (usernameExists) return res.status(400).json({ message: "Username already taken" });
+
+    const update = await updateProfileDetails(userId, firstName, middleName, lastName, username, company, job_role, bio, phoneNumber, isPrivate);
+    if (!update) return res.status(400).json({ message: "Failed to update user details" });
 
     res.status(200).json({ message: "Update Success" });
   } catch (error) {
-    return res.status(500).json({ message: error });
+    return res.status(500).json({ message: error.message });
   }
 };
 

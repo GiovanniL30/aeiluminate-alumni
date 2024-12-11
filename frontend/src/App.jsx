@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import {
-  Home,
+  BrowsePosts,
   ChatMessage,
   InboxLayout,
   MainLayout,
@@ -23,6 +23,10 @@ import {
   AlbumContribute,
   Album,
   BrowseUsers,
+  BrowseAlbums,
+  BrowseEvents,
+  BrowseJobs,
+  HomeLayout,
 } from "./alumni/pages/index.js";
 import Auth from "./alumni/_auth/Auth.jsx";
 import AuthContext from "./alumni/context/AuthContext.jsx";
@@ -35,7 +39,12 @@ const App = () => {
         <Routes>
           <Route element={<Auth />}>
             <Route path="/" element={<MainLayout />}>
-              <Route index element={<Home />} />
+              <Route path="home" element={<HomeLayout />}>
+                <Route index element={<BrowsePosts />} />
+                <Route path="events" element={<BrowseEvents />} />
+                <Route path="albums" element={<BrowseAlbums />} />
+                <Route path="jobs" element={<BrowseJobs />} />
+              </Route>
               <Route path="users" element={<BrowseUsers />} />
               <Route path="search" element={<Search />} />
               <Route path="post" element={<CreatePost />} />

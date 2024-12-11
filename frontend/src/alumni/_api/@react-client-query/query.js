@@ -28,6 +28,7 @@ import {
   getAlbumPosts,
   getAlbumInformation,
   addImageOnAlbum,
+  fetchAlbums,
 } from "../index.js";
 
 /**
@@ -91,6 +92,17 @@ export const useGetPosts = (length) => {
   return useInfiniteQuery({
     queryKey: ["posts"],
     queryFn: ({ pageParam }) => fetchPosts({ pageParam, length }),
+    getNextPageParam: (lastPage) => lastPage.nextPage,
+  });
+};
+
+/**
+ * React query to handle loading of albums
+ */
+export const useGetAlbums = (length) => {
+  return useInfiniteQuery({
+    queryKey: ["albums"],
+    queryFn: ({ pageParam }) => fetchAlbums({ pageParam, length }),
     getNextPageParam: (lastPage) => lastPage.nextPage,
   });
 };
