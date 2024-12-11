@@ -2,6 +2,7 @@ import express from "express";
 import { checkEmail } from "../mysqlQueries/readQueries.js";
 import { transporter, forgotPasswordEmail } from "../mail.js";
 import crypto from "crypto";
+import { changePassword } from "../mysqlQueries/updateQueries.js";
 
 export const passwordRecoveryRoute = express.Router();
 
@@ -61,4 +62,22 @@ passwordRecoveryRoute.post("/verify-otp", (req, res) => {
 
   otpStore.delete(email);
   res.json({ message: "OTP verified successfully." });
+});
+
+passwordRecoveryRoute.post("/change-pass", async (req, res) => {
+  try {
+    const { email, newPassword } = req.body;
+
+    if (!email || !newPassword) {
+      return res.status(400).json({ message: "Email and new password is required" });
+    }
+
+    const updatedPass = await changePassword(email, newPassword);
+
+    if (!updatedPass) return res.status(400).json({ message: "Failed to change password, try again later" });
+
+    res.json({ message: "Password updated successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
 });

@@ -53,3 +53,20 @@ export const updateProfilePicture = async (userId, profilePicture) => {
     throw new Error("Failed to update profile picture: " + error.message);
   }
 };
+
+/**
+ * Updates user password recovery via forget password
+ */
+export const changePassword = async (email, newPassword) => {
+  const query = `
+    UPDATE users 
+    SET password = ? 
+    WHERE email = ?`;
+
+  try {
+    const [result] = await connection.query(query, [newPassword, email]);
+    return result.affectedRows > 0;
+  } catch (error) {
+    throw new Error("Failed to change password: " + error.message);
+  }
+};

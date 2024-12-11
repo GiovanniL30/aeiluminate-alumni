@@ -5,11 +5,12 @@ import Button from "../components/Button";
 import { NavLink } from "react-router-dom";
 import OtpInput from "react-otp-input";
 import ToastNotification from "../constants/toastNotification";
-import { useSendOTP, useVerifyOTP } from "../_api/@react-client-query/query";
+import { useChangePassword, useSendOTP, useVerifyOTP } from "../_api/@react-client-query/query";
 
 const ForgetPassword = () => {
   const sendOtp = useSendOTP();
   const verifyOtp = useVerifyOTP();
+  const changePass = useChangePassword();
 
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
@@ -81,7 +82,18 @@ const ForgetPassword = () => {
       return;
     }
 
-    console.log(password.new);
+    changePass.mutate(
+      { email, newPassword: password.new },
+      {
+        onSuccess: () => {
+          ToastNotification.success("Password Reset Success");
+          setStep(4);
+        },
+        onError: (error) => {
+          ToastNotification.error(error.message);
+        },
+      }
+    );
   };
 
   return (
@@ -90,23 +102,26 @@ const ForgetPassword = () => {
         <img className="w-12" src={logo} alt="logo" />
       </div>
       <div className="w-full max-w-[550px] mx-auto">
-        {step == 1 && <InputEmail onChange={(e) => setEmail(e.target.value)} value={email} submit={handleEmailSubmit} />}
-        {step == 2 && <OTP verifyCode={verifyCode} email={email} setOtp={setOtp} otp={otp} />}
-        {step == 3 && <PasswordReset submitPassword={submitPassword} password={password} setPassword={handlePasswordChange} />}
+        {step == 1 && <InputEmail pending={sendOtp.isPending} onChange={(e) => setEmail(e.target.value)} value={email} submit={handleEmailSubmit} />}
+        {step == 2 && <OTP handleEmailSubmit={handleEmailSubmit} verifyCode={verifyCode} email={email} setOtp={setOtp} otp={otp} />}
+        {step == 3 && (
+          <PasswordReset pending={changePass.isPending} submitPassword={submitPassword} password={password} setPassword={handlePasswordChange} />
+        )}
+        {step == 4 && <PasswordChanged />}
       </div>
     </div>
   );
 };
 
-const InputEmail = ({ submit, onChange, value }) => {
+const InputEmail = ({ submit, onChange, value, pending }) => {
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
       <div className="w-full flex flex-col gap-5">
         <h1 className="font-bold text-2xl">Forget Password</h1>
         <p className="text-light_text">Please enter your email to reset the password.</p>
         <div className="flex flex-col gap-8">
-          <Input value={value} handleChange={onChange} type="email" placeholder={"Enter your email"} label={"Your Email"} />
-          <Button onClick={submit} type="submit" text={`Reset Password`} />
+          <Input disabled={pending} value={value} handleChange={onChange} type="email" placeholder={"Enter your email"} label={"Your Email"} />
+          <Button disabled={pending} onClick={submit} type="submit" text={`${pending ? "Sending Request" : "Reset Password"}`} />
         </div>
       </div>
       <NavLink className="mt-20" to="/login">
@@ -118,7 +133,7 @@ const InputEmail = ({ submit, onChange, value }) => {
   );
 };
 
-const OTP = ({ otp, setOtp, email, verifyCode }) => {
+const OTP = ({ otp, setOtp, email, verifyCode, handleEmailSubmit }) => {
   const [isResendDisabled, setIsResendDisabled] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
 
@@ -127,6 +142,7 @@ const OTP = ({ otp, setOtp, email, verifyCode }) => {
       setIsResendDisabled(true);
       setTimeLeft(60);
     }
+    handleEmailSubmit();
   };
 
   useEffect(() => {
@@ -175,7 +191,7 @@ const OTP = ({ otp, setOtp, email, verifyCode }) => {
   );
 };
 
-const PasswordReset = ({ password, setPassword, submitPassword }) => {
+const PasswordReset = ({ password, setPassword, submitPassword, pending }) => {
   return (
     <div className="w-full flex flex-col gap-5">
       <div className="flex flex-col gap-2">
@@ -183,8 +199,17 @@ const PasswordReset = ({ password, setPassword, submitPassword }) => {
         <p className="text-light_text">Create a new password. Ensure it differs from previous one for security</p>
       </div>
       <div className="mt-4 flex flex-col gap-8">
-        <Input name="new" handleChange={setPassword} value={password.new} placeholder="Enter your new password" type="password" label="Password" />
         <Input
+          disabled={pending}
+          name="new"
+          handleChange={setPassword}
+          value={password.new}
+          placeholder="Enter your new password"
+          type="password"
+          label="Password"
+        />
+        <Input
+          disabled={pending}
           name="confirm"
           handleChange={setPassword}
           value={password.confirm}
@@ -192,8 +217,21 @@ const PasswordReset = ({ password, setPassword, submitPassword }) => {
           type="password"
           label="Confirm Password"
         />
-        <Button onClick={submitPassword} type="submit" text={`Update Password`} />
+        <Button disabled={pending} onClick={submitPassword} type="submit" text={`${pending ? "Updating Password" : "Update Password"}`} />
       </div>
+    </div>
+  );
+};
+
+const PasswordChanged = () => {
+  return (
+    <div className="w-full flex flex-col items-center justify-center gap-3">
+      <h1 className="font-bold text-2xl">Successful</h1>
+      <p className="text-center text-light_text">Congratulations! Your password has been changed. Click continue to login</p>
+
+      <NavLink className="w-full" to="/login">
+        <Button text="Continue" otherStyle="!w-full" />
+      </NavLink>
     </div>
   );
 };

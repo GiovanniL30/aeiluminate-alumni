@@ -31,6 +31,7 @@ import {
   fetchAlbums,
   sendOTP,
   verifyOTP,
+  changePassword,
 } from "../index.js";
 
 /**
@@ -381,5 +382,14 @@ export const useSendOTP = () => {
 export const useVerifyOTP = () => {
   return useMutation({
     mutationFn: ({ email, otp }) => verifyOTP(email, otp),
+  });
+};
+
+/**
+ * React query to change password
+ */
+export const useChangePassword = () => {
+  return useMutation({
+    mutationFn: ({ email, newPassword }) => changePassword(email, newPassword),
   });
 };

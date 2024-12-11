@@ -586,3 +586,13 @@ export const verifyOTP = async (email, otp) => {
     throw new Error(error.response?.data?.message || error.message);
   }
 };
+
+export const changePassword = async (email, newPassword) => {
+  try {
+    const response = await axios.post(`${baseURL}/api/recover/change-pass`, { email, newPassword });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
