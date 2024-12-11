@@ -36,13 +36,10 @@ eventRouter.post("/event/uninterested/:id", authenticateUserToken, unmarkInteres
  */
 
 /** Get list of events */
-eventRouter.get("/event", authenticateUserToken, getEventsController);
+eventRouter.get("/events", authenticateUserToken, getEventsController);
 
 /** Get list of events of a user */
-eventRouter.get("/event/:id", authenticateUserToken, getUserEventsController);
-
-/** Get list of events a user is interested in */
-eventRouter.get("/event/interested/:id", authenticateUserToken, getUserInterestedEventsController);
+eventRouter.get("/events/:id", authenticateUserToken, getUserEventsController);
 
 /** Get event stats */
 eventRouter.get("/event/stats/:id", authenticateUserToken, getInterestedUsersCountController);
