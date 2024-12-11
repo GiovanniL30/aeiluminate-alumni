@@ -555,3 +555,53 @@ export const getAlbums = async (offset, limit) => {
     throw new Error("Error fetching paginated albums with latest posts");
   }
 };
+
+export const getEvents = async (page, pageSize ) => {
+  const query = `
+    SELECT events.*
+    FROM events
+    LEFT JOIN users ON posts.userID = users.userID  
+    ORDER BY events.createdOn DESC 
+    LIMIT ? OFFSET ?
+  `;
+
+  const offset = (page - 1) * pageSize;
+
+  try {
+    const [results] = await connection.query(query, [parseInt(pageSize), parseInt(offset)]);
+    const [[countResult]] = await connection.query(
+      "SELECT COUNT(*) AS total FROM events LEFT JOIN users ON events.userID = users.userID"
+    );
+    return { events: results, total: countResult.total };
+  } catch (error) {
+    console.error("Error fetching paginated events:", error);
+    throw new Error("Error fetching paginated events");
+  }
+};
+
+export const getUserEvents = async (userId) => {
+  const query = "SELECT * FROM events WHERE createdBy = ?";
+
+  try {
+    const [results] = await connection.query(query, [userId]);
+    return results.length > 0 ? results : [];
+  } catch (error) {
+    console.error("Error fetching user events:", error);
+    throw new Error("Error fetching user events");
+  }
+};
+
+export const getUserInterestedEvents = async (userId) => {
+  const query = `
+  SELECT * FROM events 
+  LEFT JOIN interested_users USING (eventID) 
+  WHERE userID = ?`;
+
+  try {
+    const [results] = await connection.query(query, [userId]);
+    return results.length > 0 ? results : [];
+  } catch (error) {
+    console.error("Error fetching user interested events:", error);
+    throw new Error("Error fetching user interested events");
+  }
+};

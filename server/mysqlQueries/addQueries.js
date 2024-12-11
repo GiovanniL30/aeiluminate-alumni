@@ -200,6 +200,7 @@ export const createAlbum = async (albumId, albumTitle, albumIdOwner) => {
 
 /**
  * Creates a new event on the database
+ * @affectedDatabase = events
  */
 export const createEvent = async (eventID, title, desc = "", dateTime, location, eventType, createdOn, createdBy) => {
   let query = `
@@ -221,6 +222,7 @@ export const createEvent = async (eventID, title, desc = "", dateTime, location,
 
 /**
  * Creates a new interested_user on the database
+ * @affectedDatabase = interested_users
  */
 export const addInterestedUser = async (userID, eventID) => {
   let query = "INSERT INTO interested_users (userID, eventID) VALUES (?, ?)";
