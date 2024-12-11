@@ -63,3 +63,20 @@ export const removeEvent = async (eventID) => {
     throw new Error("Failed to unlike the post in the database");
   }
 };
+
+
+/**
+ * Unmark an Event as Interested 
+ * @affectedDatabase = interested_users
+ */
+export const unmarkInterestedEvent = async (eventID, userID) => {
+  const query = "DELETE FROM interested_users WHERE eventID = ? AND userID = ?";
+
+  try {
+    const [result] = await connection.query(query, [eventID, userID]);
+    return result.affectedRows > 0;
+  } catch (err) {
+    console.error("Error deleting interested user", err);
+    throw new Error("Failed to delete the interested user in the database");
+  }
+};
