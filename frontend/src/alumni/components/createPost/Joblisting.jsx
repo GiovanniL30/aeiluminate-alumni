@@ -5,11 +5,7 @@ import salaryIcon from "../../../assets/money.png";
 import worktypeIcon from "../../../assets/worktype.png";
 import experienceIcon from "../../../assets/experience.png";
 
-const Joblisting = () => {
-  const [company, setCompany] = useState("");
-  const [salary, setSalary] = useState("");
-  const [workType, setWorkType] = useState("");
-  const [experience, setExperience] = useState("");
+const Joblisting = ({jobDetails, setJobDetails}) => {
 
   return (
     <div className="flex flex-col justify-between h-full w-full border-t mt-10 pt-4 gap-4">
@@ -17,8 +13,8 @@ const Joblisting = () => {
         <img src={companyIcon} alt="Company Icon" className="w-6 h-6" />
         <input
           type="text"
-          value={company}
-          onChange={(e) => setCompany(e.target.value)}
+          value={jobDetails.company}
+          onChange={(e) => setJobDetails({ ...jobDetails, company: e.target.value })}
           placeholder="Enter company name"
           className="border-[1px] p-2 text-sm border-gray-300 rounded w-full"
         />
@@ -28,8 +24,8 @@ const Joblisting = () => {
         <img src={salaryIcon} alt="Salary Icon" className="w-6 h-6" />
         <input
           type="text"
-          value={salary}
-          onChange={(e) => setSalary(e.target.value)}
+          value={jobDetails.salary}
+          onChange={(e) => setJobDetails({ ...jobDetails, salary: e.target.value })}
           placeholder="Enter salary/pay (e.g., $50,000/year)"
           className="border-[1px] p-2 text-sm border-gray-300 rounded w-full"
         />
@@ -38,11 +34,14 @@ const Joblisting = () => {
       <div className="flex items-center gap-3">
         <img src={worktypeIcon} alt="Work Type Icon" className="w-6 h-6" />
         <select
-          value={workType}
-          onChange={(e) => setWorkType(e.target.value)}
+          value={jobDetails.workType}
+          onChange={(e) => setJobDetails({ ...jobDetails, workType: e.target.value })}
           className="border-[1px] p-2 text-sm border-gray-300 rounded w-full"
         >
           <option value="">Select Work Type</option>
+          <option value="on-site">On Site</option>
+          <option value="wfh">Work From Home</option>
+          <option value="hybrid">Hybrid</option>
         </select>
       </div>
 
@@ -50,8 +49,8 @@ const Joblisting = () => {
         <img src={experienceIcon} alt="Experience Icon" className="w-6 h-6" />
         <input
           type="text"
-          value={experience}
-          onChange={(e) => setExperience(e.target.value)}
+          value={jobDetails.experience}
+          onChange={(e) => setJobDetails({ ...jobDetails, experience: e.target.value })}
           placeholder="Enter experience required (e.g., 2+ years)"
           className="border-[1px] p-2 text-sm border-gray-300 rounded w-full"
         />
@@ -61,7 +60,3 @@ const Joblisting = () => {
 };
 
 export default Joblisting;
-
-// return <div>Add Company
-//     <img src={company} alt="company"/>
-//   </div>;

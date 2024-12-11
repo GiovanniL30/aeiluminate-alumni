@@ -98,21 +98,21 @@ const CreatePost = ({ maxCaption = 225 }) => {
         alert("posting event");
       },
       isJob: () => {
-        if (!caption|| !jobDetails.company || !jobDetails.salary || jobDetails.experience) {
-          ToastNotification.warning("Please fill out all job listing fields.");
+        if (!caption || !jobDetails.company || !jobDetails.salary || !jobDetails.experience) {
+          ToastNotification.warning("Please fill out the job title and all the job listing fields.");
           return;
         }
 
         uploadJobListing.mutate(
-          {title: caption, ...jobDetails},
+          { jobDetails },
           {
             onSuccess: () => {
               setCaption("");
               setJobDetails({company: "", salary:"", workType:"", experience: ""});
               ToastNotification.success("Job listing uploaded successfully");
               navigate("/home");
-            }
-          }
+            },
+          },
         )
       },
       isAlbum: () => {

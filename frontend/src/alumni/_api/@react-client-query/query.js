@@ -32,18 +32,6 @@ import {
   uploadJobListing,
 } from "../index.js";
 
-export const useUploadJobListing = () => {
-  const client = useQueryClient();
-
-  return useMutation({
-    mutationFn: ({company, salary, workType, experience}) =>
-      uploadJobListing({company, salary, workType, experience}),
-    onSuccess: () => {
-      client.invalidateQueries(["joblistings"]);
-    }
-  })
-}
-
 /**
  * React query to get user info
  */
@@ -85,6 +73,18 @@ export const useUploadPost = () => {
     onSuccess: () => client.invalidateQueries(["posts"]),
   });
 };
+
+export const useUploadJobListing = () => {
+  const client = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({company, salary, workType, experience}) =>
+      uploadJobListing({company, salary, workType, experience}),
+    onSuccess: () => {
+      client.invalidateQueries(["joblistings"]);
+    }
+  })
+}
 
 /**
  * React query to upload a new post

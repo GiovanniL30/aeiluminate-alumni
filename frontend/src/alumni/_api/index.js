@@ -89,6 +89,33 @@ export const uploadLine = async (caption) => {
   }
 };
 
+// Upload a job listing
+export const uploadJobListing = async ({ company, salary, workType, experience }) => {
+  try {
+    const token = getAuthToken();
+    const formData = new FormData();
+    
+    formData.append("company", company);
+    formData.append("salary", salary);
+    formData.append("workType", workType);
+    formData.append("experience", experience);
+
+    if (caption) formData.append("caption", caption);
+
+    const response = await axios.post(`${baseURL}/api/job`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.log("Error uploading job listing:", error);
+    throw new Error(error.response?.data.message || error.message);
+  }
+};
+
 // Fetch posts with pagination
 export const fetchPosts = async ({ pageParam = 1, length = 5 }) => {
   try {
@@ -537,30 +564,6 @@ export const getAlbumInformation = async (albumId) => {
   } catch (error) {
     console.error("Error fetching album posts:", error);
     throw new Error(error.response?.data?.message || error.message);
-  }
-};
-
-export const uploadJobListing = async ({ company, salary, workType, experience }) => {
-  try {
-    const token = getAuthToken();
-    const formData = new FormData();
-    
-    formData.append("company", company);
-    formData.append("salary", salary);
-    formData.append("workType", workType);
-    formData.append("experience", experience);
-
-    const response = await axios.post(`${baseURL}/api/job`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    return response.data;
-  } catch (error) {
-    console.log("Error uploading job listing:", error);
-    throw new Error(error.response?.data.message || error.message);
   }
 };
 
