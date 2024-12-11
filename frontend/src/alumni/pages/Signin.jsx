@@ -90,6 +90,10 @@ const Signin = () => {
                 Sign Up
               </NavLink>
             </p>
+
+            <NavLink className="underline hover-opacity" to="/recover">
+              Forget Password?
+            </NavLink>
           </form>
         </div>
       </div>
