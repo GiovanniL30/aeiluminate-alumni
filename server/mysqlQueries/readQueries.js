@@ -605,3 +605,35 @@ export const getUserInterestedEvents = async (userId) => {
     throw new Error("Error fetching user interested events");
   }
 };
+
+/**
+ * Get interested users count for a specific event
+ */
+export const getEventStats = async (eventId, userId) => {
+  const query = `
+    SELECT 
+        e.eventID, 
+        e.createdBy AS posted_by,
+        u.profile_picture AS profile_link,
+        COUNT(DISTINCT iu.userID) AS total_interested, 
+        MAX(CASE WHEN iu.userID = ? THEN 1 ELSE 0 END) AS is_intereseted
+    FROM 
+        events e
+    LEFT JOIN 
+        interested_users iu ON e.eventID = iu.eventID
+    LEFT JOIN 
+        users u ON e.createdBy = u.userID
+    WHERE 
+        event.eventID = ?
+    GROUP BY 
+        e.eventID, u.username
+  `;
+
+  try {
+    const [result] = await connection.query(query, [userId, eventId]);
+    return result.length > 0 ? result[0] : null;
+  } catch (error) {
+    console.error("Failed to get event stats:", error);
+    throw new Error("Failed to get event stats");
+  }
+};
