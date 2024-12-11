@@ -5,8 +5,12 @@ import Button from "../components/Button";
 import { NavLink } from "react-router-dom";
 import OtpInput from "react-otp-input";
 import ToastNotification from "../constants/toastNotification";
+import { useSendOTP, useVerifyOTP } from "../_api/@react-client-query/query";
 
 const ForgetPassword = () => {
+  const sendOtp = useSendOTP();
+  const verifyOtp = useVerifyOTP();
+
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
@@ -25,7 +29,14 @@ const ForgetPassword = () => {
       return;
     }
 
-    setStep(2);
+    sendOtp.mutate(email, {
+      onSuccess: () => {
+        setStep(2);
+      },
+      onError: (error) => {
+        ToastNotification.error(error.message);
+      },
+    });
   };
 
   const verifyCode = () => {
@@ -34,7 +45,17 @@ const ForgetPassword = () => {
       return;
     }
 
-    setStep(3);
+    verifyOtp.mutate(
+      { email, otp },
+      {
+        onSuccess: () => {
+          setStep(3);
+        },
+        onError: (error) => {
+          ToastNotification.error(error.message);
+        },
+      }
+    );
   };
 
   const handlePasswordChange = (e) => {

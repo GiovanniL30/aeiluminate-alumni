@@ -566,3 +566,23 @@ export const fetchAlbums = async ({ pageParam = 1, length = 5 }) => {
     throw new Error(error.message);
   }
 };
+
+export const sendOTP = async (email) => {
+  try {
+    const response = await axios.post(`${baseURL}/api/recover/send-otp`, { email });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
+
+export const verifyOTP = async (email, otp) => {
+  try {
+    const response = await axios.post(`${baseURL}/api/recover/verify-otp`, { email, otp });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
