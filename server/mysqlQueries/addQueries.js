@@ -216,4 +216,16 @@ export const createEvent = async (eventID, title, desc = "", dateTime, location,
   }
 };
 
+export const addInterestedUser = async (userID, eventID) => {
+  let query = "INSERT INTO interested_users (userID, eventID) VALUES (?, ?)";
+  let values = [userID, eventID];
+
+  try {
+    const [result] = await connection.query(query, values);
+    return result.affectedRows > 0;
+  } catch (err) {
+    console.error("Error inserting new interested_users", err);
+    throw new Error("Failed to insert new interested_users into the database");
+  }
+};
 
