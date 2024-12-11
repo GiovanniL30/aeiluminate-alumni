@@ -8,7 +8,7 @@ import create_line from "../../assets/create_line.png";
 import create_album from "../../assets/create_album.png";
 import create_event from "../../assets/create_event.png";
 import create_joblisting from "../../assets/joblisting.png";
-import { useNewAlbum, useUploadLine, useUploadPost } from "../_api/@react-client-query/query";
+import { useNewAlbum, useUploadLine, useUploadPost, useUploadJobListing } from "../_api/@react-client-query/query";
 import TopPopUp from "../components/TopPopUp";
 
 import default_img from "../../assets/default-img.png";
@@ -21,6 +21,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
   const uploadQuery = useUploadPost();
   const uploadLine = useUploadLine();
   const createAlbum = useNewAlbum();
+  const uploadJobListing = useUploadJobListing();
 
   const navigate = useNavigate();
 
@@ -35,6 +36,13 @@ const CreatePost = ({ maxCaption = 225 }) => {
   const [images, setImages] = useState([]);
   const { user } = useAuthContext();
   const [caption, setCaption] = useState("");
+
+  const [jobDetails, setJobDetails] = useState({
+    company: "",
+    salary: "",
+    workType: "",
+    experience: "",
+  });
 
   const [eventInformation, setEventInformation] = useState({
     title: "",
@@ -90,10 +98,22 @@ const CreatePost = ({ maxCaption = 225 }) => {
         alert("posting event");
       },
       isJob: () => {
-        if (!caption) {
-          alert("Joblisting title cannot be empty.");
+        if (!caption|| !jobDetails.company || !jobDetails.salary || jobDetails.experience) {
+          ToastNotification.warning("Please fill out all job listing fields.");
           return;
         }
+
+        uploadJobListing.mutate(
+          {title: caption, ...jobDetails},
+          {
+            onSuccess: () => {
+              setCaption("");
+              setJobDetails({company: "", salary:"", workType:"", experience: ""});
+              ToastNotification.success("Job listing uploaded successfully");
+              navigate("/home");
+            }
+          }
+        )
       },
       isAlbum: () => {
         if (images.length === 0) {
@@ -257,7 +277,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
                 : postType.isEvent
                 ? "Event title"
                 : postType.isJob
-                ? "Joblisting title"
+                ? "Joblisting Title and Description"
                 : postType.isAlbum
                 ? " Album title"
                 : " Unknown"}
@@ -276,7 +296,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
 
           <>
             {postType.isEvent && <EventInformation />}
-            {postType.isJob && <Joblisting />}
+            {postType.isJob && <Joblisting jobDetails={jobDetails} setJobDetails={setJobDetails}/>}
           </>
         </div>
       </div>

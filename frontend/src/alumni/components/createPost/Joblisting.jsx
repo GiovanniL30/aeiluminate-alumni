@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import companyIcon from "../../../assets/company.png";
 import salaryIcon from "../../../assets/money.png";

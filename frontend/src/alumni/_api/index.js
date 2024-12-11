@@ -540,6 +540,30 @@ export const getAlbumInformation = async (albumId) => {
   }
 };
 
+export const uploadJobListing = async ({ company, salary, workType, experience }) => {
+  try {
+    const token = getAuthToken();
+    const formData = new FormData();
+    
+    formData.append("company", company);
+    formData.append("salary", salary);
+    formData.append("workType", workType);
+    formData.append("experience", experience);
+
+    const response = await axios.post(`${baseURL}/api/job`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.log("Error uploading job listing:", error);
+    throw new Error(error.response?.data.message || error.message);
+  }
+};
+
 export const fetchAlbums = async ({ pageParam = 1, length = 5 }) => {
   try {
     const token = getAuthToken();

@@ -29,7 +29,20 @@ import {
   getAlbumInformation,
   addImageOnAlbum,
   fetchAlbums,
+  uploadJobListing,
 } from "../index.js";
+
+export const useUploadJobListing = () => {
+  const client = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({company, salary, workType, experience}) =>
+      uploadJobListing({company, salary, workType, experience}),
+    onSuccess: () => {
+      client.invalidateQueries(["joblistings"]);
+    }
+  })
+}
 
 /**
  * React query to get user info
