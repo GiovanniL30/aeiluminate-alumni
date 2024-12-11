@@ -47,3 +47,19 @@ export const unfollowUser = async (followerID, followedID) => {
     throw new Error("Failed to unfollow");
   }
 };
+
+/**
+ * Remove an event in the events table
+ * @affectedDatabase = events
+ */
+export const removeEvent = async (eventID) => {
+  const query = "DELETE FROM events WHERE eventID = ?";
+
+  try {
+    const [result] = await connection.query(query, [eventID]);
+    return result.affectedRows > 0;
+  } catch (err) {
+    console.error("Error deleting like", err);
+    throw new Error("Failed to unlike the post in the database");
+  }
+};
