@@ -202,13 +202,13 @@ export const createAlbum = async (albumId, albumTitle, albumIdOwner) => {
  * Creates a new event on the database
  * @affectedDatabase = events
  */
-export const createEvent = async (eventID, title, desc = "", dateTime, location, eventType, createdOn, createdBy) => {
+export const createEvent = async (eventID, title, desc = "", eventDateTime, location, eventType, createdOn, createdBy) => {
   let query = `
-  INSERT INTO events (eventID, title, desc, dateTime, 
+  INSERT INTO events (eventID, title, description, eventDateTime, 
   location, eventType, createdOn, createdBy) 
   VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `;
-  let values = [eventID, title, desc, dateTime, location, eventType, createdOn, createdBy];
+  let values = [eventID, title, desc, eventDateTime, location, eventType, createdOn, createdBy];
 
 
   try {
