@@ -247,14 +247,11 @@ export const addCommentController = async (req, res, next) => {
  */
 export const uploadJobListingController = async (req, res) => {
   try {
-    const {userId} = req;
     const {company, experienceRequired, workType, salary} = req.body;
 
     if (!company || !salary || experienceRequired) {
       return res.status(400).json({message: "All fields are required"});
     }
-
-    const jobID = crypto.randomUUID();
 
     const result = await addNewJobListing(company, experienceRequired, workType, salary);
 

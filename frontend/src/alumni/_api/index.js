@@ -100,9 +100,7 @@ export const uploadJobListing = async ({ company, salary, workType, experience }
     formData.append("workType", workType);
     formData.append("experience", experience);
 
-    if (caption) formData.append("caption", caption);
-
-    const response = await axios.post(`${baseURL}/api/job`, formData, {
+    const response = await axios.post(`${baseURL}/api/job-listing`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${token}`,

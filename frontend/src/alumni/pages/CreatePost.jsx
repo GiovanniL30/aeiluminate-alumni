@@ -104,16 +104,23 @@ const CreatePost = ({ maxCaption = 225 }) => {
         }
 
         uploadJobListing.mutate(
-          { jobDetails },
+          { 
+            company: jobDetails.company, 
+            salary: jobDetails.salary, 
+            workType: jobDetails.workType, 
+            experience: jobDetails.experience 
+          },
           {
             onSuccess: () => {
-              setCaption("");
-              setJobDetails({company: "", salary:"", workType:"", experience: ""});
+              setJobDetails({ company: "", salary: "", workType: "", experience: "" });
               ToastNotification.success("Job listing uploaded successfully");
               navigate("/home");
             },
-          },
-        )
+            onError: (error) => {
+              ToastNotification.error(error.message || "Failed to upload job listing.");
+            }
+          }
+        );
       },
       isAlbum: () => {
         if (images.length === 0) {
