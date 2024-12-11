@@ -27,6 +27,7 @@ import {
   BrowseEvents,
   BrowseJobs,
   HomeLayout,
+  ForgetPassword,
 } from "./alumni/pages/index.js";
 import Auth from "./alumni/_auth/Auth.jsx";
 import AuthContext from "./alumni/context/AuthContext.jsx";
@@ -70,6 +71,7 @@ const App = () => {
 
           <Route path="login" element={<Signin />} />
           <Route path="register" element={<Signup />} />
+          <Route path="recover" element={<ForgetPassword />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

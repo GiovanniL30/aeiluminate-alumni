@@ -24,14 +24,14 @@ export const addNewUser = async (userId, role, email, username, password, firstN
  * Adds a new alumni
  * @affectedDatabase = alumni
  */
-export const addNewAlumni = async (userID, yeaGraduated, programID) => {
+export const addNewAlumni = async (userID, yeaGraduated, programID, isEmployed = 0) => {
   const insertUserQuery = `
-    INSERT INTO alumni (userID, year_graduated, programID) 
-    VALUES (?, ?, ?)
+    INSERT INTO alumni (userID, year_graduated, programID, isEmployed) 
+    VALUES (?, ?, ?, ?)
   `;
 
   try {
-    const [result] = await connection.query(insertUserQuery, [userID, yeaGraduated, programID]);
+    const [result] = await connection.query(insertUserQuery, [userID, yeaGraduated, programID, isEmployed]);
     return result.affectedRows > 0;
   } catch (err) {
     console.error("Error inserting new alumni", err);

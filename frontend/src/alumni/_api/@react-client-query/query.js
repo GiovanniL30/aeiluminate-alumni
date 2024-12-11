@@ -29,6 +29,9 @@ import {
   getAlbumInformation,
   addImageOnAlbum,
   fetchAlbums,
+  sendOTP,
+  verifyOTP,
+  changePassword,
 } from "../index.js";
 
 /**
@@ -361,5 +364,32 @@ export const useAlbumInformation = (albumId) => {
   return useQuery({
     queryFn: () => getAlbumInformation(albumId),
     queryKey: ["album", "information", albumId],
+  });
+};
+
+/**
+ * React query to send OTP code
+ */
+export const useSendOTP = () => {
+  return useMutation({
+    mutationFn: (email) => sendOTP(email),
+  });
+};
+
+/**
+ * React query to verify OTP code
+ */
+export const useVerifyOTP = () => {
+  return useMutation({
+    mutationFn: ({ email, otp }) => verifyOTP(email, otp),
+  });
+};
+
+/**
+ * React query to change password
+ */
+export const useChangePassword = () => {
+  return useMutation({
+    mutationFn: ({ email, newPassword }) => changePassword(email, newPassword),
   });
 };
