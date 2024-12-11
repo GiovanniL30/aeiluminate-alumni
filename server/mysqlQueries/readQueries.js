@@ -556,7 +556,7 @@ export const getAlbums = async (offset, limit) => {
   }
 };
 
-export const getEvents = async (page, pageSize ) => {
+export const getEvents = async (page, pageSize, userId ) => {
   const query = `
     SELECT events.*
     FROM events
