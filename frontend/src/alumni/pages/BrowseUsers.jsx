@@ -51,7 +51,8 @@ const BrowseUsers = () => {
       return (
         fullName.includes(debouncedSearch.toLowerCase()) ||
         user.email.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-        user.username.toLowerCase().includes(debouncedSearch.toLowerCase())
+        user.username.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+        user.role.toLowerCase().includes(debouncedSearch.toLowerCase())
       );
     })
   );
