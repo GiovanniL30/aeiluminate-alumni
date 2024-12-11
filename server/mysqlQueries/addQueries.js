@@ -197,3 +197,23 @@ export const createAlbum = async (albumId, albumTitle, albumIdOwner) => {
     throw new Error("Failed to add new album");
   }
 };
+
+export const createEvent = async (eventID, title, desc = "", dateTime, location, eventType, createdOn, createdBy) => {
+  let query = `
+  INSERT INTO events (eventID, title, desc, dateTime, 
+  location, eventType, createdOn, createdBy) 
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+  let values = [eventID, title, desc, dateTime, location, eventType, createdOn, createdBy];
+
+
+  try {
+    const [result] = await connection.query(query, values);
+    return result.affectedRows > 0;
+  } catch (err) {
+    console.error("Error inserting new event", err);
+    throw new Error("Failed to insert new event into the database");
+  }
+};
+
+
