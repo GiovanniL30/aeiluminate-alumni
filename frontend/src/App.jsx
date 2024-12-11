@@ -8,7 +8,6 @@ import {
   MainLayout,
   Notifications,
   CreatePost,
-  Search,
   Signin,
   Signup,
   UserPosts,
@@ -47,7 +46,6 @@ const App = () => {
                 <Route path="jobs" element={<BrowseJobs />} />
               </Route>
               <Route path="users" element={<BrowseUsers />} />
-              <Route path="search" element={<Search />} />
               <Route path="post" element={<CreatePost />} />
               <Route path="inbox" element={<InboxLayout />}>
                 <Route index element={<NoOpenedMessage />} />

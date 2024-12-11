@@ -32,6 +32,7 @@ import {
   sendOTP,
   verifyOTP,
   changePassword,
+  fetchUsers,
 } from "../index.js";
 
 /**
@@ -106,6 +107,17 @@ export const useGetAlbums = (length) => {
   return useInfiniteQuery({
     queryKey: ["albums"],
     queryFn: ({ pageParam }) => fetchAlbums({ pageParam, length }),
+    getNextPageParam: (lastPage) => lastPage.nextPage,
+  });
+};
+
+/**
+ * React query to handle loading of users
+ */
+export const useGetUsers = ({ length, key }) => {
+  return useInfiniteQuery({
+    queryKey: ["users"],
+    queryFn: ({ pageParam }) => fetchUsers({ pageParam, length, key }),
     getNextPageParam: (lastPage) => lastPage.nextPage,
   });
 };

@@ -146,15 +146,62 @@ export const checkEmail = async (email) => {
 };
 
 /**
- * Fetch paginated users and total count from the database
+ * Fetch paginated users excluding those who have an ID in the application table
+ * and filter by search query (key)
  */
-export const getUsers = async (page, pageSize) => {
-  const query = "SELECT * FROM users LIMIT ? OFFSET ?";
+export const getUsers = async (page, pageSize, key) => {
   const offset = (page - 1) * pageSize;
 
   try {
-    const [results] = await connection.query(query, [parseInt(pageSize), parseInt(offset)]);
-    const [[countResult]] = await connection.query("SELECT COUNT(*) AS total FROM users");
+    const [results] = await connection.query(
+      `
+      SELECT u.*
+      FROM users u
+      LEFT JOIN application a ON u.userID = a.userID
+      WHERE a.userID IS NULL
+      ${
+        key
+          ? `
+        AND (
+          u.username LIKE ? OR
+          u.firstName LIKE ? OR
+          u.middleName LIKE ? OR
+          u.lastName LIKE ? OR
+          u.email LIKE ?
+        )
+      `
+          : ""
+      }
+      LIMIT ? OFFSET ?
+      `,
+      key
+        ? [`%${key}%`, `%${key}%`, `%${key}%`, `%${key}%`, `%${key}%`, parseInt(pageSize), parseInt(offset)]
+        : [parseInt(pageSize), parseInt(offset)]
+    );
+
+    const [[countResult]] = await connection.query(
+      `
+      SELECT COUNT(*) AS total
+      FROM users u
+      LEFT JOIN application a ON u.userID = a.userID
+      WHERE a.userID IS NULL
+      ${
+        key
+          ? `
+        AND (
+          u.username LIKE ? OR
+          u.firstName LIKE ? OR
+          u.middleName LIKE ? OR
+          u.lastName LIKE ? OR
+          u.email LIKE ?
+        )
+      `
+          : ""
+      }
+      `,
+      key ? [`%${key}%`, `%${key}%`, `%${key}%`, `%${key}%`, `%${key}%`] : []
+    );
+
     return { users: results, total: countResult.total };
   } catch (error) {
     console.error("Error fetching paginated users:", error);
@@ -178,8 +225,7 @@ export const getPosts = async (page, pageSize, userId) => {
   try {
     const [results] = await connection.query(query, [parseInt(pageSize), parseInt(offset)]);
     const [[countResult]] = await connection.query(
-      "SELECT COUNT(*) AS total FROM posts LEFT JOIN users ON posts.userID = users.userID WHERE posts.albumId IS NOT NULL AND (users.isPrivate = 0 OR posts.userID = ?)",
-      [userId]
+      "SELECT COUNT(*) AS total FROM posts LEFT JOIN users ON posts.userID = users.userID WHERE posts.albumId IS NULL AND (users.isPrivate = 0)"
     );
     return { posts: results, total: countResult.total };
   } catch (error) {

@@ -567,6 +567,33 @@ export const fetchAlbums = async ({ pageParam = 1, length = 5 }) => {
   }
 };
 
+export const fetchUsers = async ({ pageParam = 1, length = 5, key = "" }) => {
+  try {
+    const token = getAuthToken();
+    const response = await fetch(`${baseURL}/api/users?page=${pageParam}&length=${length}&key=${key}`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "An error occurred while fetching lists of users.");
+    }
+
+    const data = await response.json();
+    const totalUsers = data.totalUsers;
+    const totalPages = Math.ceil(totalUsers / length);
+    const nextPage = pageParam < totalPages ? pageParam + 1 : undefined;
+
+    return {
+      users: data.users,
+      nextPage,
+    };
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
 export const sendOTP = async (email) => {
   try {
     const response = await axios.post(`${baseURL}/api/recover/send-otp`, { email });

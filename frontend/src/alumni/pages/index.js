@@ -9,7 +9,6 @@ import BrowseUsers from "./BrowseUsers.jsx";
 import BrowseEvents from "./home/BrowseEvents.jsx";
 import BrowseJobs from "./home/BrowseJobs.jsx";
 import BrowseAlbums from "./home/BrowseAlbums.jsx";
-import Search from "./Search";
 import Signin from "./Signin";
 import Signup from "./Signup";
 import UserPosts from "./user/UserPosts.jsx";
@@ -40,7 +39,6 @@ export {
   MainLayout,
   Notifications,
   CreatePost,
-  Search,
   Signin,
   Signup,
   UserPosts,

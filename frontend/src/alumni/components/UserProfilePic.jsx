@@ -14,7 +14,7 @@ const UserProfilePic = ({ userID, profile_link, otherContainerStyle, otherImageS
   const userQuery = useGetUser(userID);
   const { user } = useAuthContext();
 
-  if (followerQuery.isLoading || followerQuery.isLoading || userPostsQuery.isLoading || userQuery.isLoading) {
+  if (followerQuery.isLoading || followingQuery.isLoading || userPostsQuery.isLoading || userQuery.isLoading) {
     return <SkeletonLoader />;
   }
 
