@@ -27,7 +27,7 @@ eventRouter.post("/event", authenticateUserToken, uploadEventController);
 eventRouter.post("/event/interested/:id", authenticateUserToken, markInterestedController);
 
 /** Unmark an Eent as Interestedt */
-eventRouter.post("/post/uninterested/:id", authenticateUserToken, unmarkInterestedController);
+eventRouter.post("/event/uninterested/:id", authenticateUserToken, unmarkInterestedController);
 
 /**
  * ================================================================
