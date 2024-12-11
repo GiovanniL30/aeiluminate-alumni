@@ -198,6 +198,9 @@ export const createAlbum = async (albumId, albumTitle, albumIdOwner) => {
   }
 };
 
+/**
+ * Creates a new event on the database
+ */
 export const createEvent = async (eventID, title, desc = "", dateTime, location, eventType, createdOn, createdBy) => {
   let query = `
   INSERT INTO events (eventID, title, desc, dateTime, 
@@ -216,6 +219,9 @@ export const createEvent = async (eventID, title, desc = "", dateTime, location,
   }
 };
 
+/**
+ * Creates a new interested_user on the database
+ */
 export const addInterestedUser = async (userID, eventID) => {
   let query = "INSERT INTO interested_users (userID, eventID) VALUES (?, ?)";
   let values = [userID, eventID];
