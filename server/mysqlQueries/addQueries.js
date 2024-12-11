@@ -224,7 +224,7 @@ export const createEvent = async (eventID, title, desc = "", eventDateTime, loca
  * Creates a new interested_user on the database
  * @affectedDatabase = interested_users
  */
-export const addInterestedUser = async (userID, eventID) => {
+export const addInterestedUser = async (eventID, userID) => {
   let query = "INSERT INTO interested_users (userID, eventID) VALUES (?, ?)";
   let values = [userID, eventID];
 
