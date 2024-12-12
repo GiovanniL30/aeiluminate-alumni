@@ -33,6 +33,14 @@ import {
   verifyOTP,
   changePassword,
   fetchUsers,
+  fetchEvents,
+  fetchUserEvents,
+  fetchEventInformation,
+  markEventInterested,
+  unmarkEventInterested,
+  fetchUserInterestedEvents,
+  uploadEvent,
+  checkUserInterested,
 } from "../index.js";
 
 /**
@@ -101,6 +109,17 @@ export const useGetPosts = (length) => {
 };
 
 /**
+ * React query to handle loading of events
+ */
+export const useGetEvents = (length) => {
+  return useInfiniteQuery({
+    queryKey: ["events"],
+    queryFn: ({ pageParam }) => fetchEvents({ pageParam, length }),
+    getNextPageParam: (lastPage) => lastPage.nextPage,
+  });
+};
+
+/**
  * React query to handle loading of albums
  */
 export const useGetAlbums = (length) => {
@@ -132,6 +151,26 @@ export const useGetUserPosts = (userId) => {
   });
 };
 
+// /**
+//  * React query to handle loading of posts
+//  */
+// export const useGetUserEvents = (userId) => {
+//   return useQuery({
+//     queryKey: ["events", userId],
+//     queryFn: () => fetchUserEvents(userId),
+//   });
+// };
+
+// /**
+//  * React query to handle loading of posts
+//  */
+// export const useGetUserInterestedEvents = (userId) => {
+//   return useQuery({
+//     queryKey: ["interested_events", userId],
+//     queryFn: () => fetchUserInterestedEvents(userId),
+//   });
+// };
+
 /**
  * React query to get post comment and like count
  */
@@ -139,6 +178,16 @@ export const usePostInformation = (postId) => {
   return useQuery({
     queryKey: ["post_comment_like_count", postId],
     queryFn: () => fetchPostInformation(postId),
+  });
+};
+
+/**
+ * React query to get interested users in events
+ */
+export const useEventInformation = (eventId) => {
+  return useQuery({
+    queryKey: ["event_interested_users", eventId],
+    queryFn: () => fetchEventInformation(eventId),
   });
 };
 
@@ -163,6 +212,36 @@ export const useUnlikePost = () => {
   return useMutation({
     mutationFn: (postId) => unlikePost(postId),
     onSuccess: (_, postId) => client.invalidateQueries(["post_comment_like_count", postId]),
+  });
+};
+
+/**
+ * React query to unlike a post
+ */
+export const useUnmarkInterested = () => {
+  const client = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ eventId, userid }) => unmarkEventInterested(eventId),
+    onSuccess: (_, { eventId, userid }) => {
+      client.invalidateQueries[("event_interested_users", eventId)];
+      client.invalidateQueries(["interested", eventId, userid]);
+    },
+  });
+};
+
+/**
+ * React query to mark an event as interested
+ */
+export const useMarkInterested = () => {
+  const client = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ eventId, userid }) => markEventInterested(eventId),
+    onSuccess: (_, { eventId, userid }) => {
+      client.invalidateQueries[("event_interested_users", eventId)];
+      client.invalidateQueries(["interested", eventId, userid]);
+    },
   });
 };
 
@@ -403,5 +482,29 @@ export const useVerifyOTP = () => {
 export const useChangePassword = () => {
   return useMutation({
     mutationFn: ({ email, newPassword }) => changePassword(email, newPassword),
+  });
+};
+
+/**
+ *
+ * React query to upload a new event
+ */
+export const useUploadEvent = () => {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: ({ location, dateTime, description, category, title, image }) =>
+      uploadEvent({ location, dateTime, description, category, title, image }),
+    onSuccess: () => client.invalidateQueries(["events"]),
+  });
+};
+
+/**
+ *
+ * React query to check if user is intereseted on the event
+ */
+export const useCheckInterested = (eventid, userid) => {
+  return useQuery({
+    queryKey: ["interested", eventid, userid],
+    queryFn: () => checkUserInterested(eventid, userid),
   });
 };

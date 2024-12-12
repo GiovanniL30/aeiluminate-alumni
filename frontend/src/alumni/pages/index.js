@@ -23,8 +23,10 @@ import NotFound from "./NotFound";
 import NoOpenedMessage from "./inbox/NoOpenedMessage";
 import HomeLayout from "./home/HomeLayout.jsx";
 import ForgetPassword from "./ForgetPassword.jsx";
+import UserInteresetedEvents from "./user/UserInteresetedEvents.jsx";
 
 export {
+  UserInteresetedEvents,
   ForgetPassword,
   HomeLayout,
   BrowseAlbums,

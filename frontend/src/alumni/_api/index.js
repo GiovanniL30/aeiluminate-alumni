@@ -89,6 +89,33 @@ export const uploadLine = async (caption) => {
   }
 };
 
+// Upload an event
+export const uploadEvent = async ({ location, dateTime, description, category, title, image }) => {
+  try {
+    const token = getAuthToken();
+    const formData = new FormData();
+
+    formData.append("title", title);
+    formData.append("desc", description);
+    formData.append("eventDateTime", dateTime);
+    formData.append("location", location);
+    formData.append("eventType", category);
+    formData.append("images", image.file);
+
+    const response = await axios.post(`${baseURL}/api/events`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.log(error.message);
+    throw new Error(error.response?.data.message || error.message);
+  }
+};
+
 // Fetch posts with pagination
 export const fetchPosts = async ({ pageParam = 1, length = 5 }) => {
   try {
@@ -147,6 +174,80 @@ export const fetchPostInformation = async (postId) => {
   }
 };
 
+// Fetch events with pagination
+export const fetchEvents = async ({ pageParam = 1, length = 5 }) => {
+  try {
+    const token = getAuthToken();
+    const response = await fetch(`${baseURL}/api/events?page=${pageParam}&length=${length}`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "An error occurred while fetching lists of events.");
+    }
+
+    const data = await response.json();
+    const totalEvents = data.totalEvents;
+    const totalPages = Math.ceil(totalEvents / length);
+    const nextPage = pageParam < totalPages ? pageParam + 1 : undefined;
+
+    return {
+      events: data.events,
+      nextPage,
+    };
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+// Fetch user events
+export const fetchUserEvents = async (userId) => {
+  try {
+    const token = getAuthToken();
+    const response = await axios.get(`${baseURL}/api/events/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const { events } = response.data;
+    return events;
+  } catch (error) {
+    console.error("Error fetching user events:", error.message);
+    throw new Error(error.response?.data.message || error.message);
+  }
+};
+
+// Fetch user events
+export const fetchUserInterestedEvents = async (userId) => {
+  try {
+    const token = getAuthToken();
+    const response = await axios.get(`${baseURL}/api/interested_events/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const { events } = response.data;
+    return events;
+  } catch (error) {
+    console.error("Error fetching user interested events:", error.message);
+    throw new Error(error.response?.data.message || error.message);
+  }
+};
+
+// Fetch event information (interested users)
+export const fetchEventInformation = async (eventId) => {
+  try {
+    const token = getAuthToken();
+    const response = await axios.get(`${baseURL}/api/events/stats/${eventId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.response?.data.message || error.message);
+  }
+};
+
 // Like a post
 export const likePost = async (postId) => {
   try {
@@ -165,12 +266,48 @@ export const likePost = async (postId) => {
   }
 };
 
+// Mark an event as interested
+export const markEventInterested = async (eventId) => {
+  try {
+    const token = getAuthToken();
+    const response = await axios.post(
+      `${baseURL}/api/events/interested/${eventId}`,
+      {},
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.response?.data.message || error.message);
+  }
+};
+
 // Unlike a post
 export const unlikePost = async (postId) => {
   try {
     const token = getAuthToken();
     const response = await axios.post(
       `${baseURL}/api/post/unlike/${postId}`,
+      {},
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.response?.data.message || error.message);
+  }
+};
+
+// Unmark an event as interested
+export const unmarkEventInterested = async (eventId) => {
+  try {
+    const token = getAuthToken();
+    const response = await axios.post(
+      `${baseURL}/api/events/uninterested/${eventId}`,
       {},
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -617,6 +754,22 @@ export const verifyOTP = async (email, otp) => {
 export const changePassword = async (email, newPassword) => {
   try {
     const response = await axios.post(`${baseURL}/api/recover/change-pass`, { email, newPassword });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
+
+export const checkUserInterested = async (eventid, userid) => {
+  try {
+    const token = getAuthToken();
+    const response = await axios.get(`${baseURL}/api/events/user_interested/${eventid}`, {
+      params: { userid },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error(error);

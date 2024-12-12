@@ -23,3 +23,5 @@ export const navLinks = [
     otherStye: "w-[22.5px] h-[22.5px]",
   },
 ];
+
+export const eventCategories = ["reunion", "mass", "thanksgiving", "seminar", "webinar", "conference", "workshop", "others"];
