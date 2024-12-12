@@ -8,7 +8,8 @@ import create_line from "../../assets/create_line.png";
 import create_album from "../../assets/create_album.png";
 import create_event from "../../assets/create_event.png";
 import create_joblisting from "../../assets/joblisting.png";
-import { useNewAlbum, useUploadEvent, useUploadLine, useUploadPost } from "../_api/@react-client-query/query";
+
+import { useNewAlbum, useUploadLine, useUploadEvent, useUploadPost, useUploadJobListing } from "../_api/@react-client-query/query";
 import TopPopUp from "../components/TopPopUp";
 
 import default_img from "../../assets/default-img.png";
@@ -30,6 +31,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
   const uploadLine = useUploadLine();
   const createAlbum = useNewAlbum();
   const uploadEvent = useUploadEvent();
+  const uploadJobListing = useUploadJobListing();
 
   const navigate = useNavigate();
 
@@ -44,6 +46,13 @@ const CreatePost = ({ maxCaption = 225 }) => {
   const [images, setImages] = useState([]);
   const { user } = useAuthContext();
   const [caption, setCaption] = useState("");
+
+  const [jobDetails, setJobDetails] = useState({
+    company: "",
+    salary: "",
+    workType: "",
+    experience: "",
+  });
 
   const handleCaptionChange = (e) => {
     const { value } = e.target;
@@ -134,6 +143,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
                 description: "",
               });
               setImages([]);
+              navigate("/home/events");
             },
             onError: (error) => {
               ToastNotification.error("Failed to add new event: " + error.message);
@@ -142,10 +152,29 @@ const CreatePost = ({ maxCaption = 225 }) => {
         );
       },
       isJob: () => {
-        if (!caption) {
-          alert("Joblisting title cannot be empty.");
+        if (!caption || !jobDetails.company || !jobDetails.salary || !jobDetails.experience) {
+          ToastNotification.warning("Please fill out the job title and all the job listing fields.");
           return;
         }
+
+        uploadJobListing.mutate(
+          {
+            company: jobDetails.company,
+            salary: jobDetails.salary,
+            workType: jobDetails.workType,
+            experience: jobDetails.experience,
+          },
+          {
+            onSuccess: () => {
+              setJobDetails({ company: "", salary: "", workType: "", experience: "" });
+              ToastNotification.success("Job listing uploaded successfully");
+              navigate("/home/jobs");
+            },
+            onError: (error) => {
+              ToastNotification.error(error.message || "Failed to upload job listing.");
+            },
+          }
+        );
       },
       isAlbum: () => {
         if (images.length === 0) {
@@ -285,7 +314,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
           : "Unknown"}
       </h1>
       <div className="flex flex-col gap-20 md:flex-row w-full">
-        {(postType.isPost || postType.isEvent || postType.isAlbum || postType.isJob) && (
+        {(postType.isPost || postType.isEvent || postType.isAlbum) && (
           <FileUploader
             maxImage={postType.isEvent ? 1 : 10}
             uploading={uploadQuery.isPending || uploadLine.isPending || createAlbum.isPending}
@@ -332,7 +361,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
 
           <>
             {postType.isEvent && <EventInformation setEventInformation={handleEventInformationChange} eventInformation={eventInformation} />}
-            {postType.isJob && <Joblisting />}
+            {postType.isJob && <Joblisting jobDetails={jobDetails} setJobDetails={setJobDetails} />}
           </>
         </div>
       </div>

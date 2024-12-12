@@ -90,6 +90,7 @@ export const uploadLine = async (caption) => {
 };
 
 // Upload an event
+// Upload an event
 export const uploadEvent = async ({ location, dateTime, description, category, title, image }) => {
   try {
     const token = getAuthToken();
@@ -112,6 +113,32 @@ export const uploadEvent = async ({ location, dateTime, description, category, t
     return response.data;
   } catch (error) {
     console.log(error.message);
+    throw new Error(error.response?.data.message || error.message);
+  }
+};
+
+// Upload a job listing
+export const uploadJobListing = async ({ company, salary, workType, experience }) => {
+  try {
+    const token = getAuthToken();
+    const formData = new FormData();
+
+    formData.append("company", company);
+    formData.append("salary", salary);
+    formData.append("workType", workType);
+    formData.append("experience", experience);
+
+    const response = await axios.post(`${baseURL}/api/job-listing`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.log(error.message);
+    console.log("Error uploading job listing:", error);
     throw new Error(error.response?.data.message || error.message);
   }
 };

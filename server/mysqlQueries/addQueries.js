@@ -199,6 +199,7 @@ export const createAlbum = async (albumId, albumTitle, albumIdOwner) => {
 };
 
 /**
+
  * Creates a new event on the database
  * @affectedDatabase = events
  */
@@ -233,5 +234,24 @@ export const addInterestedUser = async (eventID, userID) => {
   } catch (err) {
     console.error("Error inserting new interested_users", err);
     throw new Error("Failed to insert new interested_users into the database");
+  }
+};
+
+/*
+ * Adds a new job listing
+ * @affectedDatabase = job_listing
+ */
+export const addNewJobListing = async (company, experienceRequired, workType, salary) => {
+  const query = `
+    INSERT INTO job_listing (company, experienceRequired, workType, salary)
+    VALUES (?, ?, ?, ?);
+  `;
+
+  try {
+    const [result] = await connection.query(query, [company, experienceRequired, workType, salary]);
+    return result.affectedRows > 0;
+  } catch (err) {
+    console.error("Error inserting a new job listing:", err);
+    throw new Error("Failed to insert new job listing into the database.");
   }
 };
