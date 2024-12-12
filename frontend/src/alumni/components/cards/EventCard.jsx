@@ -56,25 +56,28 @@ const EventCard = ({ eventID, title, description, eventDateTime, location, event
             </button>
           </div>
         </div>
-        <h1 className="font-bold text-md">{title}</h1>
-        <div className="text-sm">
-        <p>{description}</p>
+        <div className="p-5">
+          <h1 className="font-bold text-md">{title}</h1>
+          <div className="text-sm">
+            <p>{description}</p>
+          </div>
         </div>
+        
         <div className="grid grid-cols-2 p-5 gap-4">
-          <div className="flex items-center gap-2">
-            <img className="w-5" src={loc} alt="" />
+          <div className="flex gap-2">
+            <img  src={loc} alt="" />
             <p className="break-words">{location}</p>
           </div>
-          <div className="flex items-center gap-2">
-            <img className="w-5" src={category} alt="" />
+          <div className="flex gap-2">
+            <img  src={category} alt="" />
             <p className="break-words">{eventType}</p>
           </div>
-          <div className="flex items-center gap-2">
-            <img className="w-5" src={create_event} alt="" />
+          <div className="flex gap-2">
+            <img  src={create_event} alt="" />
             <p className="break-words">{eventDateTime}</p>
           </div>
-          <div className="flex items-center gap-2">
-            <img className="w-5" src={time} alt="" />
+          <div className="flex gap-2">
+            <img  src={time} alt="" />
             <p className="break-words">{eventDateTime}</p>
           </div>
         </div>
