@@ -38,6 +38,7 @@ import {
   fetchEventInformation,
   markEventInterested,
   unmarkEventInterested,
+  fetchUserInterestedEvents,
 } from "../index.js";
 
 /**
@@ -155,6 +156,16 @@ export const useGetUserEvents = (userId) => {
   return useQuery({
     queryKey: ["events", userId],
     queryFn: () => fetchUserEvents(userId),
+  });
+};
+
+/**
+ * React query to handle loading of posts
+ */
+export const useGetUserInterestedEvents = (userId) => {
+  return useQuery({
+    queryKey: ["interested_events", userId],
+    queryFn: () => fetchUserInterestedEvents(userId),
   });
 };
 

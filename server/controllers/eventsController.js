@@ -107,7 +107,7 @@ export const getUserInterestedEventsController = async (req, res, next) => {
  *
  *
  * @method GET
- * @route /api/events/stats/:id
+ * @route /api/event/stats/:id
  */
 export const getInterestedUsersCountController = async (req, res, next) => {
   try {
@@ -155,7 +155,7 @@ export const markInterestedController = async (req, res, next) => {
  *
  *
  * @method GET
- * @route /api/post/uninterested/:id
+ * @route /api/event/uninterested/:id
  */
 export const unmarkInterestedController = async (req, res, next) => {
   try {

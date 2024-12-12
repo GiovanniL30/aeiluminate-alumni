@@ -213,6 +213,22 @@ export const fetchUserEvents = async (userId) => {
   }
 };
 
+// Fetch user events
+export const fetchUserInterestedEvents = async (userId) => {
+  try {
+    const token = getAuthToken();
+    const response = await axios.get(`${baseURL}/api/interested_events/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const { events } = response.data;
+    return events;
+  } catch (error) {
+    console.error("Error fetching user interested events:", error.message);
+    throw new Error(error.response?.data.message || error.message);
+  }
+};
+
 // Fetch event information (interested users)
 export const fetchEventInformation = async (eventId) => {
   try {

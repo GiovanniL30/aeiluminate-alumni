@@ -23,7 +23,7 @@ export const eventRouter = express.Router();
 /** Upload Event Route */
 eventRouter.post("/event", authenticateUserToken, uploadEventController);
 
-/** Mark an Eent as Interested */
+/** Mark an Event as Interested */
 eventRouter.post("/event/interested/:id", authenticateUserToken, markInterestedController);
 
 /** Unmark an Eent as Interestedt */
@@ -44,3 +44,5 @@ eventRouter.get("/events/:id", authenticateUserToken, getUserEventsController);
 /** Get event stats */
 eventRouter.get("/event/stats/:id", authenticateUserToken, getInterestedUsersCountController);
 
+/** Get list of events a user is interested in */
+eventRouter.get("/interested_events/:id", authenticateUserToken, getUserInterestedEventsController);

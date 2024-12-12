@@ -18,6 +18,11 @@ const routes = [
     to: "line",
   },
   {
+    text: "JOINED EVENTS",
+    icon: event,
+    to: "interested_events",
+  },
+  {
     text: "EVENTS",
     icon: event,
     to: "events",

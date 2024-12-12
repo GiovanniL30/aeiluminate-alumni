@@ -3,19 +3,19 @@ import { timeAgo } from "../../../utils.js";
 
 import album_icon from "../../../assets/album-icon.png";
 
-import liked from "../../../assets/post-liked.png";
+import liked from "../../assets/post-liked.png";
 import unliked from "../../../assets/post-unliked.png";
-import more_vert from "../../../assets/more_vert.png";
+import more_vert from "../../assets/more_vert.png";
 
 import { ReadMore } from "../ReadMore";
-import PostCardLoading from "./loaders/PostCardLoading.jsx";
-import UserProfilePic from "../UserProfilePic.jsx";
+import PostCardLoading from "../../alumni/components/cards/loaders/PostCardLoading.jsx";
+import UserProfilePic from "../../alumni/components/UserProfilePic.jsx";
 import { useAuthContext } from "../../context/AuthContext.jsx";
 import Button from "../Button.jsx";
 import { NavLink } from "react-router-dom";
 import { useMarkInterested, useUnmarkInterested, useEventInformation } from "../../alumni/_api/@react-client-query/query.js";
 
-const EventCard = ({ eventID, title, desc, eventDateTime, location, eventType, createdOn, createdBy, imageUrl }) => {
+const EventCard = ({ eventID, title, desc, eventDateTime, location, eventType, createdOn, imageUrl }) => {
   const markInterestedQuery = useMarkInterested();
   const unmarkInterestedQuery = useUnmarkInterested();
   const { isLoading, isError, data } = useEventInformation(eventID);
@@ -53,10 +53,10 @@ const EventCard = ({ eventID, title, desc, eventDateTime, location, eventType, c
         </div>
       </div>
 
-      <div className="flex flex-col gap-2  flex-grow">
+      <div className="flex flex-col gap-2 flex-grow">
         <h1>{title}</h1>
         <ReadMore text={desc} id={eventID} />
-        <div className="flex flex-col gap-2  flex-grow">
+        <div className="flex flex-col gap-2 flex-grow">
           <div className="flex flex-col gap-2  flex-grow">
             <div className="w-6 h-6">
               <img src={liked}/>
@@ -87,7 +87,7 @@ const EventCard = ({ eventID, title, desc, eventDateTime, location, eventType, c
           </button>
         </div>
 
-        <div className="flex flex-col gap-2  flex-grow">
+        <div className="flex flex-col gap-2 flex-grow">
           <div className="flex gap-2">
             <p className="font-bold text-sm">{data ? data.total_interested : "0"} interested</p>
           </div>
