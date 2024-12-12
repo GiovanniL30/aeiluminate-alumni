@@ -63,7 +63,6 @@ const Signup = () => {
 
     if (
       !formData.firstName ||
-      !formData.middleName ||
       !formData.lastName ||
       !formData.userName ||
       !formData.password ||
@@ -209,11 +208,12 @@ const Signup = () => {
                 otherStyle="border-[1px] border-white bg-transparent"
               />
               <Input
+                required={false}
                 labelColor="text-white"
                 label="Middle Name"
                 disabled={applyQuery.isPending}
                 name="middleName"
-                placeholder="eg. Pedro"
+                placeholder="eg. Pedro (leave blank if no middle name)"
                 value={formData.middleName}
                 handleChange={handleChange}
                 otherStyle="border-[1px] border-white bg-transparent"
