@@ -1,6 +1,7 @@
 import { addNewJobListing } from "../mysqlQueries/addQueries.js";
 import crypto from "crypto";
 import { deleteJobListing } from "../mysqlQueries/deleteQueries.js";
+import { checkIfUserJobPost, getJobListings } from "../mysqlQueries/readQueries.js";
 
 /**
  *

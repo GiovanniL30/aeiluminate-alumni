@@ -1,5 +1,5 @@
 import express from "express";
-import { checkIfUserJobPost, getJobListings } from "../mysqlQueries/readQueries.js";
+
 import { authenticateUserToken } from "../middleware/authenticateToken.js";
 
 import { deleteJobListingController, getJobListingsController, uploadNewJoblistingController } from "../controllers/joblistingController.js";
