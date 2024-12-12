@@ -556,7 +556,6 @@ export const getAlbums = async (offset, limit) => {
   }
 };
 
-
 export const getEvents = async (page, pageSize) => {
   const query = `
     SELECT *
@@ -642,6 +641,8 @@ export const checkInterested = async (eventId, userId) => {
   } catch (error) {
     console.error(error);
     throw new Error("Failed to get");
+  }
+};
 
 /**
  * Fetch job listings post
