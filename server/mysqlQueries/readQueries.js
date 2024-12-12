@@ -556,6 +556,7 @@ export const getAlbums = async (offset, limit) => {
   }
 };
 
+
 export const getEvents = async (page, pageSize) => {
   const query = `
     SELECT *
@@ -641,5 +642,25 @@ export const checkInterested = async (eventId, userId) => {
   } catch (error) {
     console.error(error);
     throw new Error("Failed to get");
+
+/**
+ * Fetch job listings post
+ */
+
+export const getJobListings = async (page = 1, pageSize = 10) => {
+  const offset = (page - 1) * pageSize;
+  const query = `
+    SELECT company, experienceRequired, workType, salary
+    FROM job_listing
+    LIMIT ? OFFSET ?
+  `;
+
+  try {
+    const [results] = await connection.query(query, [parseInt(pageSize), parseInt(offset)]);
+    const [[countResult]] = await connection.query("SELECT COUNT(*) AS total FROM job_listing");
+    return { listings: results, total: countResult.total };
+  } catch (error) {
+    console.error("Failed to fetch job listing: ", error);
+    throw new Error("Failed to retrieve job listings");
   }
 };
