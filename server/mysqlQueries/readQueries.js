@@ -651,7 +651,7 @@ export const checkInterested = async (eventId, userId) => {
 export const getJobListings = async (page = 1, pageSize = 10) => {
   const offset = (page - 1) * pageSize;
   const query = `
-    SELECT company, experienceRequired, workType, salary
+    SELECT *
     FROM job_listing
     LIMIT ? OFFSET ?
   `;

@@ -49,9 +49,12 @@ const CreatePost = ({ maxCaption = 225 }) => {
 
   const [jobDetails, setJobDetails] = useState({
     company: "",
-    salary: "",
-    workType: "",
-    experience: "",
+    salary: 0,
+    workType: "on-site",
+    experienceRequired: 0,
+    description: "",
+    url: "",
+    jobTitle: "",
   });
 
   const handleCaptionChange = (e) => {
@@ -74,6 +77,16 @@ const CreatePost = ({ maxCaption = 225 }) => {
     } else {
       setEventInformation((prev) => ({ ...prev, dateTime: e }));
     }
+  };
+
+  const handleJobLisitngInformationChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name == "description" && value.length > 225) {
+      return;
+    }
+
+    setJobDetails((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = () => {
@@ -152,21 +165,46 @@ const CreatePost = ({ maxCaption = 225 }) => {
         );
       },
       isJob: () => {
-        if (!caption || !jobDetails.company || !jobDetails.salary || !jobDetails.experience) {
+        const { company, salary, workType, experienceRequired, description, url, jobTitle } = jobDetails;
+
+        if (!company || !salary || !workType || !experienceRequired || !description || !url || !jobTitle) {
           ToastNotification.warning("Please fill out the job title and all the job listing fields.");
           return;
         }
 
+        if (salary <= 0) {
+          ToastNotification.warning("Are you sure about the salary?");
+          return;
+        }
+
+        if (experienceRequired < 0) {
+          ToastNotification.warning("Experience should not be negative");
+          return;
+        }
+
+        const urlpattern = new RegExp(
+          "^(https?:\\/\\/)" + "((([a-zA-Z0-9\\-]+\\.)+[a-zA-Z]{2,})|" + "localhost|" + "\\d{1,3}(\\.\\d{1,3}){3})" + "(\\:\\d+)?(\\/.*)?$",
+          "i"
+        );
+
+        if (!urlpattern.test(url)) {
+          ToastNotification.warning("Given Site URL is invalid");
+          return;
+        }
+
         uploadJobListing.mutate(
-          {
-            company: jobDetails.company,
-            salary: jobDetails.salary,
-            workType: jobDetails.workType,
-            experience: jobDetails.experience,
-          },
+          { jobTitle, company, experienceRequired, workType, salary, description, url },
           {
             onSuccess: () => {
-              setJobDetails({ company: "", salary: "", workType: "", experience: "" });
+              setJobDetails({
+                company: "",
+                salary: 0,
+                workType: "on-site",
+                experienceRequired: 0,
+                description: "",
+                url: "",
+                jobTitle: "",
+              });
               ToastNotification.success("Job listing uploaded successfully");
               navigate("/home/jobs");
             },
@@ -330,7 +368,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
           </div>
 
           <div className="relative">
-            {!postType.isEvent && (
+            {!postType.isEvent && !postType.isJob && (
               <>
                 <h1 className="">
                   {postType.isPost
@@ -361,7 +399,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
 
           <>
             {postType.isEvent && <EventInformation setEventInformation={handleEventInformationChange} eventInformation={eventInformation} />}
-            {postType.isJob && <Joblisting jobDetails={jobDetails} setJobDetails={setJobDetails} />}
+            {postType.isJob && <Joblisting jobDetails={jobDetails} setJobDetails={handleJobLisitngInformationChange} />}
           </>
         </div>
       </div>

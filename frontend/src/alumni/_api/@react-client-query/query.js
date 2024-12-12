@@ -41,8 +41,8 @@ import {
   fetchUserInterestedEvents,
   uploadEvent,
   checkUserInterested,
-  uploadJobListing,
-
+  fetchJobListing,
+  addNewJobListing,
 } from "../index.js";
 
 /**
@@ -87,18 +87,6 @@ export const useUploadPost = () => {
   });
 };
 
-export const useUploadJobListing = () => {
-  const client = useQueryClient();
-
-  return useMutation({
-    mutationFn: ({company, salary, workType, experience}) =>
-      uploadJobListing({company, salary, workType, experience}),
-    onSuccess: () => {
-      client.invalidateQueries(["joblistings"]);
-    }
-  })
-}
-
 /**
  * React query to upload a new post
  */
@@ -129,6 +117,17 @@ export const useGetEvents = (length) => {
   return useInfiniteQuery({
     queryKey: ["events"],
     queryFn: ({ pageParam }) => fetchEvents({ pageParam, length }),
+    getNextPageParam: (lastPage) => lastPage.nextPage,
+  });
+};
+
+/**
+ * React query to handle loading of job listings
+ */
+export const useGetJobListings = (length) => {
+  return useInfiniteQuery({
+    queryKey: ["joblistings"],
+    queryFn: ({ pageParam }) => fetchJobListing({ pageParam, length }),
     getNextPageParam: (lastPage) => lastPage.nextPage,
   });
 };
@@ -520,5 +519,21 @@ export const useCheckInterested = (eventid, userid) => {
   return useQuery({
     queryKey: ["interested", eventid, userid],
     queryFn: () => checkUserInterested(eventid, userid),
+  });
+};
+
+/**
+ *
+ * React query to add a new job listing
+ */
+export const useUploadJobListing = () => {
+  const client = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ jobTitle, company, experienceRequired, workType, salary, description, url }) =>
+      addNewJobListing({ jobTitle, company, experienceRequired, workType, salary, description, url }),
+    onSuccess: () => {
+      client.invalidateQueries(["joblistings"]);
+    },
   });
 };

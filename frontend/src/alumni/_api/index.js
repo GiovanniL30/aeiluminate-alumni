@@ -117,32 +117,6 @@ export const uploadEvent = async ({ location, dateTime, description, category, t
   }
 };
 
-// Upload a job listing
-export const uploadJobListing = async ({ company, salary, workType, experience }) => {
-  try {
-    const token = getAuthToken();
-    const formData = new FormData();
-
-    formData.append("company", company);
-    formData.append("salary", salary);
-    formData.append("workType", workType);
-    formData.append("experience", experience);
-
-    const response = await axios.post(`${baseURL}/api/job-listing`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    return response.data;
-  } catch (error) {
-    console.log(error.message);
-    console.log("Error uploading job listing:", error);
-    throw new Error(error.response?.data.message || error.message);
-  }
-};
-
 // Fetch posts with pagination
 export const fetchPosts = async ({ pageParam = 1, length = 5 }) => {
   try {
@@ -222,6 +196,34 @@ export const fetchEvents = async ({ pageParam = 1, length = 5 }) => {
 
     return {
       events: data.events,
+      nextPage,
+    };
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+// Fetch job listings
+export const fetchJobListing = async ({ pageParam = 1, length = 5 }) => {
+  try {
+    const token = getAuthToken();
+    const response = await fetch(`${baseURL}/api/listings?page=${pageParam}&length=${length}`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "An error occurred while fetching lists of events.");
+    }
+
+    const data = await response.json();
+    const totalJobs = data.totalJobs;
+    const totalPages = Math.ceil(totalJobs / length);
+    const nextPage = pageParam < totalPages ? pageParam + 1 : undefined;
+
+    return {
+      jobs: data.jobs,
       nextPage,
     };
   } catch (error) {
@@ -797,6 +799,26 @@ export const checkUserInterested = async (eventid, userid) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
+
+export const addNewJobListing = async ({ jobTitle, company, experienceRequired, workType, salary, description, url }) => {
+  try {
+    const token = getAuthToken();
+
+    const response = await axios.post(
+      `${baseURL}/api/listings`,
+      { jobTitle, company, experienceRequired, workType, salary, description, url },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     console.error(error);
