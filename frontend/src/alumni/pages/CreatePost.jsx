@@ -246,7 +246,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
               setImages([]);
               setCaption("");
               ToastNotification.success("Album Uploaded successfully");
-              navigate("/home");
+              navigate("/home/albums");
             },
           }
         );

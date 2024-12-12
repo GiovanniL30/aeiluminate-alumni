@@ -57,12 +57,12 @@ const Album = () => {
       </div>
 
       <div>
-        <button onClick={() => navigate(-1)}>
+        <NavLink to={`/home/albums`}>
           <div className="flex items-center gap-3 hover-opacity">
             <img className="w-6" src={back} alt="" />
             <p>Return</p>
           </div>
-        </button>
+        </NavLink>
 
         <h1 className="font-bold text-light_text mt-8">Posts:</h1>
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
