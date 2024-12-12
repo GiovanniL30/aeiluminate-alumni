@@ -96,3 +96,20 @@ export const deletePost = async (postId) => {
     throw new Error("Failed to delete the post");
   }
 };
+
+/**
+ * Delete a post
+ * @affectedDatabase = post
+ */
+
+export const deleteEvent = async (eventID) => {
+  const query = "DELETE FROM events WHERE eventID = ?";
+
+  try {
+    const [result] = await connection.query(query, [eventID]);
+    return result.affectedRows > 0;
+  } catch (err) {
+    console.error("Error deleting event", err);
+    throw new Error("Failed to delete the event");
+  }
+};

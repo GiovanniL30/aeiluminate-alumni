@@ -24,7 +24,7 @@ const postLinks = [
 const HomeLayout = () => {
   return (
     <div className="max-container flex flex-col md:flex-row justify-between gap-5 w-full p-2">
-      <div className="hidden md:flex w-[200px] xl:w-[300px] bg-red-50 fixed left-0 top-[100px] bottom-0">Left</div>
+      {/* <div className="hidden md:flex w-[200px] xl:w-[300px] bg-white fixed left-0 top-[100px] bottom-0">Left</div> */}
 
       <div className="flex flex-col w-full max-w-[600px] md:pl-[150px]  xl:pl-0 mx-auto">
         <div className="flex gap-5">
@@ -49,7 +49,7 @@ const HomeLayout = () => {
         </h1>
       </div>
 
-      <div className="hidden xl:flex w-[300px] bg-red-200 fixed right-0 top-[100px] bottom-0">Right</div>
+      {/* <div className="hidden xl:flex w-[300px] bg-red-200 fixed right-0 top-[100px] bottom-0">Right</div> */}
     </div>
   );
 };

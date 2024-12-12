@@ -11,14 +11,36 @@ import { ReadMore } from "../ReadMore";
 import UserProfilePic from "../UserProfilePic.jsx";
 import { useAuthContext } from "../../context/AuthContext.jsx";
 import Button from "../Button.jsx";
-import { useCheckInterested, useEventInformation, useGetUser, useMarkInterested, useUnmarkInterested } from "../../_api/@react-client-query/query.js";
+import {
+  useCheckInterested,
+  useDeleteEvent,
+  useEventInformation,
+  useGetUser,
+  useMarkInterested,
+  useUnmarkInterested,
+} from "../../_api/@react-client-query/query.js";
+import ToastNotification from "../../constants/toastNotification.js";
 
-const EventCard = ({ eventID, title, description, eventDateTime, location, eventType, createdOn, createdBy, imageUrl }) => {
+const EventCard = ({
+  canBeDeleted = false,
+  isReload = false,
+  eventID,
+  title,
+  description,
+  eventDateTime,
+  location,
+  eventType,
+  createdOn,
+  createdBy,
+  imageUrl,
+}) => {
+  const [showDelete, setShowDelete] = useState(false);
   const [showInterested, setShowInterested] = useState(false);
   const { user } = useAuthContext();
   const uploader = useGetUser(createdBy);
   const interested = useCheckInterested(eventID, user.userID);
   const eventInformation = useEventInformation(eventID);
+  const deleteEvent = useDeleteEvent();
 
   const markInterested = useMarkInterested();
   const unmarkIterested = useUnmarkInterested();
@@ -37,7 +59,19 @@ const EventCard = ({ eventID, title, description, eventDateTime, location, event
     }
   };
 
-  console.log(eventInformation.data);
+  const handleDelete = () => {
+    deleteEvent.mutate(eventID, {
+      onSuccess: () => {
+        if (isReload) {
+          window.location.reload();
+        }
+        ToastNotification.success("Delete Success");
+      },
+      onError: (error) => {
+        ToastNotification.error(error.message);
+      },
+    });
+  };
 
   return (
     <div className="my-shadow p-2 rounded-md ">
@@ -49,11 +83,19 @@ const EventCard = ({ eventID, title, description, eventDateTime, location, event
               {uploader.data.user.username} {user.userID == createdBy && <span className="text-primary_blue">(YOU)</span>}
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="relative flex items-center gap-2">
             <p className="text-light_text text-sm">{timeAgo(createdOn)}</p>
-            <button>
-              <img className="w-1" src={more_vert} alt="" />
-            </button>
+            {(user.userID === createdBy || canBeDeleted) && (
+              <button onClick={() => setShowDelete((prev) => !prev)}>
+                <img className="w-1 h-4" src={more_vert} alt="dots" />
+              </button>
+            )}
+            {showDelete && (
+              <div className="top-10 z-50 absolute bg-white my-shadow flex flex-col items-center w-[150px] right-3 p-2 gap-2 rounded-mdl">
+                <Button onClick={handleDelete} text="Delete Event" otherStyle="w-full" />
+                <Button onClick={() => setShowDelete(false)} text="Cancel" otherStyle="w-full bg-red-500" />
+              </div>
+            )}
           </div>
         </div>
         <div className="p-5">
@@ -62,22 +104,22 @@ const EventCard = ({ eventID, title, description, eventDateTime, location, event
             <p>{description}</p>
           </div>
         </div>
-        
+
         <div className="grid grid-cols-2 p-5 gap-4">
           <div className="flex gap-2">
-            <img  src={loc} alt="" />
+            <img src={loc} alt="" />
             <p className="break-words">{location}</p>
           </div>
           <div className="flex gap-2">
-            <img  src={category} alt="" />
+            <img src={category} alt="" />
             <p className="break-words">{eventType}</p>
           </div>
           <div className="flex gap-2">
-            <img  src={create_event} alt="" />
+            <img src={create_event} alt="" />
             <p className="break-words">{eventDateTime}</p>
           </div>
           <div className="flex gap-2">
-            <img  src={time} alt="" />
+            <img src={time} alt="" />
             <p className="break-words">{eventDateTime}</p>
           </div>
         </div>

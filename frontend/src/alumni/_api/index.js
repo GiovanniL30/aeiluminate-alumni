@@ -840,3 +840,18 @@ export const deletePostRequest = async (postId) => {
     throw new Error(error.response?.data?.message || error.message);
   }
 };
+
+export const deleteEventRequest = async (eventId) => {
+  try {
+    const token = getAuthToken();
+    const response = await axios.delete(`${baseURL}/api/events/${eventId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};

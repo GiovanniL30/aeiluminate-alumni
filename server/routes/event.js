@@ -12,7 +12,8 @@ import {
 import { authenticateUserToken } from "../middleware/authenticateToken.js";
 import { uploadMediaMiddleware } from "../middleware/uploadMedia.js";
 import { upload } from "../multer.js";
-import { checkInterested } from "../mysqlQueries/readQueries.js";
+import { checkIfUserEvent, checkInterested } from "../mysqlQueries/readQueries.js";
+import { deleteEvent } from "../mysqlQueries/deleteQueries.js";
 
 export const eventRouter = express.Router();
 
@@ -58,5 +59,31 @@ eventRouter.get("/user_interested/:id", authenticateUserToken, async (req, res) 
     res.json({ isInterested: result });
   } catch (error) {
     res.status(500).json({ message: error });
+  }
+});
+
+eventRouter.delete("/:id", authenticateUserToken, async (req, res) => {
+  try {
+    const { role, userId } = req;
+    const { id } = req.params;
+
+    const { isOwner } = await checkIfUserEvent(userId, id);
+
+    if (!isOwner) {
+      throw new Error("You cannot delete others event");
+    }
+
+    if (role !== "Admin" && role !== "Manager") {
+      throw new Error("Only admin and Manager can do this operation");
+    }
+
+    const result = deleteEvent(id, userId);
+
+    if (!result) throw new Error("Failed to delete event");
+
+    res.json({ message: "Event Deleted" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
   }
 });

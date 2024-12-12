@@ -28,7 +28,11 @@ joblistingRoute.get("/", authenticateUserToken, async (req, res) => {
 
 joblistingRoute.post("/", authenticateUserToken, async (req, res) => {
   try {
-    const { userId } = req;
+    const { userId, role } = req;
+
+    if (role !== "Admin" && role !== "Manager") {
+      throw new Error("Only admin and Manager can upload a job listing");
+    }
 
     const { jobTitle, company, experienceRequired, workType, salary, description, url } = req.body;
 

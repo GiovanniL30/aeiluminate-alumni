@@ -702,3 +702,30 @@ export const checkIfUserPost = async (userId, postId) => {
     throw new Error("Failed to check post ownership");
   }
 };
+
+/**
+ * Check if the user is the owner of the event
+ */
+
+export const checkIfUserEvent = async (userId, eventId) => {
+  const query = `
+    SELECT 
+      createdBy = ? AS isOwner
+    FROM events
+    WHERE eventID = ?;
+  `;
+
+  try {
+    const [results] = await connection.query(query, [userId, eventId]);
+
+    if (results.length === 0) {
+      throw new Error("Event not found or invalid event ID");
+    }
+
+    const isOwner = results[0].isOwner === 1;
+    return { isOwner };
+  } catch (error) {
+    console.error("Failed to check if user owns the event: ", error);
+    throw new Error("Failed to check event ownership");
+  }
+};

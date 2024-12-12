@@ -44,6 +44,7 @@ import {
   fetchJobListing,
   addNewJobListing,
   deletePostRequest,
+  deleteEventRequest,
 } from "../index.js";
 
 /**
@@ -550,6 +551,21 @@ export const useDeletePost = () => {
     mutationFn: (postId) => deletePostRequest(postId),
     onSuccess: () => {
       client.invalidateQueries(["posts"]);
+    },
+  });
+};
+
+/**
+ *
+ * React query to delete a event
+ */
+export const useDeleteEvent = () => {
+  const client = useQueryClient();
+
+  return useMutation({
+    mutationFn: (eventID) => deleteEventRequest(eventID),
+    onSuccess: () => {
+      client.invalidateQueries(["events"]);
     },
   });
 };
