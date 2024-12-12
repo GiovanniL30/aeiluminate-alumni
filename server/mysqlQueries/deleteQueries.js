@@ -64,9 +64,8 @@ export const removeEvent = async (eventID) => {
   }
 };
 
-
 /**
- * Unmark an Event as Interested 
+ * Unmark an Event as Interested
  * @affectedDatabase = interested_users
  */
 export const unmarkInterestedEvent = async (eventID, userID) => {
@@ -78,5 +77,22 @@ export const unmarkInterestedEvent = async (eventID, userID) => {
   } catch (err) {
     console.error("Error deleting interested user", err);
     throw new Error("Failed to delete the interested user in the database");
+  }
+};
+
+/**
+ * Delete a post
+ * @affectedDatabase = post
+ */
+
+export const deletePost = async (postId) => {
+  const query = "DELETE FROM posts WHERE postID = ?";
+
+  try {
+    const [result] = await connection.query(query, [postId]);
+    return result.affectedRows > 0;
+  } catch (err) {
+    console.error("Error deleting a post", err);
+    throw new Error("Failed to delete the post");
   }
 };

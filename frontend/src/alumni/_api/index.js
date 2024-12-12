@@ -825,3 +825,18 @@ export const addNewJobListing = async ({ jobTitle, company, experienceRequired, 
     throw new Error(error.response?.data?.message || error.message);
   }
 };
+
+export const deletePostRequest = async (postId) => {
+  try {
+    const token = getAuthToken();
+    const response = await axios.delete(`${baseURL}/api/post/${postId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
