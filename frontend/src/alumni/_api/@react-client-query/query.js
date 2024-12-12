@@ -565,9 +565,7 @@ export const useDeleteEvent = () => {
 
   return useMutation({
     mutationFn: (eventID) => deleteEventRequest(eventID),
-    onSuccess: () => {
-      client.invalidateQueries(["events"]);
-    },
+    onSuccess: () => client.invalidateQueries(["events"]),
   });
 };
 

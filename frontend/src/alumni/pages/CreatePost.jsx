@@ -10,7 +10,6 @@ import create_event from "../../assets/create_event.png";
 import create_joblisting from "../../assets/joblisting.png";
 
 import { useNewAlbum, useUploadLine, useUploadEvent, useUploadPost, useUploadJobListing } from "../_api/@react-client-query/query";
-import TopPopUp from "../components/TopPopUp";
 
 import default_img from "../../assets/default-img.png";
 import { useNavigate } from "react-router-dom";
@@ -258,8 +257,6 @@ const CreatePost = ({ maxCaption = 225 }) => {
 
   return (
     <div className={`px-3 w-full flex flex-col gap-10 mt-5 max-container ${uploadQuery.isPending && "pointer-events-none"}`}>
-      {uploadQuery.isError && <TopPopUp text={uploadQuery.error.message} />}
-
       <div className="flex items-center justify-between">
         <h1 className="font-bold text-2xl">
           {postType.isPost

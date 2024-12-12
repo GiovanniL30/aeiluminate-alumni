@@ -34,6 +34,7 @@ const BrowsePosts = () => {
   return (
     <div className="flex flex-col gap-2">
       {data?.pages[0].posts.length === 0 && <h1>No posts available.</h1>}
+      <Spinner isLoading={isFetching} />
 
       {data?.pages.map((page) => {
         const groupedByAlbum = page.posts.reduce((groups, post) => {

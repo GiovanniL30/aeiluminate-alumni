@@ -99,7 +99,7 @@ export const deletePost = async (postId) => {
 
 /**
  * Delete a event
- * @affectedDatabase = post
+ * @affectedDatabase = events
  */
 
 export const deleteEvent = async (eventID) => {
@@ -116,7 +116,7 @@ export const deleteEvent = async (eventID) => {
 
 /**
  * Delete a joblisting
- * @affectedDatabase = post
+ * @affectedDatabase = job_listing
  */
 export const deleteJobListing = async (jobid) => {
   const query = "DELETE FROM job_listing WHERE jobID = ?";

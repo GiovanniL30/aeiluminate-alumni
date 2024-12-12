@@ -527,6 +527,9 @@ export const getAlbumInformation = async (albumId) => {
   }
 };
 
+/**
+ * Get list of albums
+ */
 export const getAlbums = async (offset, limit) => {
   const query = `
     SELECT 
@@ -564,6 +567,9 @@ export const getAlbums = async (offset, limit) => {
   }
 };
 
+/**
+ * Get list of events
+ */
 export const getEvents = async (page, pageSize) => {
   const query = `
     SELECT *
@@ -584,6 +590,9 @@ export const getEvents = async (page, pageSize) => {
   }
 };
 
+/**
+ * Get events posted by a user
+ */
 export const getUserEvents = async (userId) => {
   const query = "SELECT * FROM events WHERE createdBy = ?";
 
@@ -596,6 +605,9 @@ export const getUserEvents = async (userId) => {
   }
 };
 
+/**
+ * Get interested users of an event
+ */
 export const getUserInterestedEvents = async (userId) => {
   const query = `
   SELECT * FROM events 
@@ -733,7 +745,6 @@ export const checkIfUserEvent = async (userId, eventId) => {
 /**
  * Check if the user is the owner of the event
  */
-
 export const checkIfUserJobPost = async (userId, jobId) => {
   const query = `
     SELECT 

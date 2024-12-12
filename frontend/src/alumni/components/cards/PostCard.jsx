@@ -46,6 +46,7 @@ const PostCard = ({ isReload = false, canBeDelete = false, albumId = null, postI
         if (isReload) {
           window.location.reload();
         }
+        setShowDelete(false);
         ToastNotification.success("Post Deleted");
       },
       onError: (error) => {
@@ -110,7 +111,7 @@ const PostCard = ({ isReload = false, canBeDelete = false, albumId = null, postI
           </div>
         )}
         <div className="flex items-center gap-6">
-          <button className="w-6 h-6" onClick={handleLike}>
+          <button disabled={likePostQuery.isPending || unlikePostQuery.isPending} className="w-6 h-6" onClick={handleLike}>
             <img src={data.is_liked == 1 ? liked : unliked} alt="like/unlike" />
           </button>
           <button className="w-6 h-6" onClick={() => setIsShowComment(true)}>

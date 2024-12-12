@@ -78,6 +78,9 @@ router.delete("/user/delete/:id", deleteUserController);
  *                    UPDATE ROUTES
  * ================================================================
  */
+
+/**  Upadate user details */
 router.patch("/user/update/details", authenticateUserToken, updateUserDetailsController);
 
+/**  Upadate user profile */
 router.patch("/user/update/profile", upload.single("image"), authenticateUserToken, updateUserProfilePictureController);

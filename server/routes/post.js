@@ -10,12 +10,11 @@ import {
   uploadLineController,
   uploadPostController,
   uploadJobListingController,
+  deletePostController,
 } from "../controllers/postsController.js";
 import { upload } from "../multer.js";
 import { authenticateUserToken } from "../middleware/authenticateToken.js";
 import { uploadMediaMiddleware } from "../middleware/uploadMedia.js";
-import { deletePost } from "../mysqlQueries/deleteQueries.js";
-import { checkIfUserPost } from "../mysqlQueries/readQueries.js";
 
 export const postRouter = express.Router();
 
@@ -66,23 +65,6 @@ postRouter.get("/post/comments/:id", authenticateUserToken, getCommentsControlle
  *                   DELTE ROUTES
  * ================================================================
  */
-postRouter.delete("/post/:id", authenticateUserToken, async (req, res) => {
-  try {
-    const { role, userId } = req;
-    const { id } = req.params;
 
-    const { isOwner } = await checkIfUserPost(userId, id);
-
-    if (!isOwner && role !== "Admin" && role !== "Manager") {
-      throw new Error("Only admin and Manager can do this operation");
-    }
-
-    const result = await deletePost(id);
-
-    if (!result) throw new Error("Failed to delete Post");
-    res.json({ message: "Post deleted" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
-  }
-});
+/** Delete a post */
+postRouter.delete("/post/:id", authenticateUserToken, deletePostController);

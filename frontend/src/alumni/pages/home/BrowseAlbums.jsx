@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useGetAlbums } from "../../_api/@react-client-query/query";
 import AlbumCard from "../../components/cards/AlbumCard";
 import PostCardLoading from "../../components/cards/loaders/PostCardLoading";
+import Spinner from "../../components/Spinner.jsx";
 
 const BrowseAlbums = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } = useGetAlbums(4);
@@ -28,10 +29,9 @@ const BrowseAlbums = () => {
     };
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  console.log(data);
-
   return (
     <div className="flex flex-col gap-2">
+      <Spinner isLoading={isFetching} />
       {data?.pages[0].albums.length === 0 && <h1>No albums available.</h1>}
 
       {data?.pages?.map((page, pageIndex) =>

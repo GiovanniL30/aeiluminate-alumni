@@ -1,84 +1,34 @@
 import express from "express";
 import { checkIfUserJobPost, getJobListings } from "../mysqlQueries/readQueries.js";
 import { authenticateUserToken } from "../middleware/authenticateToken.js";
-import { addNewJobListing } from "../mysqlQueries/addQueries.js";
-import crypto from "crypto";
-import { deleteJobListing } from "../mysqlQueries/deleteQueries.js";
+
+import { deleteJobListingController, getJobListingsController, uploadNewJoblistingController } from "../controllers/joblistingController.js";
 
 export const joblistingRoute = express.Router();
 
-joblistingRoute.get("/", authenticateUserToken, async (req, res) => {
-  try {
-    const { userId } = req;
-    const { page, length } = req.query;
+/**
+ * ================================================================
+ *                    POST ROUTES
+ * ================================================================
+ */
 
-    const { listings, total } = await getJobListings(page, length, userId);
+/** Create a new job listing*/
+joblistingRoute.post("/", authenticateUserToken, uploadNewJoblistingController);
 
-    const totalPage = Math.ceil(total / length);
+/**
+ * ================================================================
+ *                    GET ROUTES
+ * ================================================================
+ */
 
-    res.status(200).json({
-      jobs: listings,
-      totalJobs: total,
-      totalPage,
-    });
-  } catch (error) {
-    console.error("Error in getting events:", error);
-    return res.status(500).json({ message: error.message || "Internal Server Error" });
-  }
-});
+/**Get joblisitngs */
+joblistingRoute.get("/", authenticateUserToken, getJobListingsController);
 
-joblistingRoute.post("/", authenticateUserToken, async (req, res) => {
-  try {
-    const { userId, role } = req;
+/**
+ * ================================================================
+ *                    DELETE ROUTES
+ * ================================================================
+ */
 
-    if (role !== "Admin" && role !== "Manager") {
-      throw new Error("Only admin and Manager can upload a job listing");
-    }
-
-    const { jobTitle, company, experienceRequired, workType, salary, description, url } = req.body;
-
-    const result = await addNewJobListing(
-      crypto.randomUUID(),
-      jobTitle,
-      company,
-      experienceRequired,
-      workType,
-      salary,
-      description,
-      new Date(),
-      userId,
-      url
-    );
-
-    if (!result) throw new Error("Failed to add job listing");
-    res.json({ message: "Added job listing" });
-  } catch (error) {
-    console.error("Error adding new job litsing:", error);
-    return res.status(500).json({ message: error.message || "Internal Server Error" });
-  }
-});
-
-joblistingRoute.delete("/:id", authenticateUserToken, async (req, res) => {
-  try {
-    const { role, userId } = req;
-    const { id } = req.params;
-
-    const { isOwner } = await checkIfUserJobPost(userId, id);
-
-    if (!isOwner) {
-      throw new Error("You cannot delete others event");
-    }
-
-    if (role !== "Admin" && role !== "Manager") {
-      throw new Error("Only admin and Manager can do this operation");
-    }
-
-    const result = await deleteJobListing(id);
-
-    if (!result) throw new Error("Failed to delete Job Listing");
-    res.json({ message: "Job Listing deleted" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
-  }
-});
+/** Delete job listing */
+joblistingRoute.delete("/:id", authenticateUserToken, deleteJobListingController);

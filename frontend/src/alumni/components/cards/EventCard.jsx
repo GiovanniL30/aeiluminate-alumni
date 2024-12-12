@@ -20,6 +20,7 @@ import {
   useUnmarkInterested,
 } from "../../_api/@react-client-query/query.js";
 import ToastNotification from "../../constants/toastNotification.js";
+import PostCardLoading from "./loaders/PostCardLoading.jsx";
 
 const EventCard = ({
   canBeDeleted = false,
@@ -46,7 +47,7 @@ const EventCard = ({
   const unmarkIterested = useUnmarkInterested();
 
   if (uploader.isLoading || interested.isLoading || eventInformation.isLoading) {
-    return <h1>Loading...</h1>;
+    return <PostCardLoading />;
   }
 
   const isInterested = interested.data.isInterested;
@@ -65,6 +66,7 @@ const EventCard = ({
         if (isReload) {
           window.location.reload();
         }
+        setShowDelete(false);
         ToastNotification.success("Delete Success");
       },
       onError: (error) => {
@@ -124,9 +126,12 @@ const EventCard = ({
           </div>
         </div>
       </div>
-      <div className="bg-gray-50 flex justify-center h-fit max-h-[500px] min-h-[250px] hover-opacity">
+      <div className="bg-gray-50 flex justify-center h-fit max-h-[500px] min-h-[250px] hover-opacity relative">
         <a href={imageUrl} target="_blank">
           <img className="max-w-full max-h-[450px] object-contain" src={imageUrl} alt="event image" />
+          {!isInterested && (
+            <div className="w-full h-full bg-white absolute top-0 left-0 right-0 bottom-0 backdrop-blur-md bg-opacity-50 transition-all duration-500"></div>
+          )}
         </a>
       </div>
 

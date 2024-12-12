@@ -1,9 +1,9 @@
-import { ID, InputFile } from "node-appwrite";
 import crypto from "crypto";
-import { storage } from "../appwriteconfig.js";
 import { createEvent, addInterestedUser } from "../mysqlQueries/addQueries.js";
 import { getEvents, getUserEvents, getUserInterestedEvents, getEventStats } from "../mysqlQueries/readQueries.js";
-import { unlikePost, unmarkInterestedEvent } from "../mysqlQueries/deleteQueries.js";
+import { unmarkInterestedEvent } from "../mysqlQueries/deleteQueries.js";
+import { checkIfUserEvent, checkInterested } from "../mysqlQueries/readQueries.js";
+import { deleteEvent } from "../mysqlQueries/deleteQueries.js";
 
 /**
  * Inserts a new Event on the Database
@@ -111,7 +111,7 @@ export const getUserInterestedEventsController = async (req, res, next) => {
  *
  *
  * @method GET
- * @route /api/event/stats/:id
+ * @route /api/events/stats/:id
  */
 export const getInterestedUsersCountController = async (req, res, next) => {
   try {
@@ -135,7 +135,7 @@ export const getInterestedUsersCountController = async (req, res, next) => {
  *
  *
  * @method POST
- * @route /api/event/interested/:id
+ * @route /api/events/interested/:id
  */
 export const markInterestedController = async (req, res, next) => {
   try {
@@ -159,7 +159,7 @@ export const markInterestedController = async (req, res, next) => {
  *
  *
  * @method GET
- * @route /api/event/uninterested/:id
+ * @route /api/events/uninterested/:id
  */
 export const unmarkInterestedController = async (req, res, next) => {
   try {
@@ -176,5 +176,57 @@ export const unmarkInterestedController = async (req, res, next) => {
   } catch (error) {
     console.error("Error in unmarking the event as interested:", error);
     return res.status(500).json({ message: error.message || "Internal Server Error" });
+  }
+};
+
+/**
+ *
+ * Check if user is interested on the event
+ *
+ *
+ * @method GET
+ * @route /api/events/user_interested/:id
+ */
+export const checkEventInterestedController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userid } = req.query;
+    const result = await checkInterested(id, userid);
+    res.json({ isInterested: result });
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
+
+/**
+ *
+ * Delete a event
+ *
+ *
+ * @method DELTE
+ * @route /api/events/:id
+ */
+export const deleteEventController = async (req, res) => {
+  try {
+    const { role, userId } = req;
+    const { id } = req.params;
+
+    const { isOwner } = await checkIfUserEvent(userId, id);
+
+    if (!isOwner) {
+      throw new Error("You cannot delete others event");
+    }
+
+    if (role !== "Admin" && role !== "Manager") {
+      throw new Error("Only admin and Manager can do this operation");
+    }
+
+    const result = deleteEvent(id, userId);
+    if (!result) throw new Error("Failed to delete event");
+
+    res.json({ message: "Event Deleted" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
   }
 };

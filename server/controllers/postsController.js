@@ -1,9 +1,9 @@
-import { ID, InputFile } from "node-appwrite";
 import crypto from "crypto";
-import { storage } from "../appwriteconfig.js";
 import { addNewPost, addNewMedia, addLike, addComment, createAlbum, addNewJobListing } from "../mysqlQueries/addQueries.js";
 import { getPosts, getMedia, getPostStats, getPostComments, getUserPosts } from "../mysqlQueries/readQueries.js";
 import { unlikePost } from "../mysqlQueries/deleteQueries.js";
+import { deletePost } from "../mysqlQueries/deleteQueries.js";
+import { checkIfUserPost } from "../mysqlQueries/readQueries.js";
 
 /**
  * Inserts a new Post on the Database
@@ -247,19 +247,40 @@ export const addCommentController = async (req, res, next) => {
  */
 export const uploadJobListingController = async (req, res) => {
   try {
-    const {company, experienceRequired, workType, salary} = req.body;
+    const { company, experienceRequired, workType, salary } = req.body;
 
     if (!company || !salary || experienceRequired) {
-      return res.status(400).json({message: "All fields are required"});
+      return res.status(400).json({ message: "All fields are required" });
     }
 
     const result = await addNewJobListing(company, experienceRequired, workType, salary);
 
     if (!result) throw new Error("Failed to add new job listing");
 
-    return res.status(201).json({message: "JOb listing created successfully"});
+    return res.status(201).json({ message: "JOb listing created successfully" });
   } catch (error) {
     console.error("Error in uploadJobListingController: ", error);
-    return res.status(500).json({message: error.message || "Internal Server Error"});
+    return res.status(500).json({ message: error.message || "Internal Server Error" });
+  }
+};
+
+export const deletePostController = async (req, res) => {
+  try {
+    const { role, userId } = req;
+    const { id } = req.params;
+
+    const { isOwner } = await checkIfUserPost(userId, id);
+
+    if (!isOwner && role !== "Admin" && role !== "Manager") {
+      throw new Error("Only admin and Manager can do this operation");
+    }
+
+    const result = await deletePost(id);
+
+    if (!result) throw new Error("Failed to delete Post");
+    res.json({ message: "Post deleted" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
   }
 };

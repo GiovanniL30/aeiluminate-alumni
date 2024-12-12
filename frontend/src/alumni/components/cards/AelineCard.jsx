@@ -106,7 +106,7 @@ const AelineCard = ({ isReload = false, canBeDelete = false, postID, caption, us
         </div>
 
         <div className="flex mt-4 gap-2 items-center">
-          <button className="w-5 h-5" onClick={handleLike}>
+          <button disabled={likePostQuery.isPending || unlikePostQuery.isPending} className="w-5 h-5" onClick={handleLike}>
             <img src={data.is_liked == 1 ? liked : unliked} alt="unliked" />
           </button>
           <button className="w-5 h-5" onClick={() => setIsShowComment(true)}>
