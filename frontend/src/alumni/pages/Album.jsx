@@ -54,7 +54,7 @@ const Album = () => {
         <h1 className="text-3xl font-bold">
           {albumInfo.data.userId === user.userID ? "Your album" : `${albumInfo.data.firstName} ${albumInfo.data.lastName}'s Album`}
         </h1>
-        <p className="w-3/4 text-xl text-center font-bold text-light_text break-words">{albumInfo.data.albumTitle}aaaaaaaaaaaaaaaaa</p>
+        <p className="w-3/4 text-xl text-center font-bold text-light_text break-words">{albumInfo.data.albumTitle}</p>
         <NavLink to={`/album/contribute/${albumId}`}>
           <Button text="Contribute" />
         </NavLink>
