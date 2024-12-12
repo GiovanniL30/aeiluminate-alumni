@@ -115,6 +115,12 @@ const Signup = () => {
       return;
     }
 
+    if (formData.graduationYear < 1973 || formData.graduationYear > new Date().getFullYear()) {
+      setErrorMessage("Graduation must be between 1973 to " + new Date().getFullYear());
+      ToastNotification.error("Graduation must be between 1973 to " + new Date().getFullYear());
+      return;
+    }
+
     const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|slu\.edu\.ph)$/;
 
     if (!emailRegex.test(formData.email)) {
