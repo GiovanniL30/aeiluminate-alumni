@@ -46,6 +46,7 @@ import {
   deletePostRequest,
   deleteEventRequest,
   deleteJobRequest,
+  getAlumniDetails,
 } from "../index.js";
 
 /**
@@ -55,6 +56,16 @@ export const useGetUser = (id) => {
   return useQuery({
     queryFn: () => getSpecificUserRequest(id),
     queryKey: ["user", id],
+  });
+};
+
+/**
+ * React query to get user info
+ */
+export const useGetAlumniDetails = (id) => {
+  return useQuery({
+    queryFn: () => getAlumniDetails(id),
+    queryKey: ["alumni", id],
   });
 };
 

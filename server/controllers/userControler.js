@@ -8,6 +8,7 @@ import {
   getApplication,
   checkUsername,
   getUserWithEmail,
+  getAlumniDetails,
 } from "../mysqlQueries/readQueries.js";
 import { removeUserAccount, unfollowUser } from "../mysqlQueries/deleteQueries.js";
 import { followUser } from "../mysqlQueries/addQueries.js";
@@ -135,6 +136,28 @@ export const getUserController = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Failed to fetch user (Internal Server Error)" });
+  }
+};
+
+/**
+ * Get a specific user from the Database (user)
+ * @method GET
+ * @route /api/user/alumni
+ */
+export const getAlumniDetailsController = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await getAlumniDetails(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "Alumni not found" });
+    }
+
+    res.json({ alumniData: user });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Failed to fetch alumni (Internal Server Error)" });
   }
 };
 

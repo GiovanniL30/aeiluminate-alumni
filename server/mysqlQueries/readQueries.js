@@ -31,6 +31,26 @@ export const getUser = async (id) => {
 };
 
 /**
+ * Get specific alumni user details including program information
+ */
+export const getAlumniDetails = async (id) => {
+  const query = `
+    SELECT u.userID, u.year_graduated, u.isEmployed, 
+           ap.school_name, ap.program_name, ap.specialization
+    FROM alumni u
+    LEFT JOIN academic_programs ap ON u.programID = ap.programID
+    WHERE u.userID = ?`;
+
+  try {
+    const [result] = await connection.query(query, [id]);
+    return result.length > 0 ? result[0] : null;
+  } catch (error) {
+    console.error("Failed to get alumni details:", error);
+    throw new Error("Failed to retrieve alumni data");
+  }
+};
+
+/**
  * Get an application and user data from the database
  */
 export const getApplication = async (email) => {

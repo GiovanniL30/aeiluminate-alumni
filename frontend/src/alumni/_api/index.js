@@ -20,6 +20,19 @@ export const getSpecificUserRequest = async (id) => {
   }
 };
 
+// Get alumni details
+export const getAlumniDetails = async (id) => {
+  try {
+    const token = getAuthToken();
+    const response = await axios.get(`${baseURL}/api/user/alumni/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // Login user
 export const userLogin = async (email, password) => {
   try {

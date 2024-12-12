@@ -13,6 +13,7 @@ import {
   logoutController,
   updateUserDetailsController,
   updateUserProfilePictureController,
+  getAlumniDetailsController,
 } from "../controllers/userControler.js";
 
 import { authenticateUserToken } from "../middleware/authenticateToken.js";
@@ -46,6 +47,9 @@ router.get("/users", getUsersContoller);
 
 /** Get user*/
 router.get("/user", authenticateUserToken, getUserController);
+
+/** Get alumni details*/
+router.get("/user/alumni/:id", authenticateUserToken, getAlumniDetailsController);
 
 /** Get user with id */
 router.get("/user/:id", authenticateUserToken, getUserWithIdController);

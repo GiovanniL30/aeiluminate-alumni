@@ -8,6 +8,7 @@ import {
   useUnFollowUser,
   useGetUser,
   useGetUserPosts,
+  useGetAlumniDetails,
 } from "../../_api/@react-client-query/query.js";
 import Button from "../Button.jsx";
 import { NavLink, useParams } from "react-router-dom";
@@ -52,6 +53,7 @@ const ProfileHeader = () => {
   const followerQuery = useUserFollower(id);
   const isFollowStatus = useIsFollowing(id);
   const userPostsQuery = useGetUserPosts(id);
+  const alumniDetails = useGetAlumniDetails(id);
 
   const followHandler = () => {
     if (isFollowStatus.data.isFollowing) {
@@ -61,12 +63,21 @@ const ProfileHeader = () => {
     }
   };
 
-  if (isFollowStatus.isLoading || followingQuery.isLoading || followerQuery.isLoading || userPostsQuery.isLoading || userQuery.isLoading) {
+  if (
+    alumniDetails.isLoading ||
+    isFollowStatus.isLoading ||
+    followingQuery.isLoading ||
+    followerQuery.isLoading ||
+    userPostsQuery.isLoading ||
+    userQuery.isLoading
+  ) {
     return <SkeletonLoader />;
   }
 
   const { bio, company, email, firstName, job_role, lastName, middleName, phoneNumber, profile_picture, role, userID, username, isPrivate } =
     userQuery.data.user;
+
+  console.log(alumniDetails.data);
 
   return (
     <div className="w-full mt-11 flex flex-col  items-center max-w-[800px] mx-auto gap-5 md:gap-14  md:flex-row">
@@ -130,6 +141,14 @@ const ProfileHeader = () => {
           <p className="font-bold">
             {firstName} {lastName} {job_role && `(${job_role})`}
           </p>
+          {alumniDetails.data?.alumniData && (
+            <div className="flex flex-col">
+              <p>Year Graduated: {alumniDetails.data.alumniData.year_graduated}</p>
+              <p>
+                {alumniDetails.data.alumniData.program_name} ({alumniDetails.data.alumniData.school_name})
+              </p>
+            </div>
+          )}
           {company && (
             <p className="flex items-center gap-2">
               <img className="w-5" src={companyIcon} alt="" />
