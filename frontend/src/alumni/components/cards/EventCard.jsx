@@ -84,4 +84,4 @@ const EventCard = ({ eventID, title, desc, eventDateTime, location, eventType, c
     </div>
   );
 };
-export default PostCard;
+export default EventCard;
