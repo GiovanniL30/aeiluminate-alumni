@@ -56,3 +56,24 @@ joblistingRoute.post("/", authenticateUserToken, async (req, res) => {
     return res.status(500).json({ message: error.message || "Internal Server Error" });
   }
 });
+
+joblistingRoute.delete("/:id", authenticateUserToken, async (req, res) => {
+  try {
+    const { role, userId } = req;
+    const { id } = req.params;
+
+    const { isOwner } = await checkIfUserPost(userId, id);
+
+    if (!isOwner && role !== "Admin" && role !== "Manager") {
+      throw new Error("Only admin and Manager can do this operation");
+    }
+
+    const result = await deletePost(id);
+
+    if (!result) throw new Error("Failed to delete Post");
+    res.json({ message: "Post deleted" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+});

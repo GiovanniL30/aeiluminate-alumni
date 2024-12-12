@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { timeAgo } from "../../../utils.js";
+import { formatDate, getTime, timeAgo } from "../../../utils.js";
 
 import loc from "../../../assets/loc.png";
 import time from "../../../assets/time.png";
@@ -116,11 +116,11 @@ const EventCard = ({
           </div>
           <div className="flex gap-2">
             <img src={create_event} alt="" />
-            <p className="break-words">{eventDateTime}</p>
+            <p className="break-words">{formatDate(eventDateTime)}</p>
           </div>
           <div className="flex gap-2">
             <img src={time} alt="" />
-            <p className="break-words">{eventDateTime}</p>
+            <p className="break-words">{getTime(eventDateTime)}</p>
           </div>
         </div>
       </div>
