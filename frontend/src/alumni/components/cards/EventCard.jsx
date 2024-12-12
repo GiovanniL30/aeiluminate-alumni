@@ -126,7 +126,7 @@ const EventCard = ({
       </div>
       <div className="bg-gray-50 flex justify-center h-fit max-h-[500px] min-h-[250px] hover-opacity">
         <a href={imageUrl} target="_blank">
-          <img className="max-w-full max-h-[450px] object-contain" src={imageUrl} alt="" />
+          <img className="max-w-full max-h-[450px] object-contain" src={imageUrl} alt="event image" />
         </a>
       </div>
 
