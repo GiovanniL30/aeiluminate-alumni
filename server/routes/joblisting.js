@@ -1,8 +1,9 @@
 import express from "express";
-import { getJobListings } from "../mysqlQueries/readQueries.js";
+import { checkIfUserJobPost, getJobListings } from "../mysqlQueries/readQueries.js";
 import { authenticateUserToken } from "../middleware/authenticateToken.js";
 import { addNewJobListing } from "../mysqlQueries/addQueries.js";
 import crypto from "crypto";
+import { deleteJobListing } from "../mysqlQueries/deleteQueries.js";
 
 export const joblistingRoute = express.Router();
 
@@ -62,16 +63,20 @@ joblistingRoute.delete("/:id", authenticateUserToken, async (req, res) => {
     const { role, userId } = req;
     const { id } = req.params;
 
-    const { isOwner } = await checkIfUserPost(userId, id);
+    const { isOwner } = await checkIfUserJobPost(userId, id);
 
-    if (!isOwner && role !== "Admin" && role !== "Manager") {
+    if (!isOwner) {
+      throw new Error("You cannot delete others event");
+    }
+
+    if (role !== "Admin" && role !== "Manager") {
       throw new Error("Only admin and Manager can do this operation");
     }
 
-    const result = await deletePost(id);
+    const result = await deleteJobListing(id);
 
-    if (!result) throw new Error("Failed to delete Post");
-    res.json({ message: "Post deleted" });
+    if (!result) throw new Error("Failed to delete Job Listing");
+    res.json({ message: "Job Listing deleted" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });

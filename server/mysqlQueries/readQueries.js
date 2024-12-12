@@ -729,3 +729,30 @@ export const checkIfUserEvent = async (userId, eventId) => {
     throw new Error("Failed to check event ownership");
   }
 };
+
+/**
+ * Check if the user is the owner of the event
+ */
+
+export const checkIfUserJobPost = async (userId, jobId) => {
+  const query = `
+    SELECT 
+      createdBy = ? AS isOwner
+    FROM job_listing
+    WHERE jobID = ?;
+  `;
+
+  try {
+    const [results] = await connection.query(query, [userId, jobId]);
+
+    if (results.length === 0) {
+      throw new Error("Job not found or invalid job ID");
+    }
+
+    const isOwner = results[0].isOwner === 1;
+    return { isOwner };
+  } catch (error) {
+    console.error("Failed to check if user owns the job post: ", error);
+    throw new Error("Failed to check job ownership");
+  }
+};

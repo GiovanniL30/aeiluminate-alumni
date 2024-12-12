@@ -1,5 +1,5 @@
-import React from "react";
-import { useGetUser } from "../../_api/@react-client-query/query";
+import React, { useState } from "react";
+import { useDeleteJob, useGetUser } from "../../_api/@react-client-query/query";
 
 import companyIcon from "../../../assets/company.png";
 import salaryIcon from "../../../assets/money.png";
@@ -11,14 +11,46 @@ import { useAuthContext } from "../../context/AuthContext";
 import { ReadMore } from "../ReadMore";
 import Button from "../Button";
 import JobCardLoading from "./loaders/JobCardLoading";
+import ToastNotification from "../../constants/toastNotification.js";
 
-const JobCard = ({ workType, url, salary, jobTitle, jobID, experienceRequired, description, createdOn, createdBy, company }) => {
+const JobCard = ({
+  isReload = false,
+  canBeDelete = false,
+  workType,
+  url,
+  salary,
+  jobTitle,
+  jobID,
+  experienceRequired,
+  description,
+  createdOn,
+  createdBy,
+  company,
+}) => {
+  const [showDelete, setShowDelete] = useState(false);
   const jobPosterQuery = useGetUser(createdBy);
   const { user } = useAuthContext();
+  const deleteJob = useDeleteJob();
 
   if (jobPosterQuery.isLoading) {
     return <JobCardLoading />;
   }
+
+  const handleDelete = () => {
+    deleteJob.mutate(jobID, {
+      onSuccess: () => {
+        if (isReload) {
+          window.location.reload();
+        }
+        setShowDelete(false);
+        ToastNotification.success("Joblisting Deleted");
+      },
+      onError: (error) => {
+        console.log(error);
+        ToastNotification.error("Listing not deleted: " + error.message);
+      },
+    });
+  };
 
   const jobPoster = jobPosterQuery.data.user;
   return (
@@ -30,11 +62,19 @@ const JobCard = ({ workType, url, salary, jobTitle, jobID, experienceRequired, d
             {jobPoster.username} {jobPoster.userID == user.userID && <span className="text-primary_blue">(YOU)</span>}
           </p>
         </div>
-        {user.userID == jobPoster.userID && (
-          <button>
-            <img className="w-1" src={more_vert} alt="" />
-          </button>
-        )}
+        <div className="relative">
+          {(user.userID === createdBy || canBeDelete) && (
+            <button onClick={() => setShowDelete((prev) => !prev)}>
+              <img className="w-1 h-4" src={more_vert} alt="dots" />
+            </button>
+          )}
+          {showDelete && (
+            <div className="top-10 z-50 absolute bg-white my-shadow flex flex-col items-center w-[150px] right-3 p-2 gap-2 rounded-mdl">
+              <Button onClick={handleDelete} text="Delete Job" otherStyle="w-full" />
+              <Button onClick={() => setShowDelete(false)} text="Cancel" otherStyle="w-full bg-red-500" />
+            </div>
+          )}
+        </div>
       </div>
       <div className="flex flex-col p-5 mt-1">
         <div className="flex flex-col">

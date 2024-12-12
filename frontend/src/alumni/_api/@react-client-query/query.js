@@ -45,6 +45,7 @@ import {
   addNewJobListing,
   deletePostRequest,
   deleteEventRequest,
+  deleteJobRequest,
 } from "../index.js";
 
 /**
@@ -566,6 +567,21 @@ export const useDeleteEvent = () => {
     mutationFn: (eventID) => deleteEventRequest(eventID),
     onSuccess: () => {
       client.invalidateQueries(["events"]);
+    },
+  });
+};
+
+/**
+ *
+ * React query to delete a event
+ */
+export const useDeleteJob = () => {
+  const client = useQueryClient();
+
+  return useMutation({
+    mutationFn: (jobId) => deleteJobRequest(jobId),
+    onSuccess: () => {
+      client.invalidateQueries(["joblistings"]);
     },
   });
 };

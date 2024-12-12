@@ -98,7 +98,7 @@ export const deletePost = async (postId) => {
 };
 
 /**
- * Delete a post
+ * Delete a event
  * @affectedDatabase = post
  */
 
@@ -111,5 +111,21 @@ export const deleteEvent = async (eventID) => {
   } catch (err) {
     console.error("Error deleting event", err);
     throw new Error("Failed to delete the event");
+  }
+};
+
+/**
+ * Delete a joblisting
+ * @affectedDatabase = post
+ */
+export const deleteJobListing = async (jobid) => {
+  const query = "DELETE FROM job_listing WHERE jobID = ?";
+
+  try {
+    const [result] = await connection.query(query, [jobid]);
+    return result.affectedRows > 0;
+  } catch (err) {
+    console.error("Error deleting job", err);
+    throw new Error("Failed to delete the job");
   }
 };

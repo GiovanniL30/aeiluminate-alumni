@@ -855,3 +855,18 @@ export const deleteEventRequest = async (eventId) => {
     throw new Error(error.response?.data?.message || error.message);
   }
 };
+
+export const deleteJobRequest = async (jobId) => {
+  try {
+    const token = getAuthToken();
+    const response = await axios.delete(`${baseURL}/api/listings/${jobId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
