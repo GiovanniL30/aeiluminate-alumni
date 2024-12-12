@@ -26,7 +26,11 @@ const AlbumCard = ({ albumId, albumTitle }) => {
 
       <NavLink to={`/album/${albumId}`} className="w-full group">
         <div className="relative w-full">
-          <img src={firstPostImage} alt="First post" className="w-full h-64 object-cover rounded-lg mb-4" />
+          {firstPostImage ? (
+            <img src={firstPostImage} alt="First post" className="w-full h-64 object-cover rounded-lg mb-4" />
+          ) : (
+            <div className="w-full h-64 object-cover rounded-lg mb-4 bg-gray-300 text-center pt-3 font-bold">No post available for this album</div>
+          )}
           <div className="absolute top-0 left-0 right-0 bottom-0 group-hover:bg-black group-hover:bg-opacity-40 duration-200"></div>
           <div className="absolute w-1/2 h-1/2 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center bg-[#9EC0D7] bg-opacity-50 rounded-md">
             <div className="flex flex-col items-center w-full justify-center p-3">

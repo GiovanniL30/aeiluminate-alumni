@@ -3,9 +3,11 @@ import { useGetUserPosts } from "../../_api/@react-client-query/query";
 import { useParams } from "react-router-dom";
 import SimpleCardLoader from "../../components/cards/loaders/SimpleCardLoader";
 import AelineCard from "../../components/cards/AelineCard";
+import { useAuthContext } from "../../context/AuthContext";
 
 const UserAeilines = () => {
   const { id } = useParams();
+  const { user } = useAuthContext();
 
   const { data, isLoading } = useGetUserPosts(id);
 
@@ -22,7 +24,15 @@ const UserAeilines = () => {
       ) : (
         <div className="flex flex-col justify-center items-center max-w-[550px] mx-auto gap-2">
           {lines.map((post, index) => (
-            <AelineCard key={index} postID={post.postID} caption={post.caption} userID={id} createdAt={post.createdAt} />
+            <AelineCard
+              isReload={true}
+              canBeDelete={user.userID == id}
+              key={index}
+              postID={post.postID}
+              caption={post.caption}
+              userID={id}
+              createdAt={post.createdAt}
+            />
           ))}
         </div>
       )}

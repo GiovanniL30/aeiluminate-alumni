@@ -43,6 +43,7 @@ import {
   checkUserInterested,
   fetchJobListing,
   addNewJobListing,
+  deletePostRequest,
 } from "../index.js";
 
 /**
@@ -534,6 +535,21 @@ export const useUploadJobListing = () => {
       addNewJobListing({ jobTitle, company, experienceRequired, workType, salary, description, url }),
     onSuccess: () => {
       client.invalidateQueries(["joblistings"]);
+    },
+  });
+};
+
+/**
+ *
+ * React query to delete a post
+ */
+export const useDeletePost = () => {
+  const client = useQueryClient();
+
+  return useMutation({
+    mutationFn: (postId) => deletePostRequest(postId),
+    onSuccess: () => {
+      client.invalidateQueries(["posts"]);
     },
   });
 };

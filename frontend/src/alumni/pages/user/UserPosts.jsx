@@ -6,8 +6,10 @@ import SimpleCardLoader from "../../components/cards/loaders/SimpleCardLoader";
 import back from "../../../assets/back-arrow.png";
 
 import album from "../../../assets/album-icon.png";
+import { useAuthContext } from "../../context/AuthContext";
 
 const UserPosts = () => {
+  const { user } = useAuthContext();
   const [openPost, setOpenPost] = useState(false);
   const [postData, setPostData] = useState({});
   const { id } = useParams();
@@ -46,6 +48,8 @@ const UserPosts = () => {
             <p>Back to all post</p>
           </div>
           <PostCard
+            isReload={true}
+            canBeDelete={user.userID == id}
             albumId={postData.albumId}
             caption={postData.caption}
             postID={postData.postID}

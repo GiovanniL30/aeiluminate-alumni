@@ -529,21 +529,29 @@ export const getAlbumInformation = async (albumId) => {
 
 export const getAlbums = async (offset, limit) => {
   const query = `
-    SELECT albums.albumId, 
-           albums.albumTitle, 
-           albums.albumIdOwner, 
-           posts.postID AS latestPostID, 
-           posts.caption AS latestPostCaption, 
-           posts.createdAt AS latestPostCreatedAt
-    FROM albums
-    LEFT JOIN posts ON albums.albumId = posts.albumId
-    WHERE posts.createdAt = (
-      SELECT MAX(createdAt) 
-      FROM posts 
-      WHERE albumId = albums.albumId
+    SELECT 
+    albums.albumId, 
+    albums.albumTitle, 
+    albums.albumIdOwner, 
+    latest_posts.latestPostID, 
+    latest_posts.latestPostCaption, 
+    latest_posts.latestPostCreatedAt
+  FROM albums
+  LEFT JOIN (
+    SELECT 
+      posts.albumId, 
+      posts.postID AS latestPostID, 
+      posts.caption AS latestPostCaption, 
+      posts.createdAt AS latestPostCreatedAt
+    FROM posts
+    WHERE (albumId, createdAt) IN (
+      SELECT albumId, MAX(createdAt)
+      FROM posts
+      GROUP BY albumId
     )
-    ORDER BY albums.albumTitle
-    LIMIT ? OFFSET ?
+  ) AS latest_posts ON albums.albumId = latest_posts.albumId
+  ORDER BY albums.albumTitle
+  LIMIT ? OFFSET ?
   `;
 
   try {
@@ -663,5 +671,34 @@ export const getJobListings = async (page = 1, pageSize = 10) => {
   } catch (error) {
     console.error("Failed to fetch job listing: ", error);
     throw new Error("Failed to retrieve job listings");
+  }
+};
+
+/**
+ * Check if the user is the owner of the post
+ */
+
+export const checkIfUserPost = async (userId, postId) => {
+  const query = `
+    SELECT 
+      CASE 
+        WHEN userID = ? THEN TRUE 
+        ELSE FALSE 
+      END AS isOwner
+    FROM posts
+    WHERE postID = ?;
+  `;
+
+  try {
+    const [results] = await connection.query(query, [userId, postId]);
+
+    if (results.length === 0) {
+      throw new Error("Post not found or invalid postID");
+    }
+    const isOwner = results[0].isOwner;
+    return { isOwner };
+  } catch (error) {
+    console.error("Failed to check if user owns the post: ", error);
+    throw new Error("Failed to check post ownership");
   }
 };

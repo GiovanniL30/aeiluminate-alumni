@@ -10,20 +10,23 @@ import more_vert from "../../../assets/more_vert.png";
 
 import ImageCarousel from "../posts/ImageCarousel.jsx";
 import { ReadMore } from "../ReadMore";
-import { useLikePost, usePostInformation, useUnlikePost } from "../../_api/@react-client-query/query.js";
+import { useDeletePost, useLikePost, usePostInformation, useUnlikePost } from "../../_api/@react-client-query/query.js";
 import PostCardLoading from "./loaders/PostCardLoading.jsx";
 import CommentPopUp from "./CommentPopUp.jsx";
 import UserProfilePic from "../UserProfilePic.jsx";
 import { useAuthContext } from "../../context/AuthContext.jsx";
 import Button from "../Button.jsx";
 import { NavLink } from "react-router-dom";
+import ToastNotification from "../../constants/toastNotification.js";
 
-const PostCard = ({ albumId = null, postID, caption, images, userID, createdAt, otherStyle }) => {
+const PostCard = ({ isReload = false, canBeDelete = false, albumId = null, postID, caption, images, userID, createdAt, otherStyle }) => {
+  const [showDelete, setShowDelete] = useState(false);
   const [isShowComment, setIsShowComment] = useState(false);
   const likePostQuery = useLikePost();
   const unlikePostQuery = useUnlikePost();
   const { isLoading, isError, data } = usePostInformation(postID);
   const { user } = useAuthContext();
+  const deletPost = useDeletePost();
 
   if (isLoading) {
     return <PostCardLoading />;
@@ -35,6 +38,21 @@ const PostCard = ({ albumId = null, postID, caption, images, userID, createdAt, 
     } else {
       likePostQuery.mutate(postID);
     }
+  };
+
+  const handleDelete = () => {
+    deletPost.mutate(postID, {
+      onSuccess: () => {
+        if (isReload) {
+          window.location.reload();
+        }
+        ToastNotification.success("Post Deleted");
+      },
+      onError: (error) => {
+        console.log(error);
+        ToastNotification.error("Post not deleted: " + error.message);
+      },
+    });
   };
 
   return (
@@ -63,11 +81,19 @@ const PostCard = ({ albumId = null, postID, caption, images, userID, createdAt, 
           </p>
         </div>
 
-        <div className="flex gap-3 items-center justify-between sm:justify-center mt-2 sm:mt-0">
+        <div className="flex gap-3 items-center justify-between sm:justify-center mt-2 sm:mt-0 relative">
           <p className="text-sm text-light_text">{timeAgo(createdAt)}</p>
-          <button>
-            <img className="w-1 h-4" src={more_vert} alt="dots" />
-          </button>
+          {(user.userID === userID || user.role == "Admin" || user.role == "Manager" || canBeDelete) && (
+            <button onClick={() => setShowDelete((prev) => !prev)}>
+              <img className="w-1 h-4" src={more_vert} alt="dots" />
+            </button>
+          )}
+          {showDelete && (
+            <div className="top-10 z-50 absolute bg-white my-shadow flex flex-col items-center w-[150px] right-3 p-2 gap-2 rounded-mdl">
+              <Button onClick={handleDelete} text="Delete Post" otherStyle="w-full" />
+              <Button onClick={() => setShowDelete(false)} text="Cancel" otherStyle="w-full bg-red-500" />
+            </div>
+          )}
         </div>
       </div>
 
