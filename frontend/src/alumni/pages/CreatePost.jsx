@@ -142,6 +142,16 @@ const CreatePost = ({ maxCaption = 225 }) => {
           return;
         }
 
+        if (title.length > 30) {
+          ToastNotification.error("Maximum characters for title is 30");
+          return;
+        }
+
+        if (location.length > 70) {
+          ToastNotification.error("Maximum characters for location is 70");
+          return;
+        }
+
         uploadEvent.mutate(
           { location, dateTime, description, category, title, image: images[0] },
           {
@@ -171,13 +181,23 @@ const CreatePost = ({ maxCaption = 225 }) => {
           return;
         }
 
-        if (salary <= 0) {
-          ToastNotification.warning("Are you sure about the salary?");
+        if (jobTitle.length > 50) {
+          ToastNotification.warning("Job title maximun characters is 50");
           return;
         }
 
-        if (experienceRequired < 0) {
-          ToastNotification.warning("Experience should not be negative");
+        if (company.length > 50) {
+          ToastNotification.warning("Company name maximun characters is 50");
+          return;
+        }
+
+        if (salary <= 0 || salary > 100000) {
+          ToastNotification.warning("Are you sure about the salary? Limit is 100K");
+          return;
+        }
+
+        if (experienceRequired < 0 || experienceRequired > 50) {
+          ToastNotification.warning("Experience should not be negative and max experience is 10");
           return;
         }
 
