@@ -14,6 +14,7 @@ import { conversationRoute } from "./routes/conversation.js";
 import { albumRouter } from "./routes/album.js";
 import { passwordRecoveryRoute } from "./routes/passwordRecovery.js";
 import { eventRouter } from "./routes/event.js";
+import { joblistingRoute } from "./routes/joblisting.js";
 
 const app = express();
 const httpServer = createServer(app);
@@ -46,6 +47,7 @@ app.use("/api", applicationRoute);
 app.use("/api/album", albumRouter);
 app.use("/api/recover", passwordRecoveryRoute);
 app.use("/api/events", eventRouter);
+app.use("/api/listings", joblistingRoute);
 
 /**
  * ======================

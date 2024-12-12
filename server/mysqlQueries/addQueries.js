@@ -241,14 +241,25 @@ export const addInterestedUser = async (eventID, userID) => {
  * Adds a new job listing
  * @affectedDatabase = job_listing
  */
-export const addNewJobListing = async (company, experienceRequired, workType, salary) => {
+export const addNewJobListing = async (jobID, jobTitle, company, experienceRequired, workType, salary, description, createdOn, createdBy, url) => {
   const query = `
-    INSERT INTO job_listing (company, experienceRequired, workType, salary)
-    VALUES (?, ?, ?, ?);
+    INSERT INTO job_listing (jobID, jobTitle, company, experienceRequired, workType, salary, description, createdOn, createdBy, url)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
   `;
 
   try {
-    const [result] = await connection.query(query, [company, experienceRequired, workType, salary]);
+    const [result] = await connection.query(query, [
+      jobID,
+      jobTitle,
+      company,
+      experienceRequired,
+      workType,
+      salary,
+      description,
+      createdOn,
+      createdBy,
+      url,
+    ]);
     return result.affectedRows > 0;
   } catch (err) {
     console.error("Error inserting a new job listing:", err);
