@@ -89,6 +89,14 @@ const Signup = () => {
       return;
     }
 
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(formData.password)) {
+      ToastNotification.error(
+        "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character"
+      );
+      return;
+    }
+
     if (formData.password !== formData.confirmPassword) {
       setErrorMessage("Passwords do not match.");
       ToastNotification.error("Passwords do not match.");
@@ -104,6 +112,14 @@ const Signup = () => {
     if (formData.schoolId && formData.schoolId.size > 5242880) {
       setErrorMessage("School ID file size must be less than 5MB.");
       ToastNotification.error("School ID file size must be less than 5MB.");
+      return;
+    }
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|slu\.edu\.ph)$/;
+
+    if (!emailRegex.test(formData.email)) {
+      setErrorMessage("Invalid email domain. Only @gmail.com and @slu.edu.ph emails are allowed.");
+      ToastNotification.error("Invalid email domain. Only @gmail.com and @slu.edu.ph emails are allowed.");
       return;
     }
 

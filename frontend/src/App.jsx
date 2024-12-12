@@ -8,7 +8,6 @@ import {
   MainLayout,
   Notifications,
   CreatePost,
-  Search,
   Signin,
   Signup,
   UserPosts,
@@ -27,6 +26,8 @@ import {
   BrowseEvents,
   BrowseJobs,
   HomeLayout,
+  ForgetPassword,
+  UserInteresetedEvents,
 } from "./alumni/pages/index.js";
 import Auth from "./alumni/_auth/Auth.jsx";
 import AuthContext from "./alumni/context/AuthContext.jsx";
@@ -46,7 +47,6 @@ const App = () => {
                 <Route path="jobs" element={<BrowseJobs />} />
               </Route>
               <Route path="users" element={<BrowseUsers />} />
-              <Route path="search" element={<Search />} />
               <Route path="post" element={<CreatePost />} />
               <Route path="inbox" element={<InboxLayout />}>
                 <Route index element={<NoOpenedMessage />} />
@@ -60,6 +60,7 @@ const App = () => {
                   <Route index element={<UserPosts />} />
                   <Route path="events" element={<UserEvents />} />
                   <Route path="line" element={<UserAeilines />} />
+                  <Route path="interested_events" element={<UserInteresetedEvents />} />
                 </Route>
                 <Route path="followers" element={<UserFollowers />} />
                 <Route path="following" element={<UsersFollowing />} />
@@ -70,6 +71,7 @@ const App = () => {
 
           <Route path="login" element={<Signin />} />
           <Route path="register" element={<Signup />} />
+          <Route path="recover" element={<ForgetPassword />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -1,30 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 import event from "../../../assets/event.png";
 import line from "../../../assets/line@.png";
 import news_feed from "../../../assets/news feed.png";
-
-const routes = [
-  {
-    text: "POSTS",
-    icon: news_feed,
-    to: ".",
-    end: true,
-  },
-  {
-    text: "AEILINES",
-    icon: line,
-    to: "line",
-  },
-  {
-    text: "EVENTS",
-    icon: event,
-    to: "events",
-  },
-];
+import { useAuthContext } from "../../context/AuthContext";
 
 const ProfileNavbar = () => {
+  const { user } = useAuthContext();
+  const [routes, setRoutes] = useState([
+    {
+      text: "POSTS",
+      icon: news_feed,
+      to: ".",
+    },
+    {
+      text: "AEILINES",
+      icon: line,
+      to: "line",
+    },
+    {
+      text: "JOINED EVENTS",
+      icon: event,
+      to: "interested_events",
+    },
+  ]);
+
+  useEffect(() => {
+    if (user.role === "Admin" || user.role === "Manager") {
+      setRoutes([...routes, { text: "EVENTS", icon: event, to: "events" }]);
+    }
+  }, [user.role]);
+
   return (
     <div className="flex max-w-[900px] mx-auto justify-between mt-20">
       {routes.map((route, index) => {

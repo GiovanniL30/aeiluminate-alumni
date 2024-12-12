@@ -8,6 +8,7 @@ import create_line from "../../assets/create_line.png";
 import create_album from "../../assets/create_album.png";
 import create_event from "../../assets/create_event.png";
 import create_joblisting from "../../assets/joblisting.png";
+import { useNewAlbum, useUploadEvent, useUploadLine, useUploadPost } from "../_api/@react-client-query/query";
 import { useNewAlbum, useUploadLine, useUploadPost, useUploadJobListing } from "../_api/@react-client-query/query";
 import TopPopUp from "../components/TopPopUp";
 
@@ -18,10 +19,20 @@ import EventInformation from "../components/createPost/EventInformation.jsx";
 import ToastNotification from "../constants/toastNotification.js";
 
 const CreatePost = ({ maxCaption = 225 }) => {
+  const [eventInformation, setEventInformation] = useState({
+    location: "",
+    category: "reunion",
+    dateTime: new Date(),
+    title: "",
+    description: "",
+  });
+
   const uploadQuery = useUploadPost();
   const uploadLine = useUploadLine();
   const createAlbum = useNewAlbum();
+  const uploadEvent = useUploadEvent();
   const uploadJobListing = useUploadJobListing();
+
 
   const navigate = useNavigate();
 
@@ -36,6 +47,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
   const [images, setImages] = useState([]);
   const { user } = useAuthContext();
   const [caption, setCaption] = useState("");
+
 
   const [jobDetails, setJobDetails] = useState({
     company: "",
@@ -56,6 +68,20 @@ const CreatePost = ({ maxCaption = 225 }) => {
     if (value.length > maxCaption) return;
 
     setCaption(value);
+  };
+
+  const handleEventInformationChange = (e) => {
+    if (e.target) {
+      const { name, value } = e.target;
+
+      if (name == "description" && value.length > 225) {
+        return;
+      }
+
+      setEventInformation((prev) => ({ ...prev, [name]: value }));
+    } else {
+      setEventInformation((prev) => ({ ...prev, dateTime: e }));
+    }
   };
 
   const handleSubmit = () => {
@@ -95,7 +121,42 @@ const CreatePost = ({ maxCaption = 225 }) => {
         );
       },
       isEvent: () => {
-        alert("posting event");
+        const { location, dateTime, description, category, title } = eventInformation;
+
+        if (!location || !dateTime || !description || !category || !title) {
+          ToastNotification.error("All event fields are required");
+          return;
+        }
+
+        if (!images[0]) {
+          ToastNotification.error("Please add event image cover");
+          return;
+        }
+
+        if (!(dateTime > new Date())) {
+          ToastNotification.error("Event Date must be future dates");
+          return;
+        }
+
+        uploadEvent.mutate(
+          { location, dateTime, description, category, title, image: images[0] },
+          {
+            onSuccess: () => {
+              ToastNotification.success("Event Added");
+              setEventInformation({
+                location: "",
+                category: "reunion",
+                dateTime: new Date(),
+                title: "",
+                description: "",
+              });
+              setImages([]);
+            },
+            onError: (error) => {
+              ToastNotification.error("Failed to add new event: " + error.message);
+            },
+          }
+        );
       },
       isJob: () => {
         if (!caption || !jobDetails.company || !jobDetails.salary || !jobDetails.experience) {
@@ -184,9 +245,9 @@ const CreatePost = ({ maxCaption = 225 }) => {
         </h1>
 
         <Button
-          text={uploadQuery.isPending || uploadLine.isPending || createAlbum.isPending ? "Uploading..." : "Share"}
+          text={uploadEvent.isPending || uploadQuery.isPending || uploadLine.isPending || createAlbum.isPending ? "Uploading..." : "Share"}
           otherStyle="px-10"
-          disabled={uploadQuery.isPending || uploadLine.isPending || createAlbum.isPending}
+          disabled={uploadEvent.isPending || uploadQuery.isPending || uploadLine.isPending || createAlbum.isPending}
           onClick={handleSubmit}
         />
       </div>
@@ -230,7 +291,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
               }`}
             >
               <img src={create_joblisting} alt="post" />
-              <p>Create Joblisting</p>
+              <p>Create Job listing</p>
             </button>
             <button
               onClick={() => switchPostType("event")}
@@ -276,6 +337,40 @@ const CreatePost = ({ maxCaption = 225 }) => {
           </div>
 
           <div className="relative">
+
+            {!postType.isEvent && (
+              <>
+                <h1 className="">
+                  {postType.isPost
+                    ? "Post caption"
+                    : postType.isLine
+                    ? "Aeline content"
+                    : postType.isEvent
+                    ? "Event title"
+                    : postType.isJob
+                    ? "Joblisting title"
+                    : postType.isAlbum
+                    ? " Album title"
+                    : " Unknown"}
+                </h1>
+                <textarea
+                  disabled={uploadQuery.isPending || uploadLine.isPending || createAlbum.isPending}
+                  autoFocus={true}
+                  value={caption}
+                  onChange={handleCaptionChange}
+                  className="p-2 text-light_text text-sm focus:outline-none resize-none border-b-[1px] w-full h-36"
+                ></textarea>
+                <p className="absolute text-sm text-light_text bottom-3 right-3">
+                  {caption.length}/{maxCaption}
+                </p>
+              </>
+            )}
+          </div>
+
+          <>
+            {postType.isEvent && <EventInformation setEventInformation={handleEventInformationChange} eventInformation={eventInformation} />}
+            {postType.isJob && <Joblisting />}
+
             <h1 className="">
               {postType.isPost
                 ? "Post caption"

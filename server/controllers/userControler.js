@@ -91,21 +91,17 @@ export const logoutController = async (req, res) => {
  *  @route /api/users
  */
 export const getUsersContoller = async (req, res) => {
-  const { page = 1, pageSize = 10 } = req.query;
+  const { page = 1, pageSize = 5, key = "" } = req.query;
 
   try {
-    const { users, total } = await getUsers(page, pageSize);
+    const { users, total } = await getUsers(page, pageSize, key);
 
-    const totalPages = Math.ceil(total / pageSize);
+    const totalPage = Math.ceil(total / pageSize);
 
-    res.json({
-      results: users,
-      pagination: {
-        currentPage: parseInt(page),
-        pageSize: parseInt(pageSize),
-        totalRecords: total,
-        totalPages: totalPages,
-      },
+    res.status(200).json({
+      users: users,
+      totalUsers: total,
+      totalPage,
     });
   } catch (error) {
     return res.status(500).json({ message: "Failed to fetch users (Internal Server error)" });

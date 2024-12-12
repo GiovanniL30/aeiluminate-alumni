@@ -146,15 +146,62 @@ export const checkEmail = async (email) => {
 };
 
 /**
- * Fetch paginated users and total count from the database
+ * Fetch paginated users excluding those who have an ID in the application table
+ * and filter by search query (key)
  */
-export const getUsers = async (page, pageSize) => {
-  const query = "SELECT * FROM users LIMIT ? OFFSET ?";
+export const getUsers = async (page, pageSize, key) => {
   const offset = (page - 1) * pageSize;
 
   try {
-    const [results] = await connection.query(query, [parseInt(pageSize), parseInt(offset)]);
-    const [[countResult]] = await connection.query("SELECT COUNT(*) AS total FROM users");
+    const [results] = await connection.query(
+      `
+      SELECT u.*
+      FROM users u
+      LEFT JOIN application a ON u.userID = a.userID
+      WHERE a.userID IS NULL
+      ${
+        key
+          ? `
+        AND (
+          u.username LIKE ? OR
+          u.firstName LIKE ? OR
+          u.middleName LIKE ? OR
+          u.lastName LIKE ? OR
+          u.email LIKE ?
+        )
+      `
+          : ""
+      }
+      LIMIT ? OFFSET ?
+      `,
+      key
+        ? [`%${key}%`, `%${key}%`, `%${key}%`, `%${key}%`, `%${key}%`, parseInt(pageSize), parseInt(offset)]
+        : [parseInt(pageSize), parseInt(offset)]
+    );
+
+    const [[countResult]] = await connection.query(
+      `
+      SELECT COUNT(*) AS total
+      FROM users u
+      LEFT JOIN application a ON u.userID = a.userID
+      WHERE a.userID IS NULL
+      ${
+        key
+          ? `
+        AND (
+          u.username LIKE ? OR
+          u.firstName LIKE ? OR
+          u.middleName LIKE ? OR
+          u.lastName LIKE ? OR
+          u.email LIKE ?
+        )
+      `
+          : ""
+      }
+      `,
+      key ? [`%${key}%`, `%${key}%`, `%${key}%`, `%${key}%`, `%${key}%`] : []
+    );
+
     return { users: results, total: countResult.total };
   } catch (error) {
     console.error("Error fetching paginated users:", error);
@@ -178,8 +225,7 @@ export const getPosts = async (page, pageSize, userId) => {
   try {
     const [results] = await connection.query(query, [parseInt(pageSize), parseInt(offset)]);
     const [[countResult]] = await connection.query(
-      "SELECT COUNT(*) AS total FROM posts LEFT JOIN users ON posts.userID = users.userID WHERE posts.albumId IS NOT NULL AND (users.isPrivate = 0 OR posts.userID = ?)",
-      [userId]
+      "SELECT COUNT(*) AS total FROM posts LEFT JOIN users ON posts.userID = users.userID WHERE posts.albumId IS NULL AND (users.isPrivate = 0)"
     );
     return { posts: results, total: countResult.total };
   } catch (error) {
@@ -509,6 +555,93 @@ export const getAlbums = async (offset, limit) => {
     throw new Error("Error fetching paginated albums with latest posts");
   }
 };
+
+
+export const getEvents = async (page, pageSize) => {
+  const query = `
+    SELECT *
+    FROM events
+    ORDER BY createdOn DESC 
+    LIMIT ? OFFSET ?
+  `;
+
+  const offset = (page - 1) * pageSize;
+
+  try {
+    const [results] = await connection.query(query, [parseInt(pageSize), parseInt(offset)]);
+    const [[countResult]] = await connection.query("SELECT COUNT(*) AS total FROM events");
+    return { events: results, total: countResult.total };
+  } catch (error) {
+    console.error("Error fetching paginated events:", error);
+    throw new Error("Error fetching paginated events");
+  }
+};
+
+export const getUserEvents = async (userId) => {
+  const query = "SELECT * FROM events WHERE createdBy = ?";
+
+  try {
+    const [results] = await connection.query(query, [userId]);
+    return results.length > 0 ? results : [];
+  } catch (error) {
+    console.error("Error fetching user events:", error);
+    throw new Error("Error fetching user events");
+  }
+};
+
+export const getUserInterestedEvents = async (userId) => {
+  const query = `
+  SELECT * FROM events 
+  LEFT JOIN interested_users USING (eventID) 
+  WHERE userID = ?`;
+
+  try {
+    const [results] = await connection.query(query, [userId]);
+    return results.length > 0 ? results : [];
+  } catch (error) {
+    console.error("Error fetching user interested events:", error);
+    throw new Error("Error fetching user interested events");
+  }
+};
+
+/**
+ * Get interested users count for a specific event
+ */
+export const getEventStats = async (eventId, userId) => {
+  const query = `
+    SELECT 
+    u.* 
+    FROM 
+        users u
+    INNER JOIN 
+        interested_users iu ON u.userid = iu.userid
+    WHERE 
+        iu.eventid = ?;
+  `;
+
+  try {
+    const [result] = await connection.query(query, [eventId]);
+    return result;
+  } catch (error) {
+    console.error("Failed to get event stats:", error);
+    throw new Error("Failed to get event stats");
+  }
+};
+
+/**
+ * Check if the user is interested on the event
+ */
+
+export const checkInterested = async (eventId, userId) => {
+  const query = "SELECT * FROM interested_users WHERE eventid = ? AND userid = ?";
+
+  try {
+    const [result] = await connection.query(query, [eventId, userId]);
+
+    return result.length > 0;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to get");
 
 /**
  * Fetch job listings post
