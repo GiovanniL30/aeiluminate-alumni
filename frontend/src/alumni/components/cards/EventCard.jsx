@@ -130,7 +130,7 @@ const EventCard = ({
         </a>
       </div>
 
-      <button onClick={() => setShowInterested(true)}>
+      <button className="pt-5 pl-7 pb-2 font-bold" onClick={() => setShowInterested(true)}>
         <div>Interested Users: {eventInformation.data.length}</div>
       </button>
       {showInterested && (
