@@ -11,7 +11,7 @@ import { useAuthContext } from "../../context/AuthContext.jsx";
 import Button from "../Button.jsx";
 import { NavLink } from "react-router-dom";
 import { useMarkInterested, useUnmarkInterested, useEventInformation } from "../../alumni/_api/@react-client-query/query.js";
-const EventCard = ({ eventID, title, desc, eventDateTime, location, eventType, createdOn, createdBy, imageUrl }) => {
+const EventCard = ({ eventID, title, desc, eventDateTime, location, eventType, createdOn, imageUrl }) => {
   const markInterestedQuery = useMarkInterested();
   const unmarkInterestedQuery = useUnmarkInterested();
   const { isLoading, isError, data } = useEventInformation(eventID);
