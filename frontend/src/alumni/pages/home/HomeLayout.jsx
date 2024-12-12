@@ -21,6 +21,11 @@ const postLinks = [
   },
 ];
 
+/**
+ *
+ *
+ * @author Giovanni Leo
+ */
 const HomeLayout = () => {
   return (
     <div className="max-container flex flex-col md:flex-row justify-between gap-5 w-full p-2">

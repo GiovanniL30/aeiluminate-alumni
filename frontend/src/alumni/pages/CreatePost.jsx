@@ -17,6 +17,11 @@ import Joblisting from "../components/createPost/Joblisting.jsx";
 import EventInformation from "../components/createPost/EventInformation.jsx";
 import ToastNotification from "../constants/toastNotification.js";
 
+/**
+ *
+ *
+ * @author Giovanni Leo, Eugene Kyle Patano, Jhea Jhana Prudencio
+ */
 const CreatePost = ({ maxCaption = 225 }) => {
   const [eventInformation, setEventInformation] = useState({
     location: "",

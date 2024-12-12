@@ -22,10 +22,11 @@ import {
 import ToastNotification from "../../constants/toastNotification.js";
 import PostCardLoading from "./loaders/PostCardLoading.jsx";
 
-/*
-* @Eugene Kyle Patano
-* A card component to represent aN Event
-*/
+/**
+ * A card component to represent aN Event
+ *
+ * @author Eugene Kyle Patano
+ */
 const EventCard = ({
   canBeDeleted = false,
   isReload = false,

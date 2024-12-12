@@ -6,6 +6,11 @@ import plus from "../../../assets/plus.png";
 import { useAuthContext } from "../../context/AuthContext";
 import PostCardLoading from "./loaders/PostCardLoading";
 
+/**
+ * Card
+ *
+ * @author Giovanni Leo
+ */
 const AlbumCard = ({ albumId, albumTitle }) => {
   const albumPosts = useAlbumPosts(albumId);
   const albumInfo = useAlbumInformation(albumId);

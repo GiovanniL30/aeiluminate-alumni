@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from "react";
-
+import React from "react";
 import companyIcon from "../../../assets/company.png";
 import salaryIcon from "../../../assets/money.png";
 import worktypeIcon from "../../../assets/worktype.png";
 import experienceIcon from "../../../assets/experience.png";
 import Input from "../Input";
 
+/**
+ * Joblisting extra informations
+ *
+ * @author Giovanni Leo, Jhea Jhana Prudencio
+ */
 const Joblisting = ({ jobDetails, setJobDetails }) => {
   return (
     <div className=" max-w-[700px] mx-auto flex flex-col justify-between h-full w-full gap-4">

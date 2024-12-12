@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { useAlbumInformation, useAlbumPosts, useGetUser } from "../_api/@react-client-query/query";
 import PostCard from "../components/cards/PostCard";
 import Button from "../components/Button";
@@ -7,8 +7,12 @@ import { useAuthContext } from "../context/AuthContext";
 import back from "../../assets/back-arrow.png";
 import UserProfilePic from "../components/UserProfilePic";
 
+/**
+ *
+ *
+ * @author Giovanni Leo
+ */
 const Album = () => {
-  const navigate = useNavigate();
   const { albumId } = useParams();
 
   const { user } = useAuthContext();

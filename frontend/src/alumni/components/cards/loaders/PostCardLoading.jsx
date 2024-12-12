@@ -1,5 +1,10 @@
 import React from "react";
 
+/**
+ * Card Loading
+ *
+ * @author Giovanni Leo
+ */
 const PostCardLoading = () => {
   return (
     <div className="w-full flex flex-col gap-5 border-[1px] rounded-lg bg-slate-200 animate-pulse">

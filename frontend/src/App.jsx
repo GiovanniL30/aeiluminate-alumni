@@ -6,7 +6,6 @@ import {
   ChatMessage,
   InboxLayout,
   MainLayout,
-  Notifications,
   CreatePost,
   Signin,
   Signup,
@@ -33,6 +32,11 @@ import Auth from "./alumni/_auth/Auth.jsx";
 import AuthContext from "./alumni/context/AuthContext.jsx";
 import PrivateProtected from "./alumni/pages/user/PrivateProtected.jsx";
 
+/**
+ *
+ *
+ * @author Giovanni Leo
+ */
 const App = () => {
   return (
     <AuthContext>
@@ -54,7 +58,6 @@ const App = () => {
               </Route>
               <Route path="album/contribute/:albumId" element={<AlbumContribute />} />
               <Route path="album/:albumId" element={<Album />} />
-              <Route path="notifications" element={<Notifications />} />
               <Route path="user/:id" element={<UserLayout />}>
                 <Route element={<PrivateProtected />}>
                   <Route index element={<UserPosts />} />

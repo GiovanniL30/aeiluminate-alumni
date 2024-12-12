@@ -1,6 +1,10 @@
 import React from "react";
-import { BounceLoader, MoonLoader } from "react-spinners";
+import { MoonLoader } from "react-spinners";
 
+/**
+ *
+ * @author Giovanni Leo
+ */
 const CustomSpinner = ({ isLoading }) => {
   return (
     isLoading && (

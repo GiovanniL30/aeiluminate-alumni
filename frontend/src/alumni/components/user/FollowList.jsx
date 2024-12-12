@@ -2,6 +2,10 @@ import React from "react";
 import { useAuthContext } from "../../context/AuthContext.jsx";
 import UserProfilePic from "../UserProfilePic.jsx";
 
+/**
+ *
+ * @author Giovanni Leo
+ */
 const FollowList = ({ data }) => {
   const { user } = useAuthContext();
   return (

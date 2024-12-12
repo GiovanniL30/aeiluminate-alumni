@@ -3,6 +3,11 @@ import inbox from "../../assets/inbox.png";
 import post from "../../assets/post.png";
 import friends from "../../assets/friends.png";
 
+/**
+ *  Navigation Links
+ *
+ * @author Giovanni Leo
+ */
 export const navLinks = [
   {
     path: "/home",
@@ -24,4 +29,9 @@ export const navLinks = [
   },
 ];
 
+/**
+ * Event Categories
+ *
+ * @author Giovanni Leo
+ */
 export const eventCategories = ["reunion", "mass", "thanksgiving", "seminar", "webinar", "conference", "workshop", "others"];

@@ -1,5 +1,10 @@
 import React from "react";
 
+/**
+ * Card Loading
+ *
+ * @author Giovanni Leo
+ */
 const AelineCardLoading = () => {
   return (
     <div className="flex gap-7 w-full bg-slate-200 animate-pulse">

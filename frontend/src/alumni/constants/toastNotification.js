@@ -1,5 +1,11 @@
 import { Slide, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Ensure toast styles are imported
+import "react-toastify/dist/ReactToastify.css";
+
+/**
+ * Notification Toast Message
+ *
+ * @author Giovanni Leo
+ */
 
 const config = {
   position: "top-right",

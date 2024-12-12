@@ -1,5 +1,9 @@
 import React from "react";
 
+/**
+ *
+ * @author Giovanni Leo
+ */
 const Button = ({ text, variant = "filled", otherStyle, onClick, type = "button", disabled = false }) => {
   return (
     <button

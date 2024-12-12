@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import PostCardCarousel from "./PostCardCarousel.jsx";
 import no_post from "../../../assets/no_post.png";
 
+/**
+ * Component used to upload a file used in the Create Post
+ *
+ * @author Giovanni Leo
+ */
 const FileUploader = ({ maxImage = 10, images, setImages, uploading = false }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [uploadError, setUploadError] = useState("");

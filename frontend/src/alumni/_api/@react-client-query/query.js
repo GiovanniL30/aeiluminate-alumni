@@ -51,6 +51,8 @@ import {
 
 /**
  * React query to get user info
+ *
+ * @author Giovanni Leo
  */
 export const useGetUser = (id) => {
   return useQuery({
@@ -61,6 +63,8 @@ export const useGetUser = (id) => {
 
 /**
  * React query to get user info
+ *
+ * @author Giovanni Leo
  */
 export const useGetAlumniDetails = (id) => {
   return useQuery({
@@ -71,6 +75,8 @@ export const useGetAlumniDetails = (id) => {
 
 /**
  * React query to login user
+ *
+ * @author Giovanni Leo
  */
 export const useLoginUser = () => {
   return useMutation({
@@ -80,6 +86,8 @@ export const useLoginUser = () => {
 
 /**
  * React query to logout user
+ *
+ * @author Giovanni Leo
  */
 export const useLogoutUser = () => {
   const client = useQueryClient();
@@ -91,6 +99,8 @@ export const useLogoutUser = () => {
 
 /**
  * React query to upload a new post
+ *
+ * @author Giovanni Leo
  */
 export const useUploadPost = () => {
   const client = useQueryClient();
@@ -103,6 +113,8 @@ export const useUploadPost = () => {
 
 /**
  * React query to upload a new post
+ *
+ * @author Giovanni Leo
  */
 export const useUploadLine = () => {
   const client = useQueryClient();
@@ -115,6 +127,8 @@ export const useUploadLine = () => {
 
 /**
  * React query to handle loading of posts
+ *
+ * @author Giovanni Leo
  */
 export const useGetPosts = (length) => {
   return useInfiniteQuery({
@@ -126,6 +140,8 @@ export const useGetPosts = (length) => {
 
 /**
  * React query to handle loading of events
+ *
+ * @author Giovanni Leo
  */
 export const useGetEvents = (length) => {
   return useInfiniteQuery({
@@ -137,6 +153,8 @@ export const useGetEvents = (length) => {
 
 /**
  * React query to handle loading of job listings
+ *
+ * @author Giovanni Leo
  */
 export const useGetJobListings = (length) => {
   return useInfiniteQuery({
@@ -148,6 +166,8 @@ export const useGetJobListings = (length) => {
 
 /**
  * React query to handle loading of albums
+ *
+ * @author Giovanni Leo
  */
 export const useGetAlbums = (length) => {
   return useInfiniteQuery({
@@ -159,6 +179,8 @@ export const useGetAlbums = (length) => {
 
 /**
  * React query to handle loading of users
+ *
+ * @author Giovanni Leo
  */
 export const useGetUsers = ({ length, key }) => {
   return useInfiniteQuery({
@@ -170,6 +192,8 @@ export const useGetUsers = ({ length, key }) => {
 
 /**
  * React query to handle loading of posts
+ *
+ * @author Giovanni Leo
  */
 export const useGetUserPosts = (userId) => {
   return useQuery({
@@ -180,6 +204,8 @@ export const useGetUserPosts = (userId) => {
 
 /**
  * React query to handle loading of posts
+ *
+ * @author Giovanni Leo
  */
 export const useGetUserEvents = (userId) => {
   return useQuery({
@@ -190,6 +216,8 @@ export const useGetUserEvents = (userId) => {
 
 /**
  * React query to handle loading of posts
+ *
+ * @author Giovanni Leo
  */
 export const useGetUserInterestedEvents = (userId) => {
   return useQuery({
@@ -200,6 +228,8 @@ export const useGetUserInterestedEvents = (userId) => {
 
 /**
  * React query to get post comment and like count
+ *
+ * @author Giovanni Leo
  */
 export const usePostInformation = (postId) => {
   return useQuery({
@@ -210,6 +240,8 @@ export const usePostInformation = (postId) => {
 
 /**
  * React query to get interested users in events
+ *
+ * @author Giovanni Leo
  */
 export const useEventInformation = (eventId) => {
   return useQuery({
@@ -220,6 +252,8 @@ export const useEventInformation = (eventId) => {
 
 /**
  * React query to like a post
+ *
+ * @author Giovanni Leo
  */
 export const useLikePost = () => {
   const client = useQueryClient();
@@ -232,6 +266,8 @@ export const useLikePost = () => {
 
 /**
  * React query to unlike a post
+ *
+ * @author Giovanni Leo
  */
 export const useUnlikePost = () => {
   const client = useQueryClient();
@@ -244,6 +280,8 @@ export const useUnlikePost = () => {
 
 /**
  * React query to unlike a post
+ *
+ * @author Giovanni Leo
  */
 export const useUnmarkInterested = () => {
   const client = useQueryClient();
@@ -259,6 +297,8 @@ export const useUnmarkInterested = () => {
 
 /**
  * React query to mark an event as interested
+ *
+ * @author Giovanni Leo
  */
 export const useMarkInterested = () => {
   const client = useQueryClient();
@@ -274,6 +314,8 @@ export const useMarkInterested = () => {
 
 /**
  * React query to get follower count of a user
+ *
+ * @author Giovanni Leo
  */
 export const useUserFollower = (userId) => {
   return useQuery({
@@ -284,6 +326,8 @@ export const useUserFollower = (userId) => {
 
 /**
  * React query to get following count of a user
+ *
+ * @author Giovanni Leo
  */
 export const useUserFollowing = (userId) => {
   return useQuery({
@@ -294,6 +338,8 @@ export const useUserFollowing = (userId) => {
 
 /**
  * React query to unfollow a user
+ *
+ * @author Giovanni Leo
  */
 export const useUnFollowUser = () => {
   const client = useQueryClient();
@@ -309,6 +355,8 @@ export const useUnFollowUser = () => {
 
 /**
  * React query to follow  a user
+ *
+ * @author Giovanni Leo
  */
 export const useFollowUser = () => {
   const client = useQueryClient();
@@ -324,6 +372,8 @@ export const useFollowUser = () => {
 
 /**
  * React query to check if user is following a the user
+ *
+ * @author Giovanni Leo
  */
 export const useIsFollowing = (userId) => {
   return useQuery({
@@ -334,6 +384,8 @@ export const useIsFollowing = (userId) => {
 
 /**
  * React query to add a new comment
+ *
+ * @author Giovanni Leo
  */
 export const useAddComment = () => {
   const client = useQueryClient();
@@ -346,6 +398,8 @@ export const useAddComment = () => {
 
 /**
  * React query to get comments
+ *
+ * @author Giovanni Leo
  */
 export const useComments = (postId) => {
   return useQuery({
@@ -356,6 +410,8 @@ export const useComments = (postId) => {
 
 /**
  * React query to get comments
+ *
+ * @author Giovanni Leo
  */
 export const usePrograms = () => {
   return useQuery({
@@ -366,6 +422,8 @@ export const usePrograms = () => {
 
 /**
  * React query to post new application
+ *
+ * @author Giovanni Leo
  */
 export const useApplication = () => {
   return useMutation({
@@ -375,6 +433,8 @@ export const useApplication = () => {
 
 /**
  * React query to update user details
+ *
+ * @author Giovanni Leo
  */
 export const useUpdateUserDetails = () => {
   const client = useQueryClient();
@@ -390,6 +450,8 @@ export const useUpdateUserDetails = () => {
 
 /**
  * React query to update user details
+ *
+ * @author Giovanni Leo
  */
 export const useUpdateUserProfile = () => {
   const client = useQueryClient();
@@ -404,6 +466,8 @@ export const useUpdateUserProfile = () => {
 
 /**
  * React query to get conversation messages
+ *
+ * @author Giovanni Leo
  */
 export const useConversationMessages = (receiverID) => {
   return useQuery({
@@ -414,6 +478,8 @@ export const useConversationMessages = (receiverID) => {
 
 /**
  * React query to get conversation list
+ *
+ * @author Giovanni Leo
  */
 export const useConversationList = () => {
   return useQuery({
@@ -424,6 +490,8 @@ export const useConversationList = () => {
 
 /**
  * React query to add new message
+ *
+ * @author Giovanni Leo
  */
 export const useAddMessage = () => {
   const client = useQueryClient();
@@ -439,6 +507,8 @@ export const useAddMessage = () => {
 
 /**
  * React query to create a new album
+ *
+ * @author Giovanni Leo
  */
 export const useNewAlbum = () => {
   const client = useQueryClient();
@@ -453,6 +523,8 @@ export const useNewAlbum = () => {
 
 /**
  * React query to add image on the album
+ *
+ * @author Giovanni Leo
  */
 export const useAddImageAlbum = () => {
   const client = useQueryClient();
@@ -467,6 +539,8 @@ export const useAddImageAlbum = () => {
 
 /**
  * React query to get album posts
+ *
+ * @author Giovanni Leo
  */
 export const useAlbumPosts = (albumId) => {
   return useQuery({
@@ -477,6 +551,8 @@ export const useAlbumPosts = (albumId) => {
 
 /**
  * React query to get album informations
+ *
+ * @author Giovanni Leo
  */
 export const useAlbumInformation = (albumId) => {
   return useQuery({
@@ -487,6 +563,8 @@ export const useAlbumInformation = (albumId) => {
 
 /**
  * React query to send OTP code
+ *
+ * @author Giovanni Leo
  */
 export const useSendOTP = () => {
   return useMutation({
@@ -496,6 +574,8 @@ export const useSendOTP = () => {
 
 /**
  * React query to verify OTP code
+ *
+ * @author Giovanni Leo
  */
 export const useVerifyOTP = () => {
   return useMutation({
@@ -505,6 +585,8 @@ export const useVerifyOTP = () => {
 
 /**
  * React query to change password
+ *
+ * @author Giovanni Leo
  */
 export const useChangePassword = () => {
   return useMutation({
@@ -515,6 +597,8 @@ export const useChangePassword = () => {
 /**
  *
  * React query to upload a new event
+ *
+ * @author Giovanni Leo
  */
 export const useUploadEvent = () => {
   const client = useQueryClient();
@@ -528,6 +612,8 @@ export const useUploadEvent = () => {
 /**
  *
  * React query to check if user is intereseted on the event
+ *
+ * @author Giovanni Leo
  */
 export const useCheckInterested = (eventid, userid) => {
   return useQuery({
@@ -539,6 +625,8 @@ export const useCheckInterested = (eventid, userid) => {
 /**
  *
  * React query to add a new job listing
+ *
+ * @author Giovanni Leo
  */
 export const useUploadJobListing = () => {
   const client = useQueryClient();
@@ -555,6 +643,8 @@ export const useUploadJobListing = () => {
 /**
  *
  * React query to delete a post
+ *
+ * @author Giovanni Leo
  */
 export const useDeletePost = () => {
   const client = useQueryClient();
@@ -570,6 +660,8 @@ export const useDeletePost = () => {
 /**
  *
  * React query to delete a event
+ *
+ * @author Giovanni Leo
  */
 export const useDeleteEvent = () => {
   const client = useQueryClient();
@@ -583,6 +675,8 @@ export const useDeleteEvent = () => {
 /**
  *
  * React query to delete a event
+ *
+ * @author Giovanni Leo
  */
 export const useDeleteJob = () => {
   const client = useQueryClient();

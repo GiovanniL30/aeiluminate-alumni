@@ -7,6 +7,10 @@ import default_img from "../../assets/default-img.png";
 
 const SkeletonLoader = () => <div className="w-10 h-10 bg-gray-300 animate-pulse rounded-full"></div>;
 
+/**
+ *
+ * @author Giovanni Leo
+ */
 const UserProfilePic = ({ userID, profile_link, otherContainerStyle, otherImageStyle }) => {
   const followingQuery = useUserFollowing(userID);
   const followerQuery = useUserFollower(userID);

@@ -1,6 +1,11 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
+/**
+ *
+ *
+ * @author Giovanni Leo
+ */
 const NotFound = () => {
   return (
     <div className="min-h-screen bg-black text-white padding flex items-center">

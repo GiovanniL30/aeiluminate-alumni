@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { timeAgo } from "../../../utils.js";
-
 import comment from "../../../assets/comment.png";
 import liked from "../../../assets/post-liked.png";
 import unliked from "../../../assets/post-unliked.png";
-
 import more_hor from "../../../assets/more_hor.png";
 import { usePostInformation, useLikePost, useUnlikePost, useDeletePost } from "../../_api/@react-client-query/query.js";
 import AelineCardLoading from "./loaders/AelineCardLoading.jsx";
@@ -15,6 +13,11 @@ import { useAuthContext } from "../../context/AuthContext.jsx";
 import ToastNotification from "../../constants/toastNotification.js";
 import Button from "../Button.jsx";
 
+/**
+ * Aeline Card
+ *
+ * @author Giovanni Leo
+ */
 const AelineCard = ({ isReload = false, canBeDelete = false, postID, caption, userID, createdAt }) => {
   const [showDelete, setShowDelete] = useState(false);
   const { user } = useAuthContext();

@@ -31,6 +31,11 @@ const SkeletonLoader = () => (
   </div>
 );
 
+/**
+ * A card component to represent User
+ *
+ * @author Giovanni Leo
+ */
 const UserCard = ({ userID }) => {
   const { data, isLoading, isError, error } = useGetUser(userID);
   const followingQuery = useUserFollowing(userID);

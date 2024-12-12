@@ -2,6 +2,11 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import InboxSidebar from "../../components/inbox/InboxSidebar";
 
+/**
+ *
+ *
+ * @author Giovanni Leo
+ */
 const InboxLayout = () => {
   return (
     <div className="px-3 flex flex-col md:flex-row gap-3 min-h-full w-full">

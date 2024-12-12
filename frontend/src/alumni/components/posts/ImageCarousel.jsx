@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 
+/**
+ * Image Carousel
+ *
+ * @author Giovanni Leo
+ */
 const ImageCarousel = ({ images, otherImageStyle }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 

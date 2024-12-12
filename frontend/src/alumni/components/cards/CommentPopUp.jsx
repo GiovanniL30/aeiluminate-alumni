@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import ImageCarousel from "../posts/ImageCarousel.jsx";
 import Button from "../Button";
-
 import liked from "../../../assets/post-liked.png";
 import unliked from "../../../assets/post-unliked.png";
 import { useAddComment, useComments, useFollowUser, useIsFollowing, useUnFollowUser, useUserFollower } from "../../_api/@react-client-query/query";
@@ -12,6 +11,11 @@ import UserProfilePic from "../UserProfilePic";
 import { ReadMore } from "../ReadMore";
 import { useAuthContext } from "../../context/AuthContext";
 
+/**
+ * Comment Block
+ *
+ * @author Giovanni Leo
+ */
 const CommentPopUp = ({ postId, likes, isLiked, profilePic, handleLike, images, userID, userName, setIsShowComment, caption }) => {
   const [commentData, setCommentData] = useState("");
   const followerQuery = useUserFollower(userID);

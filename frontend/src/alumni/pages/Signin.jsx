@@ -8,6 +8,11 @@ import TopPopUp from "../components/TopPopUp";
 import logo from "../../assets/logo-login-small.png";
 import earth from "../../assets/earth.webp";
 
+/**
+ *
+ *
+ * @author Giovanni Leo
+ */
 const Signin = () => {
   const [data, setData] = useState({ email: "", password: "" });
   const [errorMessage, setErrorMessage] = useState("");

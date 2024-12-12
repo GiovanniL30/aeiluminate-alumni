@@ -12,7 +12,6 @@ import {
 } from "../../_api/@react-client-query/query.js";
 import Button from "../Button.jsx";
 import { NavLink, useParams } from "react-router-dom";
-
 import default_img from "../../../assets/default-img.png";
 import companyIcon from "../../../assets/enterprise.png";
 import phoneIcon from "../../../assets/phone-call.png";
@@ -41,6 +40,10 @@ const SkeletonLoader = () => (
   </div>
 );
 
+/**
+ *
+ * @author Giovanni Leo
+ */
 const ProfileHeader = () => {
   const { id } = useParams();
   const { user } = useAuthContext();
@@ -76,8 +79,6 @@ const ProfileHeader = () => {
 
   const { bio, company, email, firstName, job_role, lastName, middleName, phoneNumber, profile_picture, role, userID, username, isPrivate } =
     userQuery.data.user;
-
-  console.log(alumniDetails.data);
 
   return (
     <div className="w-full mt-11 flex flex-col  items-center max-w-[800px] mx-auto gap-5 md:gap-14  md:flex-row">

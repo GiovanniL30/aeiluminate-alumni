@@ -1,5 +1,10 @@
 import React from "react";
 
+/**
+ *
+ *
+ * @author Giovanni Leo
+ */
 const NoOpenedMessage = () => {
   return (
     <div className="flex flex-col items-center justify-center h-full text-center bg-gray-100 p-5">

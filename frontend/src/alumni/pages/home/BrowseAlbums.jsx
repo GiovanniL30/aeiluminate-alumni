@@ -4,6 +4,11 @@ import AlbumCard from "../../components/cards/AlbumCard";
 import PostCardLoading from "../../components/cards/loaders/PostCardLoading";
 import Spinner from "../../components/Spinner.jsx";
 
+/**
+ *
+ *
+ * @author Giovanni Leo
+ */
 const BrowseAlbums = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } = useGetAlbums(4);
   const observerRef = useRef(null);

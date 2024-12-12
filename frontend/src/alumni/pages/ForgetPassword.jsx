@@ -7,6 +7,11 @@ import OtpInput from "react-otp-input";
 import ToastNotification from "../constants/toastNotification";
 import { useChangePassword, useSendOTP, useVerifyOTP } from "../_api/@react-client-query/query";
 
+/**
+ *
+ *
+ * @author Giovanni Leo
+ */
 const ForgetPassword = () => {
   const sendOtp = useSendOTP();
   const verifyOtp = useVerifyOTP();

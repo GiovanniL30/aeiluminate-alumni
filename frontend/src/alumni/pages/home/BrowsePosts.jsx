@@ -6,6 +6,11 @@ import PostCardLoading from "../../components/cards/loaders/PostCardLoading.jsx"
 import Spinner from "../../components/Spinner.jsx";
 import AlbumCard from "../../components/cards/AlbumCard.jsx";
 
+/**
+ *
+ *
+ * @author Giovanni Leo
+ */
 const BrowsePosts = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } = useGetPosts(4);
   const observerRef = useRef(null);

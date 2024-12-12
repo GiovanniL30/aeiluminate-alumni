@@ -2,6 +2,12 @@ import React from "react";
 import { NavLink, useParams } from "react-router-dom";
 import default_img from "../../../assets/default-img.png";
 
+/**
+ *
+ * Chatprofile component used in Inbox
+ *
+ * @author Giovanni Leo
+ */
 const ChatProfile = ({ receiverId, img, userName }) => {
   const { receiverId: URLID } = useParams();
 

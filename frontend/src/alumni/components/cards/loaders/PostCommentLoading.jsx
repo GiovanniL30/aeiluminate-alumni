@@ -1,5 +1,10 @@
 import React from "react";
 
+/**
+ * Card Loading
+ *
+ * @author Giovanni Leo
+ */
 const PostCommentLoading = () => {
   return (
     <div className="py-20 px-10 fixed left-0 right-0 top-0 bottom-0 min-h-screen bg-black bg-opacity-30 z-50 pointer-events-auto">

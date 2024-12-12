@@ -7,6 +7,11 @@ import { useApplication, usePrograms } from "../_api/@react-client-query/query";
 import { NavLink } from "react-router-dom";
 import ToastNotification from "../constants/toastNotification";
 
+/**
+ *
+ *
+ * @author Giovanni Leo
+ */
 const Signup = () => {
   const programsQuery = usePrograms();
   const [errorMessage, setErrorMessage] = useState("");

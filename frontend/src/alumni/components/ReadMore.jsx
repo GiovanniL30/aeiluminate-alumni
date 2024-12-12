@@ -1,5 +1,9 @@
 import { useState } from "react";
 
+/**
+ *
+ * @author Giovanni Leo
+ */
 export const ReadMore = ({ id, text, charLimit = 100 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const itCanOverflow = text.length > charLimit;

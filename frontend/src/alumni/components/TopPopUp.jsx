@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 
+/**
+ *
+ * @author Giovanni Leo
+ */
 const TopPopUp = ({ text }) => {
   const [hide, setHide] = useState(false);
 

@@ -1,5 +1,10 @@
 import React from "react";
 
+/**
+ * Card Loading
+ *
+ * @author Giovanni Leo
+ */
 const JobCardLoading = () => {
   return (
     <div className="my-shadow rounded-md p-3 animate-pulse">

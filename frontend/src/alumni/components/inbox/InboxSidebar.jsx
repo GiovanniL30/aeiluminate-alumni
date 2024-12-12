@@ -3,9 +3,14 @@ import ChatProfile from "./ChatProfile";
 import { useParams } from "react-router-dom";
 import { useConversationList } from "../../_api/@react-client-query/query";
 import { useAuthContext } from "../../context/AuthContext";
-
 import default_img from "../../../assets/default-img.png";
 
+/**
+ *
+ * Sidebar on the inbox
+ *
+ * @author Giovanni Leo
+ */
 const InboxSidebar = () => {
   const { receiverId } = useParams();
   const { user } = useAuthContext();

@@ -1,5 +1,10 @@
 import React from "react";
 
+/**
+ * Image Carousel used on Post Cards
+ *
+ * @author Giovanni Leo, Jhea Jhana Prudencio
+ */
 const PostCardCarousel = ({ posts, setPosts, currentIndex, setCurrentIndex, isRemovable = true }) => {
   const nextPost = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % posts.length);

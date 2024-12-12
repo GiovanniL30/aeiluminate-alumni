@@ -4,6 +4,11 @@ import { useAuthContext } from "../../context/AuthContext";
 import UserProfilePic from "../UserProfilePic";
 import { ReadMore } from "../ReadMore";
 
+/**
+ * Comment Block
+ *
+ * @author Giovanni Leo
+ */
 const CommentBlock = ({ userProfilePic, userName, userID, commentID, commentCreatedAt, commentContent }) => {
   const { user } = useAuthContext();
   return (

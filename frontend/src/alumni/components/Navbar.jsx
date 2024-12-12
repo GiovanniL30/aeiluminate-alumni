@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import logo from "../../assets/logoCircle.png";
 import { NavLink, useNavigate } from "react-router-dom";
 import { navLinks } from "../constants";
-
 import { useAuthContext } from "../context/AuthContext";
 import Button from "./Button";
 import { useLogoutUser } from "../_api/@react-client-query/query";
-
 import default_img from "../../assets/default-img.png";
 
+/**
+ *
+ * @author Giovanni Leo
+ */
 const Navbar = () => {
   const navigate = useNavigate();
   const { user, setToken, setUser } = useAuthContext();

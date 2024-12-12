@@ -7,7 +7,11 @@ const getAuthToken = () => {
   return auth?.token || null;
 };
 
-// Get specific user info
+/**
+ * Get specific user info
+ *
+ * @author Giovanni Leo
+ */
 export const getSpecificUserRequest = async (id) => {
   try {
     const token = getAuthToken();
@@ -20,7 +24,11 @@ export const getSpecificUserRequest = async (id) => {
   }
 };
 
-// Get alumni details
+/**
+ * Get alumni details
+ *
+ * @author Giovanni Leo
+ */
 export const getAlumniDetails = async (id) => {
   try {
     const token = getAuthToken();
@@ -33,7 +41,11 @@ export const getAlumniDetails = async (id) => {
   }
 };
 
-// Login user
+/**
+ * Login user
+ *
+ * @author Giovanni Leo
+ */
 export const userLogin = async (email, password) => {
   try {
     const credentials = { email, password };
@@ -48,7 +60,11 @@ export const userLogin = async (email, password) => {
   }
 };
 
-// Logout user
+/**
+ * // Logout user
+ *
+ * @author Giovanni Leo
+ */
 export const userLogout = async () => {
   try {
     localStorage.removeItem("auth");
@@ -59,7 +75,11 @@ export const userLogout = async () => {
   }
 };
 
-// Upload a post
+/**
+ * // Upload a post
+ *
+ * @author Giovanni Leo
+ */
 export const uploadPost = async (caption, images) => {
   try {
     const token = getAuthToken();
@@ -81,7 +101,11 @@ export const uploadPost = async (caption, images) => {
   }
 };
 
-// Upload a line
+/**
+ * // Upload a line
+ *
+ * @author Giovanni Leo
+ */
 export const uploadLine = async (caption) => {
   try {
     const token = getAuthToken();
@@ -102,8 +126,11 @@ export const uploadLine = async (caption) => {
   }
 };
 
-// Upload an event
-// Upload an event
+/**
+ * // Upload an event
+ *
+ * @author Giovanni Leo
+ */
 export const uploadEvent = async ({ location, dateTime, description, category, title, image }) => {
   try {
     const token = getAuthToken();
@@ -130,7 +157,11 @@ export const uploadEvent = async ({ location, dateTime, description, category, t
   }
 };
 
-// Fetch posts with pagination
+/**
+ * // Fetch posts with pagination
+ *
+ * @author Giovanni Leo
+ */
 export const fetchPosts = async ({ pageParam = 1, length = 5 }) => {
   try {
     const token = getAuthToken();
@@ -158,7 +189,11 @@ export const fetchPosts = async ({ pageParam = 1, length = 5 }) => {
   }
 };
 
-// Fetch user posts
+/**
+ * // Fetch user posts
+ *
+ * @author Giovanni Leo
+ */
 export const fetchUserPosts = async (userId) => {
   try {
     const token = getAuthToken();
@@ -174,7 +209,11 @@ export const fetchUserPosts = async (userId) => {
   }
 };
 
-// Fetch post information (likes, comments, etc.)
+/**
+ * // Fetch post information (likes, comments, etc.)
+ *
+ * @author Giovanni Leo
+ */
 export const fetchPostInformation = async (postId) => {
   try {
     const token = getAuthToken();
@@ -188,7 +227,11 @@ export const fetchPostInformation = async (postId) => {
   }
 };
 
-// Fetch events with pagination
+/**
+ * // Fetch events with pagination
+ *
+ * @author Giovanni Leo, Eugene Kyle Patano
+ */
 export const fetchEvents = async ({ pageParam = 1, length = 5 }) => {
   try {
     const token = getAuthToken();
@@ -216,7 +259,11 @@ export const fetchEvents = async ({ pageParam = 1, length = 5 }) => {
   }
 };
 
-// Fetch job listings
+/**
+ * // Fetch job listings
+ *
+ * @author Giovanni Leo, Jhea Jhana Prudencio
+ */
 export const fetchJobListing = async ({ pageParam = 1, length = 5 }) => {
   try {
     const token = getAuthToken();
@@ -244,7 +291,11 @@ export const fetchJobListing = async ({ pageParam = 1, length = 5 }) => {
   }
 };
 
-// Fetch user events
+/**
+ * // Fetch user events
+ *
+ * @author Giovanni Leo, Eugene Kyle Patano
+ */
 export const fetchUserEvents = async (userId) => {
   try {
     const token = getAuthToken();
@@ -260,7 +311,11 @@ export const fetchUserEvents = async (userId) => {
   }
 };
 
-// Fetch user events
+/**
+ * // Fetch user events
+ *
+ * @author Giovanni Leo, Eugene Kyle Patano
+ */
 export const fetchUserInterestedEvents = async (userId) => {
   try {
     const token = getAuthToken();
@@ -276,7 +331,11 @@ export const fetchUserInterestedEvents = async (userId) => {
   }
 };
 
-// Fetch event information (interested users)
+/**
+ * // Fetch event information (interested users)
+ *
+ * @author Giovanni Leo, Eugene Kyle Patano
+ */
 export const fetchEventInformation = async (eventId) => {
   try {
     const token = getAuthToken();
@@ -290,7 +349,11 @@ export const fetchEventInformation = async (eventId) => {
   }
 };
 
-// Like a post
+/**
+ * // Like a post
+ *
+ * @author Giovanni Leo
+ */
 export const likePost = async (postId) => {
   try {
     const token = getAuthToken();
@@ -308,7 +371,11 @@ export const likePost = async (postId) => {
   }
 };
 
-// Mark an event as interested
+/**
+ * // Mark an event as interested
+ *
+ * @author Giovanni Leo, Eugene Kyle Patano
+ */
 export const markEventInterested = async (eventId) => {
   try {
     const token = getAuthToken();
@@ -326,7 +393,11 @@ export const markEventInterested = async (eventId) => {
   }
 };
 
-// Unlike a post
+/**
+ * // Unlike a post
+ *
+ * @author Giovanni Leo
+ */
 export const unlikePost = async (postId) => {
   try {
     const token = getAuthToken();
@@ -344,7 +415,11 @@ export const unlikePost = async (postId) => {
   }
 };
 
-// Unmark an event as interested
+/**
+ * // Unmark an event as interested
+ *
+ * @author Giovanni Leo, Eugene Kyle Patano
+ */
 export const unmarkEventInterested = async (eventId) => {
   try {
     const token = getAuthToken();
@@ -362,7 +437,11 @@ export const unmarkEventInterested = async (eventId) => {
   }
 };
 
-// Fetch followers of a user
+/**
+ * // Fetch followers of a user
+ *
+ * @author Giovanni Leo
+ */
 export const fetchFollower = async (userId) => {
   try {
     const token = getAuthToken();
@@ -376,7 +455,11 @@ export const fetchFollower = async (userId) => {
   }
 };
 
-// Fetch following of a user
+/**
+ * // Fetch following of a user
+ *
+ * @author Giovanni Leo
+ */
 export const fetchFollowing = async (userId) => {
   try {
     const token = getAuthToken();
@@ -390,7 +473,11 @@ export const fetchFollowing = async (userId) => {
   }
 };
 
-// Follow a user
+/**
+ * // Follow a user
+ *
+ * @author Giovanni Leo
+ */
 export const followUserRequest = async (userId) => {
   try {
     const token = getAuthToken();
@@ -408,7 +495,11 @@ export const followUserRequest = async (userId) => {
   }
 };
 
-// Unfollow a user
+/**
+ * // Unfollow a user
+ *
+ * @author Giovanni Leo
+ */
 export const unfollowUserRequest = async (userId) => {
   try {
     const token = getAuthToken();
@@ -426,7 +517,11 @@ export const unfollowUserRequest = async (userId) => {
   }
 };
 
-// Check following status
+/**
+ * // Check following status
+ *
+ * @author Giovanni Leo
+ */
 export const checkFollowingStatusRequest = async (userId) => {
   try {
     const token = getAuthToken();
@@ -440,7 +535,11 @@ export const checkFollowingStatusRequest = async (userId) => {
   }
 };
 
-// Add comment to post
+/**
+ * // Add comment to post
+ *
+ * @author Giovanni Leo
+ */
 export const addCommentRequest = async (comment, postId) => {
   try {
     const token = getAuthToken();
@@ -461,7 +560,11 @@ export const addCommentRequest = async (comment, postId) => {
   }
 };
 
-// Get comments of a post
+/**
+ * // Get comments of a post
+ *
+ * @author Giovanni Leo
+ */
 export const getCommentsRequest = async (postId) => {
   try {
     const token = getAuthToken();
@@ -475,7 +578,11 @@ export const getCommentsRequest = async (postId) => {
   }
 };
 
-// Get list of programs
+/**
+ * // Get list of programs
+ *
+ * @author Giovanni Leo
+ */
 export const getProgramsRequest = async () => {
   try {
     const token = getAuthToken();
@@ -489,7 +596,11 @@ export const getProgramsRequest = async () => {
   }
 };
 
-//Request to apply for a new user account
+/**
+ * //Request to apply for a new user account
+ *
+ * @author Giovanni Leo
+ */
 export const postApplication = async ({
   email,
   roleType,
@@ -535,7 +646,11 @@ export const postApplication = async ({
   }
 };
 
-//Request to update user details
+/**
+ * //Request to update user details
+ *
+ * @author Giovanni Leo
+ */
 export const updateUserDetailsRequest = async ({ isPrivate, firstName, middleName, lastName, username, company, job_role, bio, phoneNumber }) => {
   try {
     const token = getAuthToken();
@@ -552,7 +667,11 @@ export const updateUserDetailsRequest = async ({ isPrivate, firstName, middleNam
   }
 };
 
-//Request to update user profile
+/**
+ * //Request to update user profile
+ *
+ * @author Giovanni Leo
+ */
 export const updateUserProfileRequest = async ({ oldProfileURL, newImage }) => {
   try {
     const token = getAuthToken();
@@ -574,7 +693,11 @@ export const updateUserProfileRequest = async ({ oldProfileURL, newImage }) => {
   }
 };
 
-//Request to get conversation messages
+/**
+ * //Request to get conversation messages
+ *
+ * @author Giovanni Leo
+ */
 export const getConversationMessagesRequest = async (receiverId) => {
   try {
     const token = getAuthToken();
@@ -594,7 +717,11 @@ export const getConversationMessagesRequest = async (receiverId) => {
   }
 };
 
-//Request to get conversation list
+/**
+ * //Request to get conversation list
+ *
+ * @author Giovanni Leo
+ */
 export const getConversationListRequest = async () => {
   try {
     const token = getAuthToken();
@@ -611,7 +738,11 @@ export const getConversationListRequest = async () => {
   }
 };
 
-//Request to add new message
+/**
+ * //Request to add new message
+ *
+ * @author Giovanni Leo
+ */
 export const addNewMessageRequest = async ({ receiverId, conversationID, content }) => {
   try {
     const token = getAuthToken();
@@ -632,7 +763,11 @@ export const addNewMessageRequest = async ({ receiverId, conversationID, content
   }
 };
 
-// Request to create a new album
+/**
+ * // Request to create a new album
+ *
+ * @author Giovanni Leo
+ */
 export const createNewAlbum = async ({ albumTitle, images }) => {
   try {
     const token = getAuthToken();
@@ -658,7 +793,11 @@ export const createNewAlbum = async ({ albumTitle, images }) => {
   }
 };
 
-// Request to add new image on album
+/**
+ * // Request to add new image on album
+ *
+ * @author Giovanni Leo
+ */
 export const addImageOnAlbum = async ({ albumTitle, images, albumId }) => {
   try {
     const token = getAuthToken();
@@ -685,6 +824,11 @@ export const addImageOnAlbum = async ({ albumTitle, images, albumId }) => {
   }
 };
 
+/**
+ * Get album Post
+ *
+ * @author Giovanni Leo
+ */
 export const getAlbumPosts = async (albumId) => {
   try {
     const token = getAuthToken();
@@ -702,6 +846,11 @@ export const getAlbumPosts = async (albumId) => {
   }
 };
 
+/**
+ * Get Album Information
+ *
+ * @author Giovanni Leo
+ */
 export const getAlbumInformation = async (albumId) => {
   try {
     const token = getAuthToken();
@@ -719,6 +868,11 @@ export const getAlbumInformation = async (albumId) => {
   }
 };
 
+/**
+ * Get lists of albums
+ *
+ * @author Giovanni Leo
+ */
 export const fetchAlbums = async ({ pageParam = 1, length = 5 }) => {
   try {
     const token = getAuthToken();
@@ -746,6 +900,11 @@ export const fetchAlbums = async ({ pageParam = 1, length = 5 }) => {
   }
 };
 
+/**
+ * Fetch list of users
+ *
+ * @author Giovanni Leo
+ */
 export const fetchUsers = async ({ pageParam = 1, length = 5, key = "" }) => {
   try {
     const token = getAuthToken();
@@ -773,6 +932,11 @@ export const fetchUsers = async ({ pageParam = 1, length = 5, key = "" }) => {
   }
 };
 
+/**
+ * sent otp
+ *
+ * @author Giovanni Leo
+ */
 export const sendOTP = async (email) => {
   try {
     const response = await axios.post(`${baseURL}/api/recover/send-otp`, { email });
@@ -783,6 +947,11 @@ export const sendOTP = async (email) => {
   }
 };
 
+/**
+ * verify otp
+ *
+ * @author Giovanni Leo
+ */
 export const verifyOTP = async (email, otp) => {
   try {
     const response = await axios.post(`${baseURL}/api/recover/verify-otp`, { email, otp });
@@ -793,6 +962,11 @@ export const verifyOTP = async (email, otp) => {
   }
 };
 
+/**
+ * Change password
+ *
+ * @author Giovanni Leo
+ */
 export const changePassword = async (email, newPassword) => {
   try {
     const response = await axios.post(`${baseURL}/api/recover/change-pass`, { email, newPassword });
@@ -803,6 +977,11 @@ export const changePassword = async (email, newPassword) => {
   }
 };
 
+/**
+ * Check interested user
+ *
+ * @author Giovanni Leo, Eugene Kyle Patano
+ */
 export const checkUserInterested = async (eventid, userid) => {
   try {
     const token = getAuthToken();
@@ -819,6 +998,11 @@ export const checkUserInterested = async (eventid, userid) => {
   }
 };
 
+/**
+ * Add new joblisitng
+ *
+ * @author Giovanni Leo, Jhea Jhana Prudencio
+ */
 export const addNewJobListing = async ({ jobTitle, company, experienceRequired, workType, salary, description, url }) => {
   try {
     const token = getAuthToken();
@@ -839,6 +1023,11 @@ export const addNewJobListing = async ({ jobTitle, company, experienceRequired, 
   }
 };
 
+/**
+ * Delete post
+ *
+ * @author Giovanni Leo
+ */
 export const deletePostRequest = async (postId) => {
   try {
     const token = getAuthToken();
@@ -854,6 +1043,11 @@ export const deletePostRequest = async (postId) => {
   }
 };
 
+/**
+ * Delete Event
+ *
+ * @author Giovanni Leo, Eugene Kyle Patano
+ */
 export const deleteEventRequest = async (eventId) => {
   try {
     const token = getAuthToken();
@@ -869,6 +1063,11 @@ export const deleteEventRequest = async (eventId) => {
   }
 };
 
+/**
+ * Delete Job
+ *
+ * @author Giovanni Leo, Jhea Jhana Prudencio
+ */
 export const deleteJobRequest = async (jobId) => {
   try {
     const token = getAuthToken();

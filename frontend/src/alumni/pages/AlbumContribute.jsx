@@ -8,6 +8,11 @@ import no_post from "../../assets/no_post.png";
 import back from "../../assets/back-arrow.png";
 import ToastNotification from "../constants/toastNotification";
 
+/**
+ *
+ *
+ * @author Giovanni Leo
+ */
 const AlbumContribute = () => {
   const { user } = useAuthContext();
   const { albumId } = useParams();

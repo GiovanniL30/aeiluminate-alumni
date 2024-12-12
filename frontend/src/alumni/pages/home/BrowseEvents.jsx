@@ -4,6 +4,11 @@ import EventCard from "../../components/cards/EventCard";
 import PostCardLoading from "../../components/cards/loaders/PostCardLoading";
 import Spinner from "../../components/Spinner.jsx";
 
+/**
+ *
+ *
+ * @author Giovanni Leo, Eugene Kyle Patano
+ */
 const BrowseEvents = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } = useGetEvents(5);
 

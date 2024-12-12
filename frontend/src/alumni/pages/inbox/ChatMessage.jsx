@@ -10,6 +10,11 @@ import io from "socket.io-client";
 import default_img from "../../../assets/default-img.png";
 import UserProfilePic from "../../components/UserProfilePic";
 
+/**
+ *
+ *
+ * @author Giovanni Leo
+ */
 const ChatMessage = () => {
   const [message, setMessage] = useState("");
   const messagesEndRef = useRef(null);

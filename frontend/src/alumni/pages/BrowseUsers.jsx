@@ -4,8 +4,12 @@ import UserCard from "../components/cards/UserCard";
 import PostCardLoading from "../components/cards/loaders/PostCardLoading";
 import { useAuthContext } from "../context/AuthContext";
 import search from "../../assets/search.svg";
-import Button from "../components/Button";
 
+/**
+ *
+ *
+ * @author Giovanni Leo
+ */
 const BrowseUsers = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } = useGetUsers(20);
   const observerRef = useRef(null);

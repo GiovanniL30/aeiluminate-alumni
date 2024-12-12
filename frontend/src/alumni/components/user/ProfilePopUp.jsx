@@ -3,6 +3,10 @@ import { useUpdateUserProfile } from "../../_api/@react-client-query/query";
 import default_img from "../../../assets/default-img.png";
 import Button from "../Button";
 
+/**
+ *
+ * @author Giovanni Leo
+ */
 const ProfilePopUp = ({ profile_picture, setOpenProfile, canEdit, id }) => {
   const [newProfile, setNewProfile] = useState();
   const updateUserProfileQuery = useUpdateUserProfile();

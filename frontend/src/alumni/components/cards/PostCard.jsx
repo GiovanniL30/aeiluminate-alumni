@@ -1,13 +1,9 @@
 import React, { useState } from "react";
 import { timeAgo } from "../../../utils.js";
-
-import album_icon from "../../../assets/album-icon.png";
-
 import comment from "../../../assets/comment.png";
 import liked from "../../../assets/post-liked.png";
 import unliked from "../../../assets/post-unliked.png";
 import more_vert from "../../../assets/more_vert.png";
-
 import ImageCarousel from "../posts/ImageCarousel.jsx";
 import { ReadMore } from "../ReadMore";
 import { useDeletePost, useLikePost, usePostInformation, useUnlikePost } from "../../_api/@react-client-query/query.js";
@@ -19,6 +15,11 @@ import Button from "../Button.jsx";
 import { NavLink } from "react-router-dom";
 import ToastNotification from "../../constants/toastNotification.js";
 
+/**
+ * Post Card
+ *
+ * @author Eugene Kyle Patano
+ */
 const PostCard = ({ isReload = false, canBeDelete = false, albumId = null, postID, caption, images, userID, createdAt, otherStyle }) => {
   const [showDelete, setShowDelete] = useState(false);
   const [isShowComment, setIsShowComment] = useState(false);

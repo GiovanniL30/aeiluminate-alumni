@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 
+/**
+ *
+ * @author Giovanni Leo
+ */
 const Input = ({ label, placeholder, name, value, type = "text", handleChange, min = 1, otherStyle, disabled, required = true, labelColor }) => {
   const [showPassword, setShowPassword] = useState(false);
 

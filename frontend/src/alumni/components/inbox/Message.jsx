@@ -2,6 +2,11 @@ import React from "react";
 
 import default_img from "../../../assets/default-img.png";
 
+/**
+ * Message Component
+ *
+ * @author Giovanni Leo
+ */
 const Message = ({ fromMe, content, date, image }) => {
   return (
     <div className={`flex items-center gap-4 ${fromMe ? "flex-row-reverse" : "flex-row"}`}>

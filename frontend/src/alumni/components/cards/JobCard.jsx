@@ -13,6 +13,11 @@ import Button from "../Button";
 import JobCardLoading from "./loaders/JobCardLoading";
 import ToastNotification from "../../constants/toastNotification.js";
 
+/**
+ * Job Card
+ *
+ * @author Jhea Jhana Prudencio, Giovanni Leo
+ */
 const JobCard = ({
   isReload = false,
   canBeDelete = false,

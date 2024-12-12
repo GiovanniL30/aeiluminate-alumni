@@ -10,10 +10,11 @@ import time from "../../../assets/time.png";
 import create_event from "../../../assets/create_event.png";
 import category from "../../../assets/category.png";
 
-/*
-* @Eugene Kyle Patano
-* Used to show necessary event information fields
-*/
+/**
+ * Used to show necessary event information fields
+ *
+ * @author Eugene Kyle Patano
+ */
 const EventInformation = ({ setEventInformation, eventInformation }) => {
   return (
     <div>

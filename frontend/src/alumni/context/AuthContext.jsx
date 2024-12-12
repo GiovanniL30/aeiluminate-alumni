@@ -4,6 +4,11 @@ const Auth = createContext();
 
 export const useAuthContext = () => useContext(Auth);
 
+/**
+ * user details provider
+ *
+ * @author Giovanni Leo
+ */
 const AuthContext = ({ children }) => {
   const [auth, setAuth] = useState(() => {
     try {
