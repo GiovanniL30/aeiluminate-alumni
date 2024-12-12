@@ -4,6 +4,10 @@ import { useGetUserInterestedEvents } from "../../_api/@react-client-query/query
 import EventCard from "../../components/cards/EventCard";
 import PostCardLoading from "../../components/cards/loaders/PostCardLoading";
 
+/*
+* @Eugene Kyle Patano
+* Used to show events marked as interested by a user
+*/
 const UserInteresetedEvents = () => {
   const { id } = useParams();
 

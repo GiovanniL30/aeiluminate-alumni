@@ -4,6 +4,10 @@ import PostCardLoading from "../../components/cards/loaders/PostCardLoading";
 import { useGetUserEvents } from "../../_api/@react-client-query/query";
 import EventCard from "../../components/cards/EventCard";
 
+/*
+* @Eugene Kyle Patano
+* Used to show events created by a specified user
+*/
 const UserEvents = () => {
   const { id } = useParams();
 
