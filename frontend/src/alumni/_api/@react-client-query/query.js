@@ -165,25 +165,25 @@ export const useGetUserPosts = (userId) => {
   });
 };
 
-// /**
-//  * React query to handle loading of posts
-//  */
-// export const useGetUserEvents = (userId) => {
-//   return useQuery({
-//     queryKey: ["events", userId],
-//     queryFn: () => fetchUserEvents(userId),
-//   });
-// };
+/**
+ * React query to handle loading of posts
+ */
+export const useGetUserEvents = (userId) => {
+  return useQuery({
+    queryKey: ["events", userId],
+    queryFn: () => fetchUserEvents(userId),
+  });
+};
 
-// /**
-//  * React query to handle loading of posts
-//  */
-// export const useGetUserInterestedEvents = (userId) => {
-//   return useQuery({
-//     queryKey: ["interested_events", userId],
-//     queryFn: () => fetchUserInterestedEvents(userId),
-//   });
-// };
+/**
+ * React query to handle loading of posts
+ */
+export const useGetUserInterestedEvents = (userId) => {
+  return useQuery({
+    queryKey: ["events/interested_events", userId],
+    queryFn: () => fetchUserInterestedEvents(userId),
+  });
+};
 
 /**
  * React query to get post comment and like count

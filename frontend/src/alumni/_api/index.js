@@ -251,7 +251,7 @@ export const fetchUserEvents = async (userId) => {
 export const fetchUserInterestedEvents = async (userId) => {
   try {
     const token = getAuthToken();
-    const response = await axios.get(`${baseURL}/api/interested_events/${userId}`, {
+    const response = await axios.get(`${baseURL}/api/events/interested_events/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
