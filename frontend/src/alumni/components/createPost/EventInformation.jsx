@@ -5,6 +5,10 @@ import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
 import { eventCategories } from "../../constants";
 import Input from "../Input";
+import loc from "../../../assets/loc.png";
+import time from "../../../assets/time.png";
+import create_event from "../../../assets/create_event.png";
+import category from "../../../assets/category.png";
 
 const EventInformation = ({ setEventInformation, eventInformation }) => {
   return (
@@ -14,13 +18,17 @@ const EventInformation = ({ setEventInformation, eventInformation }) => {
         <Input placeholder="eg. Reunion For Batch 2021" name="title" value={eventInformation.title} handleChange={setEventInformation} />
       </div>
       <div>
-        <img src="" alt="" />
-        <p>Add Location</p>
+        <div className="flex flex-row gap-2 items-center mt-5">
+          <img className="h-5" src={loc} alt="" />
+          <p>Add Location</p>
+        </div>
         <Input placeholder="eg. Baguio City Burnham Park" name="location" value={eventInformation.location} handleChange={setEventInformation} />
       </div>
       <div>
-        <img src="" alt="" />
-        <p>Category </p>
+        <div className="flex flex-row gap-2 items-center mt-5">
+          <img className="h-4" src={category} alt="" />
+          <p>Category </p>
+        </div>
         <select className="border-[1px]" onChange={setEventInformation} value={eventInformation.category} name="category">
           {eventCategories.map((category, index) => (
             <option key={index}>{category}</option>
@@ -28,11 +36,13 @@ const EventInformation = ({ setEventInformation, eventInformation }) => {
         </select>
       </div>
       <div>
-        <img src="" alt="" />
-        <p>Date and Time</p>
+        <div className="flex flex-row gap-2 items-center mt-5">
+          <img className="h-5" src={create_event} alt="" />
+          <p>Date and Time</p>
+        </div>
         <DateTimePicker format="y-MM-dd h:mm:ss a" name="dateTime" onChange={setEventInformation} value={eventInformation.dateTime} />
       </div>
-      <div className="relative">
+      <div className="relative mt-5">
         <p>Event Description</p>
         <textarea
           value={eventInformation.description}

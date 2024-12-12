@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { timeAgo } from "../../../utils.js";
-import album_icon from "../../../assets/album-icon.png";
-import like from "../../../assets/post-liked.png";
+
+import loc from "../../../assets/loc.png";
+import time from "../../../assets/time.png";
+import create_event from "../../../assets/create_event.png";
+import category from "../../../assets/category.png";
 
 import more_vert from "../../../assets/more_vert.png";
 import { ReadMore } from "../ReadMore";
-import PostCardLoading from "./loaders/PostCardLoading.jsx";
 import UserProfilePic from "../UserProfilePic.jsx";
 import { useAuthContext } from "../../context/AuthContext.jsx";
 import Button from "../Button.jsx";
-import { NavLink } from "react-router-dom";
 import { useCheckInterested, useEventInformation, useGetUser, useMarkInterested, useUnmarkInterested } from "../../_api/@react-client-query/query.js";
 
 const EventCard = ({ eventID, title, description, eventDateTime, location, eventType, createdOn, createdBy, imageUrl }) => {
@@ -44,7 +45,7 @@ const EventCard = ({ eventID, title, description, eventDateTime, location, event
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
             <UserProfilePic userID={createdBy} profile_link={uploader.data.user.profile_picture} />
-            <p>
+            <p className="font-bold text-md">
               {uploader.data.user.username} {user.userID == createdBy && <span className="text-primary_blue">(YOU)</span>}
             </p>
           </div>
@@ -55,23 +56,26 @@ const EventCard = ({ eventID, title, description, eventDateTime, location, event
             </button>
           </div>
         </div>
-        <h1>{title}</h1>
+        <h1 className="font-bold text-md">{title}</h1>
+        <div className="text-sm">
+        <p>{description}</p>
+        </div>
         <div className="grid grid-cols-2 p-5 gap-4">
           <div className="flex items-center gap-2">
-            <img className="w-5" src={like} alt="" />
-            <p>{location}</p>
+            <img className="w-5" src={loc} alt="" />
+            <p className="break-words">{location}</p>
           </div>
           <div className="flex items-center gap-2">
-            <img className="w-5" src={like} alt="" />
-            <p>{eventType}</p>
+            <img className="w-5" src={category} alt="" />
+            <p className="break-words">{eventType}</p>
           </div>
           <div className="flex items-center gap-2">
-            <img className="w-5" src={like} alt="" />
-            <p>{eventDateTime}</p>
+            <img className="w-5" src={create_event} alt="" />
+            <p className="break-words">{eventDateTime}</p>
           </div>
           <div className="flex items-center gap-2">
-            <img className="w-5" src={like} alt="" />
-            <p>{eventDateTime}</p>
+            <img className="w-5" src={time} alt="" />
+            <p className="break-words">{eventDateTime}</p>
           </div>
         </div>
       </div>

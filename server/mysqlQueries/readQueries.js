@@ -591,8 +591,8 @@ export const getUserEvents = async (userId) => {
 export const getUserInterestedEvents = async (userId) => {
   const query = `
   SELECT * FROM events 
-  LEFT JOIN interested_users USING (eventID) 
-  WHERE userID = ?`;
+  LEFT JOIN interested_users iu USING (eventID) 
+  WHERE iu.userID = ?`;
 
   try {
     const [results] = await connection.query(query, [userId]);

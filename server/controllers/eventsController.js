@@ -72,7 +72,7 @@ export const getUserEventsController = async (req, res, next) => {
 
     const events = await getUserEvents(id);
 
-    res.status(200).json({ posts: events });
+    res.status(200).json({ events: events });
   } catch (error) {
     console.error("Error in getting user events:", error);
     return res.status(500).json({ message: error.message || "Internal Server Error" });
@@ -85,7 +85,7 @@ export const getUserEventsController = async (req, res, next) => {
  *
  *
  * @method GET
- * @route /api/interested_events/:id
+ * @route /api/events/interested_events/:id
  */
 export const getUserInterestedEventsController = async (req, res, next) => {
   try {
