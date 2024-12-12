@@ -52,7 +52,7 @@ const EventCard = ({ eventID, title, description, eventDateTime, location, event
           <div className="flex items-center gap-2">
             <p className="text-light_text text-sm">{timeAgo(createdOn)}</p>
             <button>
-              <img className="w-1" src={more_vert} alt="" />
+              <img className="w-1" src={more_vert} alt="dots" />
             </button>
           </div>
         </div>
@@ -65,26 +65,38 @@ const EventCard = ({ eventID, title, description, eventDateTime, location, event
         
         <div className="grid grid-cols-2 p-5 gap-4">
           <div className="flex gap-2">
-            <img  src={loc} alt="" />
+            <img  src={loc} alt="location" />
             <p className="break-words">{location}</p>
           </div>
           <div className="flex gap-2">
-            <img  src={category} alt="" />
+            <img  src={category} alt="event type" />
             <p className="break-words">{eventType}</p>
           </div>
           <div className="flex gap-2">
-            <img  src={create_event} alt="" />
-            <p className="break-words">{eventDateTime}</p>
+            <img src={create_event} alt="calendar" />
+            <p className="break-words">
+              {new Intl.DateTimeFormat("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              }).format(new Date(eventDateTime))}
+            </p>
           </div>
           <div className="flex gap-2">
-            <img  src={time} alt="" />
-            <p className="break-words">{eventDateTime}</p>
+            <img src={time} alt="time" />
+            <p className="break-words">
+              {new Intl.DateTimeFormat("en-US", {
+                hour: "numeric",
+                minute: "numeric",
+                hour12: true,
+              }).format(new Date(eventDateTime))}
+            </p>
           </div>
         </div>
       </div>
       <div className="bg-gray-50 flex justify-center h-fit max-h-[500px] min-h-[250px] hover-opacity">
         <a href={imageUrl} target="_blank">
-          <img className="max-w-full max-h-[450px] object-contain" src={imageUrl} alt="" />
+          <img className="max-w-full max-h-[450px] object-contain" src={imageUrl} alt="event image" />
         </a>
       </div>
 

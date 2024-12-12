@@ -19,14 +19,14 @@ const EventInformation = ({ setEventInformation, eventInformation }) => {
       </div>
       <div>
         <div className="flex flex-row gap-2 items-center mt-5">
-          <img className="h-5" src={loc} alt="" />
+          <img className="h-5" src={loc} alt="location" />
           <p>Add Location</p>
         </div>
         <Input placeholder="eg. Baguio City Burnham Park" name="location" value={eventInformation.location} handleChange={setEventInformation} />
       </div>
       <div>
         <div className="flex flex-row gap-2 items-center mt-5">
-          <img className="h-4" src={category} alt="" />
+          <img className="h-4" src={category} alt="event type" />
           <p>Category </p>
         </div>
         <select className="border-[1px]" onChange={setEventInformation} value={eventInformation.category} name="category">
@@ -37,7 +37,7 @@ const EventInformation = ({ setEventInformation, eventInformation }) => {
       </div>
       <div>
         <div className="flex flex-row gap-2 items-center mt-5">
-          <img className="h-5" src={create_event} alt="" />
+          <img className="h-5" src={create_event} alt="calendar" />
           <p>Date and Time</p>
         </div>
         <DateTimePicker format="y-MM-dd h:mm:ss a" name="dateTime" onChange={setEventInformation} value={eventInformation.dateTime} />
