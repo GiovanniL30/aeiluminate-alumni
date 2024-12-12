@@ -107,19 +107,19 @@ const EventCard = ({
 
         <div className="grid grid-cols-2 p-5 gap-4">
           <div className="flex gap-2">
-            <img src={loc} alt="" />
+            <img className="w-5 h-5 object-contain" src={loc} alt="" />
             <p className="break-words">{location}</p>
           </div>
           <div className="flex gap-2">
-            <img src={category} alt="" />
+            <img className="w-5 h-5 object-contain" src={category} alt="" />
             <p className="break-words">{eventType}</p>
           </div>
           <div className="flex gap-2">
-            <img src={create_event} alt="" />
+            <img className="w-5 h-5 object-contain" src={create_event} alt="" />
             <p className="break-words">{formatDate(eventDateTime)}</p>
           </div>
           <div className="flex gap-2">
-            <img src={time} alt="" />
+            <img className="w-5 h-5 object-contain" src={time} alt="" />
             <p className="break-words">{getTime(eventDateTime)}</p>
           </div>
         </div>

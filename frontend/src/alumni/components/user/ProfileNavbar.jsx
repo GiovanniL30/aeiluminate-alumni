@@ -33,7 +33,7 @@ const ProfileNavbar = () => {
   }, [user.role]);
 
   return (
-    <div className="flex max-w-[900px] mx-auto justify-between mt-20">
+    <div className="flex max-w-[900px] flex-wrap gap-3 mx-auto justify-between mt-20">
       {routes.map((route, index) => {
         return (
           <NavLink
