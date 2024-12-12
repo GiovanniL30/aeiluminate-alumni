@@ -9,9 +9,9 @@ import crypto from "crypto";
  *  @route /api/register/client
  */
 export const createUserAccountController = async (req, res, next) => {
-  const { email, roleType, userName, password, firstName, lastName, middleName, program, yearGraduated, type } = req.body;
+  const { email, roleType, userName, password, firstName, lastName, middleName = null, program, yearGraduated, type } = req.body;
 
-  if (!email || !roleType || !userName || !password || !firstName || !lastName || !middleName || !program || !yearGraduated) {
+  if (!email || !roleType || !userName || !password || !firstName || !lastName || !program || !yearGraduated) {
     return res.status(400).json({ message: "Bad request: Missing required fields." });
   }
 

@@ -16,19 +16,8 @@ import { storage } from "../appwriteconfig.js";
 import { ID, InputFile } from "node-appwrite";
 import jwt from "jsonwebtoken";
 
-const getFileIdFromUrl = (url) => {
-  const regex = /\/files\/([a-z0-9]+)\//;
-  const match = url.match(regex);
-
-  if (match && match[1]) {
-    return match[1];
-  } else {
-    throw new Error("File ID not found in the URL.");
-  }
-};
-
 const generateToken = (userId, role) => {
-  return jwt.sign({ userId, role }, process.env.TOKEN, { expiresIn: "1d" });
+  return jwt.sign({ userId, role }, process.env.TOKEN);
 };
 
 /**
