@@ -27,6 +27,7 @@ import {
   BrowseJobs,
   HomeLayout,
   ForgetPassword,
+  UserInteresetedEvents,
 } from "./alumni/pages/index.js";
 import Auth from "./alumni/_auth/Auth.jsx";
 import AuthContext from "./alumni/context/AuthContext.jsx";
@@ -59,6 +60,7 @@ const App = () => {
                   <Route index element={<UserPosts />} />
                   <Route path="events" element={<UserEvents />} />
                   <Route path="line" element={<UserAeilines />} />
+                  <Route path="interested_events" element={<UserInteresetedEvents />} />
                 </Route>
                 <Route path="followers" element={<UserFollowers />} />
                 <Route path="following" element={<UsersFollowing />} />

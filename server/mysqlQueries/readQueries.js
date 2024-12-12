@@ -556,12 +556,11 @@ export const getAlbums = async (offset, limit) => {
   }
 };
 
-export const getEvents = async (page, pageSize, userId ) => {
+export const getEvents = async (page, pageSize) => {
   const query = `
-    SELECT events.*
+    SELECT *
     FROM events
-    LEFT JOIN users ON posts.userID = users.userID  
-    ORDER BY events.createdOn DESC 
+    ORDER BY createdOn DESC 
     LIMIT ? OFFSET ?
   `;
 
@@ -569,9 +568,7 @@ export const getEvents = async (page, pageSize, userId ) => {
 
   try {
     const [results] = await connection.query(query, [parseInt(pageSize), parseInt(offset)]);
-    const [[countResult]] = await connection.query(
-      "SELECT COUNT(*) AS total FROM events LEFT JOIN users ON events.userID = users.userID"
-    );
+    const [[countResult]] = await connection.query("SELECT COUNT(*) AS total FROM events");
     return { events: results, total: countResult.total };
   } catch (error) {
     console.error("Error fetching paginated events:", error);
@@ -612,28 +609,37 @@ export const getUserInterestedEvents = async (userId) => {
 export const getEventStats = async (eventId, userId) => {
   const query = `
     SELECT 
-        e.eventID, 
-        e.createdBy AS posted_by,
-        u.profile_picture AS profile_link,
-        COUNT(DISTINCT iu.userID) AS total_interested, 
-        MAX(CASE WHEN iu.userID = ? THEN 1 ELSE 0 END) AS is_intereseted
+    u.* 
     FROM 
-        events e
-    LEFT JOIN 
-        interested_users iu ON e.eventID = iu.eventID
-    LEFT JOIN 
-        users u ON e.createdBy = u.userID
+        users u
+    INNER JOIN 
+        interested_users iu ON u.userid = iu.userid
     WHERE 
-        event.eventID = ?
-    GROUP BY 
-        e.eventID, u.username
+        iu.eventid = ?;
   `;
 
   try {
-    const [result] = await connection.query(query, [userId, eventId]);
-    return result.length > 0 ? result[0] : null;
+    const [result] = await connection.query(query, [eventId]);
+    return result;
   } catch (error) {
     console.error("Failed to get event stats:", error);
     throw new Error("Failed to get event stats");
+  }
+};
+
+/**
+ * Check if the user is interested on the event
+ */
+
+export const checkInterested = async (eventId, userId) => {
+  const query = "SELECT * FROM interested_users WHERE eventid = ? AND userid = ?";
+
+  try {
+    const [result] = await connection.query(query, [eventId, userId]);
+
+    return result.length > 0;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to get");
   }
 };

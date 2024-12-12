@@ -90,14 +90,19 @@ export const uploadLine = async (caption) => {
 };
 
 // Upload an event
-export const uploadEvent = async (desc, images) => {
+export const uploadEvent = async ({ location, dateTime, description, category, title, image }) => {
   try {
     const token = getAuthToken();
     const formData = new FormData();
-    formData.append("description", desc);
-    images.forEach((image) => formData.append("images", image.file));
 
-    const response = await axios.post(`${baseURL}/api/event`, formData, {
+    formData.append("title", title);
+    formData.append("desc", description);
+    formData.append("eventDateTime", dateTime);
+    formData.append("location", location);
+    formData.append("eventType", category);
+    formData.append("images", image.file);
+
+    const response = await axios.post(`${baseURL}/api/events`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${token}`,
@@ -189,7 +194,7 @@ export const fetchEvents = async ({ pageParam = 1, length = 5 }) => {
     const nextPage = pageParam < totalPages ? pageParam + 1 : undefined;
 
     return {
-      posts: data.events,
+      events: data.events,
       nextPage,
     };
   } catch (error) {
@@ -233,7 +238,7 @@ export const fetchUserInterestedEvents = async (userId) => {
 export const fetchEventInformation = async (eventId) => {
   try {
     const token = getAuthToken();
-    const response = await axios.get(`${baseURL}/api/event/stats/${eventId}`, {
+    const response = await axios.get(`${baseURL}/api/events/stats/${eventId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
@@ -266,7 +271,7 @@ export const markEventInterested = async (eventId) => {
   try {
     const token = getAuthToken();
     const response = await axios.post(
-      `${baseURL}/api/event/interested/${eventId}`,
+      `${baseURL}/api/events/interested/${eventId}`,
       {},
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -302,7 +307,7 @@ export const unmarkEventInterested = async (eventId) => {
   try {
     const token = getAuthToken();
     const response = await axios.post(
-      `${baseURL}/api/event/uninterested/${eventId}`,
+      `${baseURL}/api/events/uninterested/${eventId}`,
       {},
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -749,6 +754,22 @@ export const verifyOTP = async (email, otp) => {
 export const changePassword = async (email, newPassword) => {
   try {
     const response = await axios.post(`${baseURL}/api/recover/change-pass`, { email, newPassword });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
+
+export const checkUserInterested = async (eventid, userid) => {
+  try {
+    const token = getAuthToken();
+    const response = await axios.get(`${baseURL}/api/events/user_interested/${eventid}`, {
+      params: { userid },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error(error);

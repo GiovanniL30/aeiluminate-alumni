@@ -13,15 +13,14 @@ export const uploadEventController = async (req, res) => {
     const { userId, mediaInfo } = req;
 
     const { title, desc, eventDateTime, location, eventType } = req.body;
-    const eventId = crypto.randomUUID();
+    const eventID = crypto.randomUUID();
 
-    const eventResult = await createEvent(eventId, title, desc = "", eventDateTime, location, eventType, new Date(), userId);
+    const image = mediaInfo[0].mediaURL || null;
+
+    const eventResult = await createEvent(eventID, title, desc, new Date(eventDateTime), location, eventType, new Date(), userId, image);
     if (!eventResult) throw new Error("Failed to add new event");
 
-    for (const media of mediaInfo) {
-      const newMedia = await addNewMedia(media.mediaID, media.mediaType, media.mediaURL, new Date(), postId);
-      if (!newMedia) throw new Error("Failed to add new media");
-    }
+    await addInterestedUser(eventID, userId);
 
     return res.status(201).json({ message: "Event created successfully" });
   } catch (error) {
@@ -89,17 +88,17 @@ export const getUserEventsController = async (req, res, next) => {
  * @route /api/interested_events/:id
  */
 export const getUserInterestedEventsController = async (req, res, next) => {
-    try {
-      const { id } = req.params;
-  
-      const events = await getUserInterestedEvents(id);
-  
-      res.status(200).json({ events: events });
-    } catch (error) {
-      console.error("Error in getting user interested events:", error);
-      return res.status(500).json({ message: error.message || "Internal Server Error" });
-    }
-  };
+  try {
+    const { id } = req.params;
+
+    const events = await getUserInterestedEvents(id);
+
+    res.status(200).json({ events: events });
+  } catch (error) {
+    console.error("Error in getting user interested events:", error);
+    return res.status(500).json({ message: error.message || "Internal Server Error" });
+  }
+};
 
 /**
  *
@@ -111,10 +110,10 @@ export const getUserInterestedEventsController = async (req, res, next) => {
  */
 export const getInterestedUsersCountController = async (req, res, next) => {
   try {
-    const { eventId } = req.params;
+    const { id } = req.params;
     const { userId } = req;
 
-    const stats = await getEventStats(eventId, userId);
+    const stats = await getEventStats(id, userId);
 
     if (!stats) return res.status(404).json({ message: "Event stats not found" });
 
@@ -130,15 +129,15 @@ export const getInterestedUsersCountController = async (req, res, next) => {
  * Mark an Event as interested
  *
  *
- * @method GET
+ * @method POST
  * @route /api/event/interested/:id
  */
 export const markInterestedController = async (req, res, next) => {
   try {
-    const { eventId } = req.params;
+    const { id } = req.params;
     const { userId } = req;
 
-    const result = await addInterestedUser(eventId, userId);
+    const result = await addInterestedUser(id, userId);
 
     if (!result) throw new Error("Failed to mark the event as interested");
 
@@ -159,10 +158,12 @@ export const markInterestedController = async (req, res, next) => {
  */
 export const unmarkInterestedController = async (req, res, next) => {
   try {
-    const { eventId } = req.params;
+    const { id } = req.params;
     const { userId } = req;
 
-    const result = await unmarkInterestedEvent(eventId, userId);
+    console.log({ id, userId });
+
+    const result = await unmarkInterestedEvent(id, userId);
 
     if (!result) throw new Error("Failed to unmark as Interested");
 

@@ -210,7 +210,6 @@ export const createEvent = async (eventID, title, desc = "", eventDateTime, loca
   `;
   let values = [eventID, title, desc, eventDateTime, location, eventType, createdOn, createdBy, imageUrl];
 
-
   try {
     const [result] = await connection.query(query, values);
     return result.affectedRows > 0;
@@ -236,4 +235,3 @@ export const addInterestedUser = async (eventID, userID) => {
     throw new Error("Failed to insert new interested_users into the database");
   }
 };
-
