@@ -1,6 +1,10 @@
 import express from "express";
 import { changePasswordController, sendOTPController, verifyOTPController } from "../controllers/passwordRecoveryController.js";
 
+/**
+ *
+ * @author Giovanni Leo
+ */
 export const passwordRecoveryRoute = express.Router();
 
 /**

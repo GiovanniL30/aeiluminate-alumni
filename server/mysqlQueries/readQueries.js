@@ -2,6 +2,8 @@ import connection from "../connections.js";
 
 /**
  * Get user hashed password
+ *
+ * @author Giovanni Leo
  */
 export const getUserWithEmail = async (email) => {
   const query = "SELECT * FROM users WHERE email = ?";
@@ -17,6 +19,8 @@ export const getUserWithEmail = async (email) => {
 
 /**
  * Get a specific user from the database
+ *
+ * @author Giovanni Leo
  */
 export const getUser = async (id) => {
   const query = "SELECT * FROM users WHERE userID = ?";
@@ -32,6 +36,8 @@ export const getUser = async (id) => {
 
 /**
  * Get specific alumni user details including program information
+ *
+ * @author Giovanni Leo
  */
 export const getAlumniDetails = async (id) => {
   const query = `
@@ -52,6 +58,8 @@ export const getAlumniDetails = async (id) => {
 
 /**
  * Get an application and user data from the database
+ *
+ * @author Giovanni Leo
  */
 export const getApplication = async (email) => {
   const query = `
@@ -79,6 +87,8 @@ export const getApplication = async (email) => {
 
 /**
  * Get a list of all programs
+ *
+ * @author Giovanni Leo
  */
 export const getPrograms = async () => {
   const query = "SELECT * FROM academic_programs";
@@ -94,6 +104,8 @@ export const getPrograms = async () => {
 
 /**
  * Get comment, like count, and user's like status for a specific post
+ *
+ * @author Giovanni Leo
  */
 export const getPostStats = async (postId, userId) => {
   const query = `
@@ -129,6 +141,8 @@ export const getPostStats = async (postId, userId) => {
 
 /**
  * Check if the username is already in the database
+ *
+ * @author Giovanni Leo
  */
 export const checkUsername = async (username, userId = null) => {
   let query = "SELECT COUNT(*) as users FROM users WHERE username = ?";
@@ -151,6 +165,8 @@ export const checkUsername = async (username, userId = null) => {
 
 /**
  * Check if the email is already in the database
+ *
+ * @author Giovanni Leo
  */
 export const checkEmail = async (email) => {
   const query = "SELECT * FROM users WHERE email = ?";
@@ -167,6 +183,8 @@ export const checkEmail = async (email) => {
 /**
  * Fetch paginated users excluding those who have an ID in the application table
  * and filter by search query (key)
+ *
+ * @author Giovanni Leo
  */
 export const getUsers = async (page, pageSize, key) => {
   const offset = (page - 1) * pageSize;
@@ -228,6 +246,10 @@ export const getUsers = async (page, pageSize, key) => {
   }
 };
 
+/**
+ *
+ * @author Giovanni Leo
+ */
 export const getPosts = async (page, pageSize, userId) => {
   const query = `
     SELECT posts.*, 
@@ -255,6 +277,8 @@ export const getPosts = async (page, pageSize, userId) => {
 
 /**
  * Fetch posts of a user
+ *
+ * @author Giovanni Leo
  */
 export const getUserPosts = async (userId) => {
   const query = "SELECT * FROM posts WHERE userID = ?";
@@ -270,6 +294,8 @@ export const getUserPosts = async (userId) => {
 
 /**
  * Get all list of media files of a post
+ *
+ * @author Giovanni Leo
  */
 export const getMedia = async (postId) => {
   const query = "SELECT mediaID, mediaURL, mediaType FROM media WHERE postID = ?";
@@ -285,6 +311,8 @@ export const getMedia = async (postId) => {
 
 /**
  * Get the followers of a user
+ *
+ * @author Giovanni Leo
  */
 export const getUserFollowers = async (userId) => {
   const query = `
@@ -310,6 +338,8 @@ export const getUserFollowers = async (userId) => {
 
 /**
  * Get the users that a user is following
+ *
+ * @author Giovanni Leo
  */
 export const getUserFollowing = async (userId) => {
   const query = `
@@ -335,6 +365,8 @@ export const getUserFollowing = async (userId) => {
 
 /**
  * Check if the user is following a user
+ *
+ * @author Giovanni Leo
  */
 export const checkIsFollowing = async (followerID, followingID) => {
   const query = "SELECT COUNT(*) AS is_following FROM follows WHERE followerID = ? AND followedID = ?";
@@ -350,6 +382,8 @@ export const checkIsFollowing = async (followerID, followingID) => {
 
 /**
  * Get comments for a specific post
+ *
+ * @author Giovanni Leo
  */
 export const getPostComments = async (postId) => {
   const query = `
@@ -379,6 +413,8 @@ export const getPostComments = async (postId) => {
 
 /**
  * Check if a conversation already exists between two users
+ *
+ * @author Giovanni Leo
  */
 export const checkIfConversationAvailable = async (senderID, receiverID) => {
   const query = `
@@ -400,6 +436,8 @@ export const checkIfConversationAvailable = async (senderID, receiverID) => {
 
 /**
  * Get conversation messages for a specific conversation
+ *
+ * @author Giovanni Leo
  */
 export const getConversationMessages = async (conversationID) => {
   const query = `
@@ -440,6 +478,8 @@ export const getConversationMessages = async (conversationID) => {
 
 /**
  * Get all conversations for a certain user
+ *
+ * @author Giovanni Leo
  */
 export const getAllUserConversations = async (userID) => {
   const query = `
@@ -479,6 +519,8 @@ export const getAllUserConversations = async (userID) => {
 
 /**
  * Get all posts and their media for a specific album
+ *
+ * @author Giovanni Leo
  */
 export const getPostsByAlbumId = async (albumId) => {
   const query = `
@@ -513,6 +555,8 @@ export const getPostsByAlbumId = async (albumId) => {
 
 /**
  * Get album information along with user details (user ID, profile picture, username)
+ *
+ * @author Giovanni Leo
  */
 export const getAlbumInformation = async (albumId) => {
   const query = `
@@ -548,6 +592,8 @@ export const getAlbumInformation = async (albumId) => {
 
 /**
  * Get list of albums
+ *
+ * @author Giovanni Leo
  */
 export const getAlbums = async (offset, limit) => {
   const query = `
@@ -588,6 +634,8 @@ export const getAlbums = async (offset, limit) => {
 
 /**
  * Get list of events
+ *
+ * @author Giovanni Leo, Eugene Kyle Patano
  */
 export const getEvents = async (page, pageSize) => {
   const query = `
@@ -611,6 +659,8 @@ export const getEvents = async (page, pageSize) => {
 
 /**
  * Get events posted by a user
+ *
+ * @author Eugene Kyle Patano
  */
 export const getUserEvents = async (userId) => {
   const query = "SELECT * FROM events WHERE createdBy = ?";
@@ -626,6 +676,8 @@ export const getUserEvents = async (userId) => {
 
 /**
  * Get interested users of an event
+ *
+ * @author Eugene Kyle Patano
  */
 export const getUserInterestedEvents = async (userId) => {
   const query = `
@@ -644,6 +696,8 @@ export const getUserInterestedEvents = async (userId) => {
 
 /**
  * Get interested users count for a specific event
+ *
+ * @author Giovanni Leo, Eugene Kyle Patano
  */
 export const getEventStats = async (eventId, userId) => {
   const query = `
@@ -668,6 +722,8 @@ export const getEventStats = async (eventId, userId) => {
 
 /**
  * Check if the user is interested on the event
+ *
+ * @author Giovanni Leo, Eugene Kyle Patano
  */
 
 export const checkInterested = async (eventId, userId) => {
@@ -685,6 +741,8 @@ export const checkInterested = async (eventId, userId) => {
 
 /**
  * Fetch job listings post
+ *
+ * @author Giovanni Leo, Jhea Jana Prudencio
  */
 
 export const getJobListings = async (page = 1, pageSize = 10) => {
@@ -707,6 +765,8 @@ export const getJobListings = async (page = 1, pageSize = 10) => {
 
 /**
  * Check if the user is the owner of the post
+ *
+ * @author Giovanni Leo
  */
 
 export const checkIfUserPost = async (userId, postId) => {
@@ -736,6 +796,8 @@ export const checkIfUserPost = async (userId, postId) => {
 
 /**
  * Check if the user is the owner of the event
+ *
+ * @author Giovanni Leo
  */
 
 export const checkIfUserEvent = async (userId, eventId) => {
@@ -763,6 +825,8 @@ export const checkIfUserEvent = async (userId, eventId) => {
 
 /**
  * Check if the user is the owner of the event
+ *
+ * @author Giovanni Leo
  */
 export const checkIfUserJobPost = async (userId, jobId) => {
   const query = `

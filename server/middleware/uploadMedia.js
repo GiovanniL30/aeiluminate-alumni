@@ -2,6 +2,11 @@ import { storage } from "../appwriteconfig.js";
 import { InputFile } from "node-appwrite";
 import crypto from "crypto";
 
+/**
+ * Uploads a new media on the req.files
+ *
+ * @author Giovanni Leo
+ */
 export const uploadMediaMiddleware = async (req, res, next) => {
   try {
     if (!req.files || req.files.length === 0) {

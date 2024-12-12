@@ -11,6 +11,11 @@ import {
   getAlbumsController,
 } from "../controllers/albumController.js";
 
+/**
+ *
+ * @author Giovanni Leo
+ */
+
 export const albumRouter = express.Router();
 
 /**

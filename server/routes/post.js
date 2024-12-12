@@ -16,6 +16,10 @@ import { upload } from "../multer.js";
 import { authenticateUserToken } from "../middleware/authenticateToken.js";
 import { uploadMediaMiddleware } from "../middleware/uploadMedia.js";
 
+/**
+ *
+ * @author Giovanni Leo
+ */
 export const postRouter = express.Router();
 
 /**

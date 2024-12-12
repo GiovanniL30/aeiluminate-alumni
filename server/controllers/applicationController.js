@@ -11,6 +11,7 @@ import { ID, InputFile } from "node-appwrite";
  *
  * @method POST
  * @route /api/apply
+ * @author Giovanni Leo
  */
 export const createApplicationController = async (req, res) => {
   const { userId } = req;

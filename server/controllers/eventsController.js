@@ -7,6 +7,8 @@ import { deleteEvent } from "../mysqlQueries/deleteQueries.js";
 
 /**
  * Inserts a new Event on the Database
+ *
+ * @author Giovanni Leo, Eugene Kyle Patano
  */
 export const uploadEventController = async (req, res) => {
   try {
@@ -42,6 +44,7 @@ export const uploadEventController = async (req, res) => {
  *
  * @method GET
  * @route /api/events
+ * @author Giovanni Leo, Eugene Kyle Patano
  */
 export const getEventsController = async (req, res, next) => {
   try {
@@ -70,6 +73,7 @@ export const getEventsController = async (req, res, next) => {
  *
  * @method GET
  * @route /api/events/:id
+ * @author Giovanni Leo, Eugene Kyle Patano
  */
 export const getUserEventsController = async (req, res, next) => {
   try {
@@ -91,6 +95,7 @@ export const getUserEventsController = async (req, res, next) => {
  *
  * @method GET
  * @route /api/events/interested_events/:id
+ * @author Giovanni Leo, Eugene Kyle Patano
  */
 export const getUserInterestedEventsController = async (req, res, next) => {
   try {
@@ -112,6 +117,7 @@ export const getUserInterestedEventsController = async (req, res, next) => {
  *
  * @method GET
  * @route /api/events/stats/:id
+ * @author Giovanni Leo, Eugene Kyle Patano
  */
 export const getInterestedUsersCountController = async (req, res, next) => {
   try {
@@ -136,6 +142,7 @@ export const getInterestedUsersCountController = async (req, res, next) => {
  *
  * @method POST
  * @route /api/events/interested/:id
+ * @author Giovanni Leo, Eugene Kyle Patano
  */
 export const markInterestedController = async (req, res, next) => {
   try {
@@ -160,6 +167,7 @@ export const markInterestedController = async (req, res, next) => {
  *
  * @method GET
  * @route /api/events/uninterested/:id
+ * @author Giovanni Leo, Eugene Kyle Patano
  */
 export const unmarkInterestedController = async (req, res, next) => {
   try {
@@ -186,6 +194,7 @@ export const unmarkInterestedController = async (req, res, next) => {
  *
  * @method GET
  * @route /api/events/user_interested/:id
+ * @author Giovanni Leo, Eugene Kyle Patano
  */
 export const checkEventInterestedController = async (req, res) => {
   try {
@@ -205,6 +214,7 @@ export const checkEventInterestedController = async (req, res) => {
  *
  * @method DELTE
  * @route /api/events/:id
+ * @author Giovanni Leo, Eugene Kyle Patano
  */
 export const deleteEventController = async (req, res) => {
   try {

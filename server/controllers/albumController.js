@@ -9,6 +9,7 @@ import { getAlbums } from "../mysqlQueries/readQueries.js";
  *
  * @method GET
  * @route /api/album/:id
+ * @author Giovanni Leo
  */
 export const getAlbumController = async (req, res) => {
   const albumId = req.params.id;
@@ -28,6 +29,7 @@ export const getAlbumController = async (req, res) => {
  *
  * @method GET
  * @route /api/album/information/:id
+ * @author Giovanni Leo
  */
 export const getAlbumInformationController = async (req, res) => {
   const albumId = req.params.id;
@@ -47,6 +49,7 @@ export const getAlbumInformationController = async (req, res) => {
  *
  * @method POST
  * @route /api/album/add
+ * @author Giovanni Leo
  */
 export const addNewPostOnAlbumController = async (req, res) => {
   try {
@@ -75,6 +78,7 @@ export const addNewPostOnAlbumController = async (req, res) => {
  *
  * @method GET
  * @route /api/album/all
+ * @author Giovanni Leo
  */
 export const getAlbumsController = async (req, res, next) => {
   try {

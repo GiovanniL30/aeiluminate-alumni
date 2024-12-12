@@ -2,6 +2,10 @@ import { addNewMessageController, conversationListController, getMessagesControl
 import { authenticateUserToken } from "../middleware/authenticateToken.js";
 import express from "express";
 
+/**
+ *
+ * @author Giovanni Leo
+ */
 export const conversationRoute = express.Router();
 
 /**

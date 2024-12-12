@@ -42,6 +42,7 @@ const verifyPassword = (password, hashedPassword) => {
  *
  * @method POST
  * @route /api/login
+ * @author Giovanni Leo
  */
 export const loginController = async (req, res) => {
   const { email, password } = req.body;
@@ -82,6 +83,7 @@ export const loginController = async (req, res) => {
  *
  * @method DELETE
  * @route /api/logout
+ * @author Giovanni Leo
  */
 export const logoutController = async (req, res) => {
   res.clearCookie("token", {
@@ -96,6 +98,7 @@ export const logoutController = async (req, res) => {
  *  Get all users on the Database (user)
  *  @method GET
  *  @route /api/users
+ * @author Giovanni Leo
  */
 export const getUsersContoller = async (req, res) => {
   const { page = 1, pageSize = 5, key = "" } = req.query;
@@ -119,6 +122,7 @@ export const getUsersContoller = async (req, res) => {
  * Get a specific user from the Database (user)
  * @method GET
  * @route /api/user
+ * @author Giovanni Leo
  */
 export const getUserController = async (req, res) => {
   const { userId } = req;
@@ -143,6 +147,7 @@ export const getUserController = async (req, res) => {
  * Get a specific user from the Database (user)
  * @method GET
  * @route /api/user/alumni
+ * @author Giovanni Leo
  */
 export const getAlumniDetailsController = async (req, res) => {
   const { id } = req.params;
@@ -165,6 +170,7 @@ export const getAlumniDetailsController = async (req, res) => {
  * Get a specific user from the Database (user)
  * @method GET
  * @route /api/user/:id
+ * @author Giovanni Leo
  */
 export const getUserWithIdController = async (req, res) => {
   const { id } = req.params;
@@ -189,6 +195,7 @@ export const getUserWithIdController = async (req, res) => {
  *  Delete user on the database
  *  @method DELETE
  *  @route /api/users/delete/:id
+ * @author Giovanni Leo
  */
 export const deleteUserController = async (req, res) => {
   const { id } = req.params;
@@ -209,6 +216,7 @@ export const deleteUserController = async (req, res) => {
  *  Get follower count of a user
  *  @method GET
  *  @route /api/user/follower_count/:id
+ * @author Giovanni Leo
  */
 export const userFollowerController = async (req, res) => {
   const { id } = req.params;
@@ -227,6 +235,7 @@ export const userFollowerController = async (req, res) => {
  *  Get following count of a user
  *  @method GET
  *  @route /api/user/following_count/:id
+ * @author Giovanni Leo
  */
 export const userFollowingController = async (req, res) => {
   const { id } = req.params;
@@ -245,6 +254,7 @@ export const userFollowingController = async (req, res) => {
  *  Follow a user
  *  @method POST
  *  @route /api/user/follow/:id
+ * @author Giovanni Leo
  */
 export const followUserController = async (req, res) => {
   const { id } = req.params;
@@ -266,6 +276,7 @@ export const followUserController = async (req, res) => {
  *  Unfollow a user
  *  @method POST
  *  @route /api/user/unfollow/:id
+ * @author Giovanni Leo
  */
 export const unFollowUserController = async (req, res) => {
   const { id } = req.params;
@@ -287,6 +298,7 @@ export const unFollowUserController = async (req, res) => {
  *  Unfollow a user
  *  @method POST
  *  @route /api/user/follow_status/:id
+ * @author Giovanni Leo
  */
 export const checkIsFollowingController = async (req, res) => {
   const { id } = req.params;
@@ -306,6 +318,7 @@ export const checkIsFollowingController = async (req, res) => {
  *  Update UserPosts Details
  *  @method PATCH
  *  @route /api/user/update/details
+ * @author Giovanni Leo
  */
 export const updateUserDetailsController = async (req, res) => {
   const { firstName, middleName, lastName, username, company, job_role, bio, phoneNumber, isPrivate } = req.body;
@@ -328,6 +341,7 @@ export const updateUserDetailsController = async (req, res) => {
  *  Update UserPosts Profile Pic
  *  @method PATCH
  *  @route /api/user/update/profile
+ * @author Giovanni Leo
  */
 export const updateUserProfilePictureController = async (req, res) => {
   try {

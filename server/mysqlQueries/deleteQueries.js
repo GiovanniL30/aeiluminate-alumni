@@ -4,6 +4,7 @@ import { account, users } from "../appwriteconfig.js";
 /**
  * Removes an account from the user table
  * @affectedDatabase = user
+ * @author Giovanni Leo
  */
 export const removeUserAccount = async (userId) => {
   try {
@@ -19,6 +20,7 @@ export const removeUserAccount = async (userId) => {
 /**
  * Unlike a post
  * @affectedDatabase = likes
+ * @author Giovanni Leo
  */
 export const unlikePost = async (postID, userID) => {
   const query = "DELETE FROM likes WHERE postID = ? AND userID = ?";
@@ -35,6 +37,7 @@ export const unlikePost = async (postID, userID) => {
 /**
  * Unfollow a user
  * @affectedDatabase = follower
+ * @author Giovanni Leo
  */
 export const unfollowUser = async (followerID, followedID) => {
   const query = "DELETE FROM follows WHERE followerID = ? AND followedID = ?";
@@ -51,6 +54,7 @@ export const unfollowUser = async (followerID, followedID) => {
 /**
  * Remove an event in the events table
  * @affectedDatabase = events
+ * @author Giovanni Leo
  */
 export const removeEvent = async (eventID) => {
   const query = "DELETE FROM events WHERE eventID = ?";
@@ -67,6 +71,7 @@ export const removeEvent = async (eventID) => {
 /**
  * Unmark an Event as Interested
  * @affectedDatabase = interested_users
+ * @author Eugene Kyle Patano
  */
 export const unmarkInterestedEvent = async (eventID, userID) => {
   const query = "DELETE FROM interested_users WHERE eventID = ? AND userID = ?";
@@ -83,8 +88,8 @@ export const unmarkInterestedEvent = async (eventID, userID) => {
 /**
  * Delete a post
  * @affectedDatabase = post
+ * @author Giovanni Leo
  */
-
 export const deletePost = async (postId) => {
   const query = "DELETE FROM posts WHERE postID = ?";
 
@@ -100,6 +105,7 @@ export const deletePost = async (postId) => {
 /**
  * Delete a event
  * @affectedDatabase = events
+ * @author Giovanni Leo
  */
 
 export const deleteEvent = async (eventID) => {
@@ -117,6 +123,7 @@ export const deleteEvent = async (eventID) => {
 /**
  * Delete a joblisting
  * @affectedDatabase = job_listing
+ * @author Giovanni Leo
  */
 export const deleteJobListing = async (jobid) => {
   const query = "DELETE FROM job_listing WHERE jobID = ?";

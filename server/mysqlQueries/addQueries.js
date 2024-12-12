@@ -4,6 +4,7 @@ import { account, users } from "../appwriteconfig.js";
 /**
  * Adds a new user
  * @affectedDatabase = user
+ * @author Giovanni Leo
  */
 export const addNewUser = async (userId, role, email, username, password, firstName, middleName, lastName) => {
   const insertUserQuery = `
@@ -33,6 +34,7 @@ export const addNewUser = async (userId, role, email, username, password, firstN
 /**
  * Adds a new alumni
  * @affectedDatabase = alumni
+ * @author Giovanni Leo
  */
 export const addNewAlumni = async (userID, yeaGraduated, programID, isEmployed = 0) => {
   const insertUserQuery = `
@@ -52,6 +54,7 @@ export const addNewAlumni = async (userID, yeaGraduated, programID, isEmployed =
 /**
  * Adds a new post
  * @affectedDatabase = posts
+ * @author Giovanni Leo
  */
 export const addNewPost = async (postId, userID, caption = " ", time, albumId = null) => {
   let query = "INSERT INTO posts (postId, userID, caption, createdAt";
@@ -79,6 +82,7 @@ export const addNewPost = async (postId, userID, caption = " ", time, albumId = 
 /**
  * Adds a new media
  * @affectedDatabase = media
+ * @author Giovanni Leo
  */
 export const addNewMedia = async (mediaID, mediaType, mediaURL, uploadedAt, postID) => {
   const query = "INSERT INTO media (mediaID, mediaType, mediaURL, uploadedAt, postID) VALUES (?, ?, ?, ?, ?)";
@@ -95,6 +99,7 @@ export const addNewMedia = async (mediaID, mediaType, mediaURL, uploadedAt, post
 /**
  * Like a new post
  * @affectedDatabase = likes
+ * @author Giovanni Leo
  */
 export const addLike = async (postID, userID) => {
   const query = "INSERT INTO likes (postID, userID, likedAt) VALUES (?, ?, ?)";
@@ -111,6 +116,7 @@ export const addLike = async (postID, userID) => {
 /**
  * Follow a user
  * @affectedDatabase = follower
+ * @author Giovanni Leo
  */
 export const followUser = async (followerID, followedID) => {
   const query = "INSERT INTO follows (followerID, followedID, followedAt) VALUES (?, ?, ?)";
@@ -127,6 +133,7 @@ export const followUser = async (followerID, followedID) => {
 /**
  * Add a comment
  * @affectedDatabase = comment
+ * @author Giovanni Leo
  */
 export const addComment = async (commentID, content, postID, userID) => {
   const query = "INSERT INTO comments (commentID, content, createdAt, postID, userID) VALUES (?, ?, ?, ?, ?)";
@@ -143,6 +150,7 @@ export const addComment = async (commentID, content, postID, userID) => {
 /**
  * Add a new application
  * @affectedDatabase = application
+ * @author Giovanni Leo
  */
 export const addApplication = async (appID, diplomaURL, schoolIdURL, userID) => {
   const query = "INSERT INTO application (appID, diplomaURL, schoolIdURL, userID, createdAt) VALUES (?, ?, ?, ?, ?);";
@@ -159,6 +167,7 @@ export const addApplication = async (appID, diplomaURL, schoolIdURL, userID) => 
 /**
  * Add a new conversation and the first message.
  * @affectedDatabase = conversation, private_messages
+ * @author Giovanni Leo
  */
 export const createConverstaion = async (conversationID, senderID, receiverID) => {
   const query = "INSERT INTO conversation (conversationID, memberOne, memberTwo, createdAt) VALUES (?, ?, ?, ?)";
@@ -174,6 +183,7 @@ export const createConverstaion = async (conversationID, senderID, receiverID) =
 
 /**
  * Add a new message to the conversation
+ * @author Giovanni Leo
  */
 export const addNewMessage = async (messageID, conversationID, senderID, receiverID, content) => {
   const query = `
@@ -192,6 +202,7 @@ export const addNewMessage = async (messageID, conversationID, senderID, receive
 
 /**
  * Creates a new album on the database
+ * @author Giovanni Leo
  */
 export const createAlbum = async (albumId, albumTitle, albumIdOwner) => {
   const query = `
@@ -212,6 +223,7 @@ export const createAlbum = async (albumId, albumTitle, albumIdOwner) => {
 
  * Creates a new event on the database
  * @affectedDatabase = events
+ * @author Giovanni Leo, Eugene Kyle Patano
  */
 export const createEvent = async (eventID, title, desc = "", eventDateTime, location, eventType, createdOn, createdBy, imageUrl) => {
   let query = `
@@ -233,6 +245,7 @@ export const createEvent = async (eventID, title, desc = "", eventDateTime, loca
 /**
  * Creates a new interested_user on the database
  * @affectedDatabase = interested_users
+ * @author Giovanni Leo, Eugene Kyle Patano
  */
 export const addInterestedUser = async (eventID, userID) => {
   let query = "INSERT INTO interested_users (userID, eventID) VALUES (?, ?)";
@@ -247,9 +260,10 @@ export const addInterestedUser = async (eventID, userID) => {
   }
 };
 
-/*
+/**
  * Adds a new job listing
  * @affectedDatabase = job_listing
+ * @author Giovanni Leo, Jhea Jana Prudencio
  */
 export const addNewJobListing = async (jobID, jobTitle, company, experienceRequired, workType, salary, description, createdOn, createdBy, url) => {
   const query = `

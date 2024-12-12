@@ -2,6 +2,8 @@ import connection from "../connections.js";
 
 /**
  * Updates user details
+ *
+ * @author Giovanni Leo
  */
 export const updateProfileDetails = async (userId, firstName, middleName, lastName, userName, company, jobRole, bio, phoneNumber, isPrivate) => {
   const query = `
@@ -39,6 +41,8 @@ export const updateProfileDetails = async (userId, firstName, middleName, lastNa
 
 /**
  * Updates user profile picture
+ *
+ * @author Giovanni Leo
  */
 export const updateProfilePicture = async (userId, profilePicture) => {
   const query = `
@@ -56,6 +60,8 @@ export const updateProfilePicture = async (userId, profilePicture) => {
 
 /**
  * Updates user password recovery via forget password
+ *
+ * @author Giovanni Leo
  */
 export const changePassword = async (email, newPassword) => {
   const query = `

@@ -6,6 +6,7 @@ import { getPrograms } from "../mysqlQueries/readQueries.js";
  *
  * @method GET
  * @route /api/programs
+ * @author Giovanni Leo
  */
 export const getProgramsController = async (req, res) => {
   try {

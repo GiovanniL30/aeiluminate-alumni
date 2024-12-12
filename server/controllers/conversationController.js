@@ -9,6 +9,7 @@ import crypto from "crypto";
  *
  * @method GET
  * @route /api/conversation/messages
+ * @author Giovanni Leo
  */
 export const getMessagesController = async (req, res) => {
   const { userId } = req;
@@ -41,6 +42,7 @@ export const getMessagesController = async (req, res) => {
  *
  * @method GET
  * @route /api/conversation/list
+ * @author Giovanni Leo
  */
 export const conversationListController = async (req, res) => {
   const { userId } = req;
@@ -62,6 +64,7 @@ export const conversationListController = async (req, res) => {
  *
  * @method POST
  * @route /api/conversation/message
+ * @author Giovanni Leo
  */
 export const addNewMessageController = async (req, res) => {
   const { userId: senderID } = req;

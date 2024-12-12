@@ -15,6 +15,10 @@ import { authenticateUserToken } from "../middleware/authenticateToken.js";
 import { uploadMediaMiddleware } from "../middleware/uploadMedia.js";
 import { upload } from "../multer.js";
 
+/**
+ *
+ * @author Giovanni Leo, Eugene Kyle Patano
+ */
 export const eventRouter = express.Router();
 
 /**

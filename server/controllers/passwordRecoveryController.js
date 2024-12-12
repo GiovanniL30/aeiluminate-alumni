@@ -31,6 +31,7 @@ const hashPassword = (password) => {
  *
  * @method POST
  * @route /api/recover/send-otp
+ * @author Giovanni Leo
  */
 export const sendOTPController = async (req, res) => {
   const { email } = req.body;
@@ -64,6 +65,7 @@ export const sendOTPController = async (req, res) => {
  *
  * @method POST
  * @route /api/recover/verify-otp
+ * @author Giovanni Leo
  */
 export const verifyOTPController = (req, res) => {
   const { email, otp } = req.body;
@@ -97,6 +99,7 @@ export const verifyOTPController = (req, res) => {
  *
  * @method POST
  * @route /api/recover/change-pass
+ * @author Giovanni Leo
  */
 export const changePasswordController = async (req, res) => {
   try {

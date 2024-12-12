@@ -7,6 +7,8 @@ import { checkIfUserPost } from "../mysqlQueries/readQueries.js";
 
 /**
  * Inserts a new Post on the Database
+ *
+ * @author Giovanni Leo
  */
 export const uploadPostController = async (req, res) => {
   try {
@@ -41,6 +43,7 @@ export const uploadPostController = async (req, res) => {
  *
  * @method POST
  * @route /api/line
+ * @author Giovanni Leo
  */
 export const uploadLineController = async (req, res, next) => {
   try {

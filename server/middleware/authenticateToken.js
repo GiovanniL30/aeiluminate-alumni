@@ -1,5 +1,10 @@
 import jwt from "jsonwebtoken";
 
+/**
+ * Check if user token is valid
+ *
+ * @author Giovanni Leo
+ */
 export const authenticateUserToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
 

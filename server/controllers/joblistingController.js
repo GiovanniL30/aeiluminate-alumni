@@ -10,6 +10,7 @@ import { checkIfUserJobPost, getJobListings } from "../mysqlQueries/readQueries.
  *
  * @method DELETE
  * @route /api/listings/:id
+ * @author Giovanni Leo
  */
 export const deleteJobListingController = async (req, res) => {
   try {
@@ -43,6 +44,7 @@ export const deleteJobListingController = async (req, res) => {
  *
  * @method POST
  * @route /api/listings
+ * @author Giovanni Leo
  */
 export const uploadNewJoblistingController = async (req, res) => {
   try {
@@ -82,6 +84,7 @@ export const uploadNewJoblistingController = async (req, res) => {
  *
  * @method GET
  * @route /api/listings
+ * @author Giovanni Leo
  */
 export const getJobListingsController = async (req, res) => {
   try {

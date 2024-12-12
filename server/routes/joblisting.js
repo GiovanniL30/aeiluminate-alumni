@@ -4,6 +4,10 @@ import { authenticateUserToken } from "../middleware/authenticateToken.js";
 
 import { deleteJobListingController, getJobListingsController, uploadNewJoblistingController } from "../controllers/joblistingController.js";
 
+/**
+ *
+ * @author Giovanni Leo, Jhea Jana Prudencio
+ */
 export const joblistingRoute = express.Router();
 
 /**

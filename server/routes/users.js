@@ -19,6 +19,10 @@ import {
 import { authenticateUserToken } from "../middleware/authenticateToken.js";
 import { upload } from "../multer.js";
 
+/**
+ *
+ * @author Giovanni Leo
+ */
 export const router = express.Router();
 
 /**

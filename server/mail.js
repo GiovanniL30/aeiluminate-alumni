@@ -1,6 +1,10 @@
 import nodemailer from "nodemailer";
 import "dotenv/config";
 
+/**
+ *
+ * @author Giovanni Leo
+ */
 export const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 587,
@@ -11,6 +15,10 @@ export const transporter = nodemailer.createTransport({
   },
 });
 
+/**
+ *
+ * @author Giovanni Leo
+ */
 export const applicationEmail = (receiver, applicationId, roleType, firstName, lastName, middleName) => ({
   from: "aeiluminate@gmail.com",
   to: receiver,
@@ -32,6 +40,10 @@ export const applicationEmail = (receiver, applicationId, roleType, firstName, l
   `,
 });
 
+/**
+ *
+ * @author Giovanni Leo
+ */
 export const applicationAcceptedEmail = (receiver, applicationId) => ({
   from: "aeiluminate100@gmail.com",
   to: receiver,
@@ -52,6 +64,10 @@ export const applicationAcceptedEmail = (receiver, applicationId) => ({
     `,
 });
 
+/**
+ *
+ * @author Giovanni Leo
+ */
 export const forgotPasswordEmail = (receiver, otp) => ({
   from: "aeiluminate@gmail.com",
   to: receiver,

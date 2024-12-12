@@ -20,6 +20,7 @@ const hashPassword = (password) => {
  *  Creates a new account on the Database (user, alumni) and on Appwrite
  *  @method POST
  *  @route /api/register/client
+ * @author Giovanni Leo
  */
 export const createUserAccountController = async (req, res, next) => {
   const { email, roleType, userName, password, firstName, lastName, middleName = null, program, yearGraduated, type } = req.body;
