@@ -5,9 +5,9 @@ import {
   getUserFollowing,
   getUsers,
   checkEmail,
-  validateEmailAndPassword,
   getApplication,
   checkUsername,
+  getUserWithEmail,
 } from "../mysqlQueries/readQueries.js";
 import { removeUserAccount, unfollowUser } from "../mysqlQueries/deleteQueries.js";
 import { followUser } from "../mysqlQueries/addQueries.js";
@@ -15,9 +15,24 @@ import { updateProfileDetails, updateProfilePicture } from "../mysqlQueries/upda
 import { storage } from "../appwriteconfig.js";
 import { ID, InputFile } from "node-appwrite";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 const generateToken = (userId, role) => {
   return jwt.sign({ userId, role }, process.env.TOKEN);
+};
+
+const verifyPassword = (password, hashedPassword) => {
+  return new Promise((resolve, reject) => {
+    const normalizedHash = hashedPassword.replace(/^\$2y\$/, "$2b$");
+
+    bcrypt.compare(password, normalizedHash, (err, result) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result);
+      }
+    });
+  });
 };
 
 /**
@@ -44,10 +59,12 @@ export const loginController = async (req, res) => {
       });
     }
 
-    const checkUser = await validateEmailAndPassword(email, password);
-    if (!checkUser) return res.status(403).json({ message: "Invalid Email or password" });
+    const loggingUser = await getUserWithEmail(email);
+    const correctPassword = await verifyPassword(password, loggingUser.password);
+
+    if (!correctPassword) return res.status(403).json({ message: "Invalid Email or password" });
     else {
-      const { password, ...user } = checkUser;
+      const { password, ...user } = loggingUser;
 
       const token = generateToken(user.userID, user.role);
       res.status(200).json({ user, token });

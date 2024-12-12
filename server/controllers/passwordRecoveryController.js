@@ -2,6 +2,7 @@ import { checkEmail } from "../mysqlQueries/readQueries.js";
 import { transporter, forgotPasswordEmail } from "../mail.js";
 import crypto from "crypto";
 import { changePassword } from "../mysqlQueries/updateQueries.js";
+import bcrypt from "bcrypt";
 
 /**
  * Used to store list of OTP
@@ -10,6 +11,18 @@ const otpStore = new Map();
 
 const generateOTP = () => {
   return crypto.randomInt(10000, 100000).toString();
+};
+
+const hashPassword = (password) => {
+  return new Promise((resolve, reject) => {
+    bcrypt.hash(password, 10, (err, hashedPassword) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(hashedPassword);
+      }
+    });
+  });
 };
 
 /**
@@ -93,7 +106,8 @@ export const changePasswordController = async (req, res) => {
       return res.status(400).json({ message: "Email and new password is required" });
     }
 
-    const updatedPass = await changePassword(email, newPassword);
+    const hashedPassword = await hashPassword(newPassword);
+    const updatedPass = await changePassword(email, hashedPassword);
 
     if (!updatedPass) return res.status(400).json({ message: "Failed to change password, try again later" });
 

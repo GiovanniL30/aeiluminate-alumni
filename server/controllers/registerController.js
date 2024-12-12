@@ -2,6 +2,19 @@ import { addNewAlumni, addNewUser } from "../mysqlQueries/addQueries.js";
 import { checkEmail, checkUsername, getApplication } from "../mysqlQueries/readQueries.js";
 import { removeUserAccount } from "../mysqlQueries/deleteQueries.js";
 import crypto from "crypto";
+import bcrypt from "bcrypt";
+
+const hashPassword = (password) => {
+  return new Promise((resolve, reject) => {
+    bcrypt.hash(password, 10, (err, hashedPassword) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(hashedPassword);
+      }
+    });
+  });
+};
 
 /**
  *  Creates a new account on the Database (user, alumni) and on Appwrite
@@ -34,8 +47,9 @@ export const createUserAccountController = async (req, res, next) => {
     }
 
     const id = crypto.randomUUID();
+    const hashedPassword = await hashPassword(password);
 
-    const newUser = await addNewUser(id, roleType, email, userName, password, firstName, middleName, lastName);
+    const newUser = await addNewUser(id, roleType, email, userName, hashedPassword, firstName, middleName, lastName);
     if (!newUser) {
       return res.status(500).json({ message: "Failed to create a new user in the database." });
     }

@@ -1,14 +1,13 @@
 import connection from "../connections.js";
-import { account, users } from "../appwriteconfig.js";
 
 /**
- * Validate email and password
+ * Get user hashed password
  */
-export const validateEmailAndPassword = async (email, password) => {
-  const query = "SELECT * FROM users WHERE email = ? AND password = ?";
+export const getUserWithEmail = async (email) => {
+  const query = "SELECT * FROM users WHERE email = ?";
 
   try {
-    const [result] = await connection.query(query, [email, password]);
+    const [result] = await connection.query(query, [email]);
     return result.length > 0 ? result[0] : null;
   } catch (error) {
     console.error("Failed to check email and password:", error);

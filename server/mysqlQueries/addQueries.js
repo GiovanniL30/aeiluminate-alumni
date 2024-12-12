@@ -7,12 +7,22 @@ import { account, users } from "../appwriteconfig.js";
  */
 export const addNewUser = async (userId, role, email, username, password, firstName, middleName, lastName) => {
   const insertUserQuery = `
-    INSERT INTO users (userID, role, email, username, password, firstName, middleName, lastName) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO users (userID, role, email, username, password, firstName, middleName, lastName, profile_picture) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
   try {
-    const [result] = await connection.query(insertUserQuery, [userId, role, email, username, password, firstName, middleName, lastName]);
+    const [result] = await connection.query(insertUserQuery, [
+      userId,
+      role,
+      email,
+      username,
+      password,
+      firstName,
+      middleName,
+      lastName,
+      "https://cloud.appwrite.io/v1/storage/buckets/674c025e00102761c23f/files/674ebc5c00240f4ca9f2/view?project=674c022d00339c9cad92&project=674c022d00339c9cad92&mode=admin",
+    ]);
     return result.affectedRows > 0;
   } catch (err) {
     console.error("Error inserting new user:", err);
