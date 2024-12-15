@@ -77,7 +77,7 @@ const AelineCard = ({ isReload = false, canBeDelete = false, postID, caption, us
             {data.posted_by} {user.userID === userID && <span className="text-primary_blue ml-1">(YOU)</span>}
           </p>
         </div>
-        <div className="hidden md:flex items-start justify-center gap-2 ml-auto mt-2">
+        <div className="flex items-start justify-center gap-2 ml-auto mt-2">
           <div className="flex gap-2 relative">
             <p className="text-sm text-light_text">{timeAgo(createdAt)}</p>
             {(user.userID === userID || user.role == "Admin" || user.role == "Manager" || canBeDelete) && (
@@ -97,15 +97,6 @@ const AelineCard = ({ isReload = false, canBeDelete = false, postID, caption, us
       <div className="flex flex-col gap-2 mt-0">
         <div className="w-full">
           <ReadMore text={caption} />
-        </div>
-
-        <div className="flex md:hidden gap-2">
-          <div className="flex gap-2 justify-between w-full">
-            <p className="text-sm text-light_text">{timeAgo(createdAt)}</p>
-            <button className="flex items-center justify-center">
-              <img src={more_hor} alt="dots" />
-            </button>
-          </div>
         </div>
 
         <div className="flex mt-4 gap-2 items-center">
