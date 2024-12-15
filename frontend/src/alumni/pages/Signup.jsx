@@ -349,9 +349,16 @@ const Signup = () => {
                 checked={formData.termsAccepted}
                 onChange={handleCheckboxChange}
               />
-              <label className="text-sm" htmlFor="terms">
-                I agree to ælluminate Terms and Conditions
-              </label>
+              <p className="text-sm" htmlFor="terms">
+                I agree to ælluminate{" "}
+                <a
+                  className="underline text-violet-200 hover-opacity"
+                  target="_blank"
+                  href="https://drive.google.com/uc?export=download&id=1erXfN2FNdze6LEBomNtVFi9IUtZUVVlm"
+                >
+                  Terms and Conditions
+                </a>
+              </p>
             </div>
 
             {errorMessage && <h1 className="text-center text-red-500">{errorMessage}</h1>}
