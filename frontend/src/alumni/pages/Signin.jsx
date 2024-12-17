@@ -97,7 +97,7 @@ const Signin = () => {
             </p>
 
             <NavLink className="underline hover-opacity" to="/recover">
-              Forget Password?
+              Forgot Password?
             </NavLink>
           </form>
         </div>
