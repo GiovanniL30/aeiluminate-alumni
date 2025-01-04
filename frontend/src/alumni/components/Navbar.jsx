@@ -30,7 +30,7 @@ const Navbar = () => {
     <div className="p-2 md:px-5 flex justify-between bg-white py-4 w-full max-w-full overflow-x-hidden">
       <div className="flex justify-between items-center w-full">
         <div className="w-12">
-          <NavLink to="/home">
+          <NavLink to="/">
             <img src={logo} alt="logo" />
           </NavLink>
         </div>

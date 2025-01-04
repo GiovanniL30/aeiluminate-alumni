@@ -3,20 +3,20 @@ import { NavLink, Outlet } from "react-router-dom";
 
 const postLinks = [
   {
-    path: "/home",
+    path: "/",
     text: "Posts",
   },
   {
-    path: "/home/albums",
+    path: "albums",
     text: "Albums",
   },
   {
-    path: "/home/events",
+    path: "events",
     text: "Events",
   },
 
   {
-    path: "/home/jobs",
+    path: "jobs",
     text: "Jobs",
   },
 ];

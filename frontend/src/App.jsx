@@ -44,7 +44,7 @@ const App = () => {
         <Routes>
           <Route element={<Auth />}>
             <Route path="/" element={<MainLayout />}>
-              <Route path="home" element={<HomeLayout />}>
+              <Route path="/" element={<HomeLayout />}>
                 <Route index element={<BrowsePosts />} />
                 <Route path="events" element={<BrowseEvents />} />
                 <Route path="albums" element={<BrowseAlbums />} />

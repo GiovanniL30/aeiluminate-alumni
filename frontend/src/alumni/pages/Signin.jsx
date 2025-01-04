@@ -52,7 +52,7 @@ const Signin = () => {
   };
 
   if (user && token) {
-    return <Navigate to="/home" />;
+    return <Navigate to="/" />;
   }
 
   return (

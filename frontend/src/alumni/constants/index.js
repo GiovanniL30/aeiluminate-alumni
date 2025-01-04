@@ -10,7 +10,7 @@ import friends from "../../assets/friends.png";
  */
 export const navLinks = [
   {
-    path: "/home",
+    path: "/",
     icon: feed,
   },
   {
