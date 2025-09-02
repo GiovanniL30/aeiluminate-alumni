@@ -361,7 +361,7 @@ export const updateUserProfilePictureController = async (req, res) => {
     const oldFileId = getFileIdFromUrl(oldProfile);
 
     if (req.file) {
-      await storage.deleteFile(process.env.APP_WRITE_IMAGES_BUCKET, oldFileId);
+      // await storage.deleteFile(process.env.APP_WRITE_IMAGES_BUCKET, oldFileId);
       const result = await storage.createFile(
         process.env.APP_WRITE_IMAGES_BUCKET,
         ID.unique(),
