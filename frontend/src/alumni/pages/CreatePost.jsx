@@ -107,7 +107,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
               setImages([]);
               setCaption("");
               ToastNotification.success("Post Uploaded successfully");
-              navigate("/home");
+              navigate("/");
             },
           }
         );
@@ -124,7 +124,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
             onSuccess: () => {
               setCaption("");
               ToastNotification.success("Line Uploaded successfully");
-              navigate("/home");
+              navigate("/");
             },
           }
         );
@@ -170,7 +170,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
                 description: "",
               });
               setImages([]);
-              navigate("/home/events");
+              navigate("/events");
             },
             onError: (error) => {
               ToastNotification.error("Failed to add new event: " + error.message);
@@ -230,7 +230,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
                 jobTitle: "",
               });
               ToastNotification.success("Job listing uploaded successfully");
-              navigate("/home/jobs");
+              navigate("/jobs");
             },
             onError: (error) => {
               ToastNotification.error(error.message || "Failed to upload job listing.");
@@ -251,7 +251,7 @@ const CreatePost = ({ maxCaption = 225 }) => {
               setImages([]);
               setCaption("");
               ToastNotification.success("Album Uploaded successfully");
-              navigate("/home/albums");
+              navigate("/albums");
             },
           }
         );

@@ -5,7 +5,6 @@ import {
   getUserFollowing,
   getUsers,
   checkEmail,
-  getApplication,
   checkUsername,
   getUserWithEmail,
   getAlumniDetails,
@@ -17,6 +16,21 @@ import { storage } from "../appwriteconfig.js";
 import { ID, InputFile } from "node-appwrite";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+
+/**
+ * Extracts the file ID from an Appwrite file URL.
+ * @param {string} url - The full Appwrite file URL.
+ * @returns {string|null} The file ID or null if not found.
+ */
+export function getFileIdFromUrl(url) {
+  try {
+    const match = url.match(/\/files\/([^/]+)\//);
+    return match ? match[1] : null;
+  } catch (err) {
+    console.error("Error extracting file ID:", err);
+    return null;
+  }
+}
 
 const generateToken = (userId, role) => {
   return jwt.sign({ userId, role }, process.env.TOKEN);
@@ -52,14 +66,6 @@ export const loginController = async (req, res) => {
   try {
     const emailExists = await checkEmail(email);
     if (!emailExists) return res.status(401).json({ message: "Email does not exist" });
-
-    const checkApplication = await getApplication(email);
-
-    if (checkApplication) {
-      return res.status(409).json({
-        message: `Account is currently Pending for Application, please check your email for updates about your account application (Application ID: ${checkApplication.appID})`,
-      });
-    }
 
     const loggingUser = await getUserWithEmail(email);
     const correctPassword = await verifyPassword(password, loggingUser.password);
@@ -346,23 +352,23 @@ export const updateUserDetailsController = async (req, res) => {
 export const updateUserProfilePictureController = async (req, res) => {
   try {
     const { userId } = req;
-    // const { oldProfile } = req.body;
+    const { oldProfile } = req.body;
 
-    // if (!oldProfile) {
-    //   return res.status(400).json({ message: "Old profile URL is required." });
-    // }
+    if (!oldProfile) {
+      return res.status(400).json({ message: "Old profile URL is required." });
+    }
 
-    // const oldFileId = getFileIdFromUrl(oldProfile);
+    const oldFileId = getFileIdFromUrl(oldProfile);
 
     if (req.file) {
-      //await storage.deleteFile(process.env.APP_WRITE_IMAGES_BUCKET, oldFileId);
+      await storage.deleteFile(process.env.APP_WRITE_IMAGES_BUCKET, oldFileId);
       const result = await storage.createFile(
         process.env.APP_WRITE_IMAGES_BUCKET,
         ID.unique(),
         InputFile.fromBuffer(req.file.buffer, req.file.originalname)
       );
 
-      const mediaURL = `https://cloud.appwrite.io/v1/storage/buckets/${process.env.APP_WRITE_IMAGES_BUCKET}/files/${result.$id}/view?project=${process.env.APP_WRITE_PROJECT_ID}&mode=admin`;
+      const mediaURL = `https://fra.cloud.appwrite.io/v1/storage/buckets/${process.env.APP_WRITE_IMAGES_BUCKET}/files/${result.$id}/view?project=${process.env.APP_WRITE_PROJECT_ID}&mode=admin`;
       await updateProfilePicture(userId, mediaURL);
       return res.status(200).json({
         message: "Profile updated successfully!",

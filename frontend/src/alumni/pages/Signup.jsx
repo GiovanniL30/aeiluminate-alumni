@@ -4,7 +4,7 @@ import earth from "../../assets/earth.webp";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { useApplication, usePrograms } from "../_api/@react-client-query/query";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import ToastNotification from "../constants/toastNotification";
 
 /**
@@ -14,6 +14,7 @@ import ToastNotification from "../constants/toastNotification";
  */
 const Signup = () => {
   const programsQuery = usePrograms();
+  const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedSchool, setSelectedSchool] = useState("SAMCIS");
 
@@ -28,8 +29,6 @@ const Signup = () => {
     graduationYear: "",
     programID: 1,
     termsAccepted: false,
-    diploma: null,
-    schoolId: null,
   });
 
   const applyQuery = useApplication();
@@ -87,12 +86,6 @@ const Signup = () => {
       return;
     }
 
-    if (!formData.diploma || !formData.schoolId) {
-      setErrorMessage("Please upload diploma and school id image");
-      ToastNotification.error("Please upload diploma and school id image");
-      return;
-    }
-
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordRegex.test(formData.password)) {
       ToastNotification.error(
@@ -104,18 +97,6 @@ const Signup = () => {
     if (formData.password !== formData.confirmPassword) {
       setErrorMessage("Passwords do not match.");
       ToastNotification.error("Passwords do not match.");
-      return;
-    }
-
-    if (formData.diploma && formData.diploma.size > 5242880) {
-      setErrorMessage("Diploma file size must be less than 5MB.");
-      ToastNotification.error("Diploma file size must be less than 5MB.");
-      return;
-    }
-
-    if (formData.schoolId && formData.schoolId.size > 5242880) {
-      setErrorMessage("School ID file size must be less than 5MB.");
-      ToastNotification.error("School ID file size must be less than 5MB.");
       return;
     }
 
@@ -145,13 +126,11 @@ const Signup = () => {
         program: formData.programID,
         yearGraduated: formData.graduationYear,
         type: "Application",
-        diplomaImage: formData.diploma,
-        schoolIdImage: formData.schoolId,
       },
       {
         onSuccess: () => {
           setErrorMessage("");
-          ToastNotification.success("Application is Successfull, please check your email");
+          ToastNotification.success("Account Creation is Successfull");
           setFormData({
             firstName: "",
             middleName: "",
@@ -163,9 +142,8 @@ const Signup = () => {
             graduationYear: "",
             programID: 1,
             termsAccepted: false,
-            diploma: null,
-            schoolId: null,
           });
+          navigate("/login");
         },
         onError: (error) => {
           setErrorMessage(error.message);
@@ -329,14 +307,6 @@ const Signup = () => {
                     </select>
                   </div>
                 )}
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-3 w-full">
-              <h1>Documents</h1>
-              <div className="flex flex-col md:flex-row  gap-10 justify-between w-full h-full">
-                <ImageUpload disabled={applyQuery.isPending} name="diploma" handleChange={handleChange} value={formData.diploma} />
-                <ImageUpload disabled={applyQuery.isPending} name="schoolId" handleChange={handleChange} value={formData.schoolId} />
               </div>
             </div>
 

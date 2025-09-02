@@ -1,6 +1,5 @@
 import express from "express";
 import { createUserAccountController } from "../controllers/registerController.js";
-import { upload } from "../multer.js";
 import { createApplicationController } from "../controllers/applicationController.js";
 
 /**
@@ -17,4 +16,4 @@ export const applicationRoute = express.Router();
 
 /** Upload Application Route */
 
-applicationRoute.post("/apply", upload.array("images"), createUserAccountController, createApplicationController);
+applicationRoute.post("/apply", createUserAccountController, createApplicationController);

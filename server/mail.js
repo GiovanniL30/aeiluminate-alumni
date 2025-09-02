@@ -22,16 +22,13 @@ export const transporter = nodemailer.createTransport({
 export const applicationEmail = (receiver, applicationId, roleType, firstName, lastName, middleName) => ({
   from: "aeiluminate@gmail.com",
   to: receiver,
-  subject: "Application Successful: aeIluminate Alumni Account",
+  subject: "Account Created Successfully: aeIluminate Alumni Account",
   html: `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-      <h2 style="color: #0056b3;">Application Successful!</h2>
+      <h2 style="color: #0056b3;">Account Created Successfully</h2>
       <p>Dear ${firstName} ${middleName ? middleName + " " : ""}${lastName},</p>
-      <p>We are pleased to inform you that your application for an <b>aeIluminate Alumni Account</b> has been successfully received.</p>
-      <p>Once application is accepted you can visit the website and login: <a href="https://aeiluminate.onrender.com/login">Aeiluminate Website</a></p>
-      <p><strong>Application ID:</strong> ${applicationId}</p>
+      <p>We are pleased to inform you that your account for <b>aeIluminate Alumni Account</b> has been successfully created.</p> 
       <p><strong>Role Type:</strong> ${roleType}</p>
-      <p>Please wait for further notifications regarding your account application. The verification process typically takes up to <strong>3 working days</strong>.</p>
       <p>If you have any questions, feel free to contact us at <a href="mailto:aeiluminate100@gmail.com">aeiluminate100@gmail.com</a>.</p>
       <br/>
       <p>Best regards,</p>

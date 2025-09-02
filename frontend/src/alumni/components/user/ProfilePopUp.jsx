@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useUpdateUserProfile } from "../../_api/@react-client-query/query";
 import default_img from "../../../assets/default-img.png";
 import Button from "../Button";
+import ToastNotification from "../../constants/toastNotification";
 
 /**
  *
@@ -36,7 +37,7 @@ const ProfilePopUp = ({ profile_picture, setOpenProfile, canEdit, id }) => {
         { oldProfileURL: profile_picture, newImage: newProfile, userId: id },
         {
           onSuccess: () => {
-            alert("Profile updated successfully");
+            ToastNotification.success("Profile updated successfully");
             setOpenProfile(false);
           },
         }
@@ -55,6 +56,7 @@ const ProfilePopUp = ({ profile_picture, setOpenProfile, canEdit, id }) => {
               className="w-full h-full max-w-[500px] object-cover  bg-white"
             />
             <button
+              disabled={updateUserProfileQuery.isPending}
               onClick={() => setOpenProfile(false)}
               className="absolute -top-16 -right-10 text-white bg-red-600 rounded-full w-10 h-10 hover-opacity right-0"
             >
@@ -66,8 +68,16 @@ const ProfilePopUp = ({ profile_picture, setOpenProfile, canEdit, id }) => {
               <label htmlFor="upload" className="border-[1px] flex items-center px-6 rounded-md hover-opacity">
                 <span className="text-white">Change Profile Pic</span>
               </label>
-              <input type="file" id="upload" className="hidden" onChange={handleImageChange} accept="image/*" />
+              <input
+                disabled={updateUserProfileQuery.isPending}
+                type="file"
+                id="upload"
+                className="hidden"
+                onChange={handleImageChange}
+                accept="image/*"
+              />
               <Button
+                disabled={updateUserProfileQuery.isPending}
                 otherStyle={`${!newProfile && "hidden"}`}
                 onClick={handleSubmit}
                 text={`${updateUserProfileQuery.isPending ? "Saving..." : "Save"}`}

@@ -35,13 +35,6 @@ export const createUserAccountController = async (req, res, next) => {
       return res.status(409).json({ message: "Email already exists." });
     }
 
-    if (type.toLowerCase() === "application") {
-      const application = await getApplication(email);
-      if (application) {
-        return res.status(409).json({ message: `Pending application exists: Application ID ${application.appID}` });
-      }
-    }
-
     const usernameExists = await checkUsername(userName);
     if (usernameExists) {
       return res.status(409).json({ message: "Username already exists." });

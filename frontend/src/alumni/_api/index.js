@@ -601,40 +601,24 @@ export const getProgramsRequest = async () => {
  *
  * @author Giovanni Leo
  */
-export const postApplication = async ({
-  email,
-  roleType,
-  userName,
-  password,
-  firstName,
-  lastName,
-  middleName,
-  program,
-  yearGraduated,
-  type,
-  diplomaImage,
-  schoolIdImage,
-}) => {
+export const postApplication = async ({ email, roleType, userName, password, firstName, lastName, middleName, program, yearGraduated, type }) => {
   try {
     const token = getAuthToken();
-    const formData = new FormData();
+    const payload = {
+      email,
+      roleType,
+      userName,
+      password,
+      firstName,
+      lastName,
+      middleName,
+      program,
+      yearGraduated,
+      type,
+    };
 
-    formData.append("email", email);
-    formData.append("roleType", roleType);
-    formData.append("userName", userName);
-    formData.append("password", password);
-    formData.append("firstName", firstName);
-    formData.append("lastName", lastName);
-    formData.append("middleName", middleName);
-    formData.append("program", program);
-    formData.append("yearGraduated", yearGraduated);
-    formData.append("type", type);
-    formData.append("images", diplomaImage);
-    formData.append("images", schoolIdImage);
-
-    const response = await axios.post(`${baseURL}/api/apply`, formData, {
+    const response = await axios.post(`${baseURL}/api/apply`, payload, {
       headers: {
-        "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${token}`,
       },
     });
