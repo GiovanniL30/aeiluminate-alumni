@@ -15,10 +15,6 @@ export const uploadEventController = async (req, res) => {
     const { role } = req;
     const { userId, mediaInfo } = req;
 
-    if (role !== "Admin" && role !== "Manager") {
-      throw new Error("Only admin and Manager can upload a event");
-    }
-
     const { title, desc, eventDateTime, location, eventType } = req.body;
     const eventID = crypto.randomUUID();
 
@@ -225,10 +221,6 @@ export const deleteEventController = async (req, res) => {
 
     if (!isOwner) {
       throw new Error("You cannot delete others event");
-    }
-
-    if (role !== "Admin" && role !== "Manager") {
-      throw new Error("Only admin and Manager can do this operation");
     }
 
     const result = deleteEvent(id, userId);

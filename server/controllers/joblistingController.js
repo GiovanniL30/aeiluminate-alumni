@@ -23,10 +23,6 @@ export const deleteJobListingController = async (req, res) => {
       throw new Error("You cannot delete others event");
     }
 
-    if (role !== "Admin" && role !== "Manager") {
-      throw new Error("Only admin and Manager can do this operation");
-    }
-
     const result = await deleteJobListing(id);
 
     if (!result) throw new Error("Failed to delete Job Listing");
@@ -49,10 +45,6 @@ export const deleteJobListingController = async (req, res) => {
 export const uploadNewJoblistingController = async (req, res) => {
   try {
     const { userId, role } = req;
-
-    if (role !== "Admin" && role !== "Manager") {
-      throw new Error("Only admin and Manager can upload a job listing");
-    }
 
     const { jobTitle, company, experienceRequired, workType, salary, description, url } = req.body;
 

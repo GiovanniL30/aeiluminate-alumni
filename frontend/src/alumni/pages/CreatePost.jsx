@@ -335,28 +335,24 @@ const CreatePost = ({ maxCaption = 225 }) => {
           <p>Create album</p>
         </button>
 
-        {user.role === "Admin" || user.role === "Manager" ? (
-          <>
-            <button
-              onClick={() => switchPostType("job")}
-              className={`flex items-center justify-center gap-2 hover-opacity ${
-                postType.isJob ? "text-primary_blue underline font-bold" : "text-black"
-              }`}
-            >
-              <img src={create_joblisting} alt="post" />
-              <p>Create Job listing</p>
-            </button>
-            <button
-              onClick={() => switchPostType("event")}
-              className={`flex items-center justify-center gap-2 hover-opacity ${
-                postType.isEvent ? "text-primary_blue underline font-bold" : "text-black"
-              }`}
-            >
-              <img src={create_event} alt="line" />
-              <p>Create Event</p>
-            </button>
-          </>
-        ) : null}
+        <button
+          onClick={() => switchPostType("job")}
+          className={`flex items-center justify-center gap-2 hover-opacity ${
+            postType.isJob ? "text-primary_blue underline font-bold" : "text-black"
+          }`}
+        >
+          <img src={create_joblisting} alt="post" />
+          <p>Create Job listing</p>
+        </button>
+        <button
+          onClick={() => switchPostType("event")}
+          className={`flex items-center justify-center gap-2 hover-opacity ${
+            postType.isEvent ? "text-primary_blue underline font-bold" : "text-black"
+          }`}
+        >
+          <img src={create_event} alt="line" />
+          <p>Create Event</p>
+        </button>
       </div>
 
       <h1 className="text-xl  mt-5">
